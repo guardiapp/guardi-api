@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function () {
 // });
 Route::get('/', function () {
     return Inertia::render('Dashboard');
-})->middleware(['verified'])->name('dashboard');
+})->middleware(['verified'])->name('home');
 
 
 // Rutas de autenticación generadas por Breeze

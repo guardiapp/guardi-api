@@ -83,7 +83,7 @@ const transformedResidences = residences.data.map((residence) => ({
     //id: residence.id,
     name: residence.name,
     address: residence.address,
-    manager: residence.user.name, // Extract manager name
+    manager: residence.manager.name, // Extract manager name
     actions: { id: residence.id }, // Store reference for actions
 }));
 

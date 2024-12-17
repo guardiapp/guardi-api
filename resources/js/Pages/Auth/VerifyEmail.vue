@@ -1,8 +1,11 @@
 <script setup>
 import { computed } from 'vue';
-import GuestLayout from '@/Layouts/GuestLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Link, useForm } from '@inertiajs/vue3';
+
+import AuthLayout from "@/Layouts/AuthLayout.vue";
+import { useThemeStore } from "@/stores/themeStore";
+const themeStore = useThemeStore();
 
 const props = defineProps({
     status: {
@@ -22,40 +25,56 @@ const verificationLinkSent = computed(
 </script>
 
 <template>
-    <GuestLayout>
-        <Head title="Email Verification" />
-
-        <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-            Thanks for signing up! Before getting started, could you verify your
-            email address by clicking on the link we just emailed to you? If you
-            didn't receive the email, we will gladly send you another.
-        </div>
-
-        <div
-            class="mb-4 text-sm font-medium text-green-600 dark:text-green-400"
-            v-if="verificationLinkSent"
-        >
-            A new verification link has been sent to the email address you
-            provided during registration.
-        </div>
-
-        <form @submit.prevent="submit">
-            <div class="mt-4 flex items-center justify-between">
-                <PrimaryButton
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
+    <AuthLayout>
+        <div class="flex items-center justify-center p-6 sm:p-12 md:w-1/2">
+            <div class="w-full">
+                <div
+                    v-if="status"
+                    class="mb-4 text-sm font-medium text-green-600"
                 >
-                    Resend Verification Email
-                </PrimaryButton>
-
-                <Link
-                    :href="route('logout')"
-                    method="post"
-                    as="button"
-                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-                    >Log Out</Link
+                    {{ status }}
+                </div>
+                <h1
+                    class="mb-4 text-xl font-semibold"
+                    :class="themeStore.dark ? 'text-gray-200' : 'text-gray-700'"
                 >
+                    Verificar correo electrónico
+                </h1>
+
+                <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
+                    ¡Gracias por registrarte! Antes de comenzar, ¿podrías verificar tu dirección de correo electrónico haciendo clic en el enlace que te acabamos de enviar? Si no recibiste el correo electrónico, con gusto te enviaremos otro.
+                </div>
+                <div
+                    class="mb-4 text-sm font-medium text-green-600 dark:text-green-400"
+                    v-if="verificationLinkSent"
+                >
+                    Se ha enviado un nuevo enlace de verificación a la dirección de correo electrónico que proporcionó durante el registro.
+                </div>
+
+                <form @submit.prevent="submit">
+                    <div class="mt-4 flex items-center justify-between">
+                        <PrimaryButton
+                            class="px-4 py-2 mt-4 text-sm font-medium leading-5 text-center text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+                            :class="{ 'opacity-25': form.processing }"
+                            :disabled="form.processing"
+                        >
+                            Reenviar correo de verificación
+                        </PrimaryButton>
+
+                        <Link
+                            :href="route('logout')"
+                            method="post"
+                            as="button"
+                            class="rounded-md text-sm underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
+                            :class="themeStore.dark ? 'text-purple-400' : 'text-purple-600'"
+
+
+
+                            >Salir</Link
+                        >
+                    </div>
+                </form>
             </div>
-        </form>
-    </GuestLayout>
+        </div>
+    </AuthLayout>
 </template>

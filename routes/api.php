@@ -21,6 +21,13 @@ Route::prefix('auth')->group(function () {
 
 // Residences (API)
 Route::middleware('auth:sanctum')->group(function () {
+
+
+    Route::get('/managers', [UserController::class, 'index']);
+    Route::get('/users/{id}', [UserController::class, 'show']);
+
+
+
     Route::get('/residences', [ResidenceController::class, 'index']);
     Route::post('/residences', [ResidenceController::class, 'store']);
     Route::get('/residences/{id}', [ResidenceController::class, 'show']);

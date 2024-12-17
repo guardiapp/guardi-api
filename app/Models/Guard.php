@@ -16,4 +16,11 @@ class Guard extends Model
         return $this->belongsTo(Residence::class);
     }
 
+    /**
+     * Relación con el modelo User (cada vigilante es un Usuario).
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

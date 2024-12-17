@@ -18,7 +18,7 @@
             </button>
             <!-- Search input -->
             <div class="flex justify-center flex-1 lg:mr-32">
-                <div class="relative w-full max-w-xl mr-6 focus-within:text-purple-500">
+                <!-- <div class="relative w-full max-w-xl mr-6 focus-within:text-purple-500">
                     <div class="absolute inset-y-0 flex items-center pl-2">
                         <svg class="w-4 h-4" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd"
@@ -30,7 +30,7 @@
                         'text-gray-700 placeholder-gray-600 bg-gray-100 focus:placeholder-gray-500 focus:bg-white focus:border-purple-300 focus:outline-none focus:shadow-outline-purple': !themeStore.dark,
                         'placeholder-gray-500 focus:shadow-outline-gray focus:placeholder-gray-600 bg-gray-700 text-gray-200': themeStore.dark,
                     }" type="text" placeholder="Search for projects" aria-label="Search" />
-                </div>
+                </div> -->
             </div>
             <ul class="flex items-center flex-shrink-0 space-x-6">
                 <!-- Theme toggler -->
@@ -52,7 +52,7 @@
                     </button>
                 </li>
                 <!-- Notifications menu -->
-                <li class="relative">
+                <!-- <li class="relative" v-click-outside="themeStore.closeNotificationsMenu">
                     <button class="relative align-middle rounded-md focus:outline-none focus:shadow-outline-purple"
                         @click="themeStore.toggleNotificationsMenu" @keydown.escape="themeStore.closeNotificationsMenu"
                         aria-label="Notifications" aria-haspopup="true">
@@ -61,7 +61,6 @@
                                 d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z">
                             </path>
                         </svg>
-                        <!-- Notification badge -->
                         <span aria-hidden="true"
                             class="absolute top-0 right-0 inline-block w-3 h-3 transform translate-x-1 -translate-y-1 bg-red-600 border-2 border-white rounded-full"
                             :class="{
@@ -71,7 +70,7 @@
                     </button>
                     <template v-if="themeStore.isNotificationsMenuOpen">
                         <ul transition:leave="transition ease-in duration-150" transition:leave-start="opacity-100"
-                            transition:leave-end="opacity-0" @click.away="themeStore.closeNotificationsMenu"
+                            transition:leave-end="opacity-0"
                             @keydown.escape="themeStore.closeNotificationsMenu"
                             class="absolute right-0 w-56 p-2 mt-2 space-y-2 border rounded-md shadow-md" :class="{
                                 'text-gray-600 bg-white border-gray-100': !themeStore.dark,
@@ -122,9 +121,9 @@
                             </li>
                         </ul>
                     </template>
-                </li>
+                </li> -->
                 <!-- Profile menu -->
-                <li class="relative">
+                <li class="relative" v-click-outside="themeStore.closeProfileMenu">
                     <button class="align-middle rounded-full focus:shadow-outline-purple focus:outline-none"
                         @click="themeStore.toggleProfileMenu" @keydown.escape="themeStore.closeProfileMenu"
                         aria-label="Account" aria-haspopup="true">
@@ -134,28 +133,28 @@
                     </button>
                     <template v-if="themeStore.isProfileMenuOpen">
                         <ul transition:leave="transition ease-in duration-150" transition:leave-start="opacity-100"
-                            transition:leave-end="opacity-0" @click.away="themeStore.closeProfileMenu"
+                            transition:leave-end="opacity-0"
                             @keydown.escape="themeStore.closeProfileMenu"
                             class="absolute right-0 w-56 p-2 mt-2 space-y-2 rounded-md shadow-md" :class="{
                                 'text-gray-600 bg-white border border-gray-100': !themeStore.dark,
                                 'border-gray-700 text-gray-300 bg-gray-700': themeStore.dark,
                             }" aria-label="submenu">
                             <li class="flex">
-                                <a class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md"
+                                <Link class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md"
                                     :class="{
                                         'hover:bg-gray-100 hover:text-gray-800': !themeStore.dark,
                                         'hover:bg-gray-800 hover:text-gray-200': themeStore.dark,
-                                    }" href="#">
+                                    }" href="/profile">
                                     <svg class="w-4 h-4 mr-3" aria-hidden="true" fill="none" stroke-linecap="round"
                                         stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
                                         stroke="currentColor">
                                         <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
                                         </path>
                                     </svg>
-                                    <span>Profile</span>
-                                </a>
+                                    <span>Perfil</span>
+                                </Link>
                             </li>
-                            <li class="flex">
+                            <!-- <li class="flex">
                                 <a class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md"
                                     :class="{
                                         'hover:bg-gray-100 hover:text-gray-800': !themeStore.dark,
@@ -169,9 +168,9 @@
                                         </path>
                                         <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                     </svg>
-                                    <span>Settings</span>
+                                    <span>Configuración</span>
                                 </a>
-                            </li>
+                            </li> -->
                             <li class="flex">
                                 <Link method="post"class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md"
                                     :class="{
@@ -185,7 +184,7 @@
                                             d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1">
                                         </path>
                                     </svg>
-                                    <span>Log out</span>
+                                    <span>Cerrar Sesión</span>
                                 </Link>
                             </li>
                         </ul>

@@ -12,11 +12,11 @@ class Residence extends Model
     protected $fillable = ['user_id', 'name', 'address'];
 
     /**
-     * Relación con el modelo User (cada residencia pertenece a un usuario).
+     * Relación con el modelo User (cada residencia pertenece a un manager).
      */
-    public function user()
+    public function manager()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
@@ -26,4 +26,13 @@ class Residence extends Model
     {
         return $this->hasMany(Building::class);
     }
+
+    /**
+     * Relación con el modelo Guard (una residencia puede tener varios vigilantes asociados).
+     */
+    public function guards()
+    {
+        return $this->hasMany(Guard::class);
+    }
+
 }

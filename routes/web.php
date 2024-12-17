@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResidenceController;
+use App\Http\Controllers\GuardController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,6 +19,30 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    // Rutas para usuarios generales
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+//});
+
+//Route::middleware(['auth', 'checkUserType:Admin'])->group(function () {
+    // Rutas para managers
+    Route::get('/managers', [ManagerController::class, 'index'])->name('managers.index');
+    Route::get('/managers/{id}', [ManagerController::class, 'edit'])->name('managers.edit');
+    Route::put('/managers/{id}', [ManagerController::class, 'update'])->name('managers.update');
+    Route::delete('/managers/{id}', [ManagerController::class, 'destroy'])->name('managers.destroy');
+
+    // Rutas para vigilantes
+    Route::get('/guards', [GuardController::class, 'index'])->name('guards.index');
+    Route::get('/guards/{id}', [GuardController::class, 'edit'])->name('guards.edit');
+    Route::put('/guards/{id}', [GuardController::class, 'update'])->name('guards.update');
+    Route::delete('/guards/{id}', [GuardController::class, 'destroy'])->name('guards.destroy');
+
+
+
+
+//});
+
+//Route::middleware(['auth', 'checkUserType:Admin,Manager'])->group(function () {
     // Residences (Web)
     Route::get('/residences', [ResidenceController::class, 'index'])->name('residences.index');
     Route::get('/residences/create', [ResidenceController::class, 'create'])->name('residences.create');
@@ -25,7 +52,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/residences/{id}', [ResidenceController::class, 'destroy'])->name('residences.destroy');
 });
 
-// Ruta pública para la página principal
+// // Ruta pública para la página principal
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
 //         'canLogin' => Route::has('login'),

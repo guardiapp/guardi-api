@@ -11,7 +11,7 @@
     />
     {{-- <link rel="stylesheet" href="/assets/css/tailwind.output.css" /> --}}
     <!-- Vite CSS -->
-    @vite('resources/css/app.css')
+    @vite(['resources/css/app.css', 'resources/css/tailwind.output.css'])
     {{-- <script
       src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
       defer

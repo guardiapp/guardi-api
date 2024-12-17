@@ -51,8 +51,20 @@ class User extends Authenticatable
     /**
      * Relación con el modelo Residence (un usuario puede tener varias residencias asociadas).
      */
-    public function residence()
+    public function residences()
     {
-        return $this->hasMany(residence::class);
+        return $this->hasMany(Residence::class);
+    }
+
+    /**
+     * Scope to filter users by type.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $type
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeByType($query, $type)
+    {
+        return $query->where('type', $type);
     }
 }

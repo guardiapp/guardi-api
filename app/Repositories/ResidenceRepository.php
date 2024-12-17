@@ -13,11 +13,11 @@ class ResidenceRepository
         $user = Auth::user();
 
         if ($user->type === 'Admin') {
-            return Residence::with('user')->paginate($perPage);
+            return Residence::with('manager')->paginate($perPage);
         }
 
         if ($user->type === 'Manager') {
-            return Residence::with('user')->where('user_id', $user->id)->paginate($perPage);
+            return Residence::with('manager')->where('user_id', $user->id)->paginate($perPage);
         }
 
         abort(403, 'Unauthorized action.');

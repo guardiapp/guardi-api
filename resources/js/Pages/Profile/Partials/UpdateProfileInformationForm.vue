@@ -1,9 +1,8 @@
 <script setup>
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Link, useForm, usePage } from '@inertiajs/vue3';
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import { Link, useForm, usePage } from "@inertiajs/vue3";
+import { useThemeStore } from "@/stores/themeStore";
+const themeStore = useThemeStore();
 
 defineProps({
     mustVerifyEmail: {
@@ -19,6 +18,7 @@ const user = usePage().props.auth.user;
 const form = useForm({
     name: user.name,
     email: user.email,
+    type: user.type,
 });
 </script>
 
@@ -26,11 +26,12 @@ const form = useForm({
     <section>
         <header>
             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                Profile Information
+                Información del Perfil
             </h2>
 
             <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                Update your account's profile information and email address.
+                Actualice la información de su perfil de cuenta y dirección del
+                correo electrónico.
             </p>
         </header>
 
@@ -38,47 +39,80 @@ const form = useForm({
             @submit.prevent="form.patch(route('profile.update'))"
             class="mt-6 space-y-6"
         >
-            <div>
-                <InputLabel for="name" value="Name" />
-
-                <TextInput
-                    id="name"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.name"
-                    required
-                    autofocus
-                    autocomplete="name"
-                />
-
-                <InputError class="mt-2" :message="form.errors.name" />
+            <!-- Input para Nombre -->
+            <div class="text-sm">
+                <label class="block text-sm">
+                    <span
+                        :class="
+                            themeStore.dark ? 'text-gray-400' : 'text-gray-700'
+                        "
+                        >Nombre</span
+                    >
+                    <input
+                        v-model="form.name"
+                        id="name"
+                        type="text"
+                        class="block w-full mt-1 text-sm form-input"
+                        :class="{
+                            'border-red-500': form.errors.name,
+                            ' focus:border-purple-400 focus:outline-none focus:shadow-outline-purple':
+                                !themeStore.dark,
+                            'border-gray-600 bg-gray-700 text-gray-300 focus:shadow-outline-gray ':
+                                themeStore.dark,
+                        }"
+                        placeholder="Cambie el nombre"
+                    />
+                    <p
+                        v-if="form.errors.name"
+                        class="mt-1 text-xs text-red-600"
+                    >
+                        {{ form.errors.name }}
+                    </p>
+                </label>
             </div>
 
-            <div>
-                <InputLabel for="email" value="Email" />
-
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autocomplete="username"
-                />
-
-                <InputError class="mt-2" :message="form.errors.email" />
+            <!-- Input para Correo electrónico -->
+            <div class="mt-4 text-sm">
+                <label class="block text-sm">
+                    <span
+                        :class="
+                            themeStore.dark ? 'text-gray-400' : 'text-gray-700'
+                        "
+                        >Correo electrónico</span
+                    >
+                    <input
+                        v-model="form.email"
+                        id="email"
+                        class="block w-full mt-1 text-sm form-input"
+                        :class="{
+                            'border-red-500': form.errors.email,
+                            'focus:border-purple-400 focus:outline-none focus:shadow-outline-purple':
+                                !themeStore.dark,
+                            'border-gray-600 bg-gray-700 text-gray-300 focus:shadow-outline-gray ':
+                                themeStore.dark,
+                        }"
+                        placeholder="Correo electrónico"
+                    />
+                    <p
+                        v-if="form.errors.email"
+                        class="mt-1 text-xs text-red-600"
+                    >
+                        {{ form.errors.email }}
+                    </p>
+                </label>
             </div>
 
             <div v-if="mustVerifyEmail && user.email_verified_at === null">
                 <p class="mt-2 text-sm text-gray-800 dark:text-gray-200">
-                    Your email address is unverified.
+                    Su dirección de correo electrónico no ha sido verificada.
                     <Link
                         :href="route('verification.send')"
                         method="post"
                         as="button"
                         class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
                     >
-                        Click here to re-send the verification email.
+                        Haga click aqui para re enviar el correo de
+                        verificación.
                     </Link>
                 </p>
 
@@ -86,12 +120,17 @@ const form = useForm({
                     v-show="status === 'verification-link-sent'"
                     class="mt-2 text-sm font-medium text-green-600 dark:text-green-400"
                 >
-                    A new verification link has been sent to your email address.
+                    Un nuevo enlace de verificación ha sido enviado a su
+                    dirreción de correo electrónico.
                 </div>
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+                <PrimaryButton
+                    :disabled="form.processing"
+                    class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple disabled:opacity-50 disabled:cursor-not-allowed"
+                    >Guardar</PrimaryButton
+                >
 
                 <Transition
                     enter-active-class="transition ease-in-out"
@@ -103,7 +142,7 @@ const form = useForm({
                         v-if="form.recentlySuccessful"
                         class="text-sm text-gray-600 dark:text-gray-400"
                     >
-                        Saved.
+                        Guardado.
                     </p>
                 </Transition>
             </div>

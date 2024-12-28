@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreResidenceRequest;
 use App\Http\Requests\UpdateResidenceRequest;
+use Illuminate\Http\Request;
 use App\Models\Residence;
+use App\Models\Building;
 use App\Repositories\ResidenceRepository;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -24,12 +26,14 @@ class ResidenceController extends Controller
     /**
      * Listar todas las residencias para el usuario autenticado.
      */
-    public function index()
+    public function index(Request $request)
     {
         $this->authorize('viewAny', Residence::class);
 
-        $residences = $this->residenceRepository->getAll();
-        return Inertia::render('Residences/Index', ['residences' => $residences]);
+        $perPage = $request->input('per_page', 5);
+        $page = $request->input('page', 1);
+        $residences = $this->residenceRepository->getAll($perPage, $page);
+        return Inertia::render('Residences/Index', $residences);
     }
 
     /**
@@ -39,9 +43,16 @@ class ResidenceController extends Controller
     {
         $this->authorize('create', Residence::class);
 
-        return Inertia::render('Residences/Create', [
-            'managers' => $this->residenceRepository->getManagers(),
-        ]);
+        $user = Auth::user();
+
+        // Datos para la vista
+        $data = [];
+
+        if ($user->type === 'Admin') {
+            $data['managers'] = $this->residenceRepository->getManagers();
+        }
+
+        return Inertia::render('Residences/Create', $data);
     }
 
     /**
@@ -52,7 +63,9 @@ class ResidenceController extends Controller
         $this->authorize('create', Residence::class);
 
         $this->residenceRepository->create($request->validated());
-        return redirect()->route('residences.index')->with('success', 'Residence created successfully.');
+
+        //return redirect()->route('residences.create')->with('success', 'Residence deleted successfully.');
+        return response()->noContent();
     }
 
     /**
@@ -97,12 +110,48 @@ class ResidenceController extends Controller
     /**
      * Eliminar una residencia específica de la base de datos.
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $residence = $this->residenceRepository->findByUser($id);
         $this->authorize('delete', $residence);
 
         $this->residenceRepository->delete($residence);
-        return redirect()->route('residences.index')->with('success', 'Residence deleted successfully.');
+
+        // Obtener las residencias actualizadas con los mismos parámetros
+        $perPage = $request->input('per_page', 10);
+        $page = $request->input('page', 1);
+
+        $residences = $this->residenceRepository->getAll($perPage, $page);
+
+        // Devolver las residencias actualizadas como respuesta
+        return response()->json($residences);
+    }
+
+    /**
+     * Obtener edificios asociados a una residencia.
+     */
+    public function getBuildingsByResidence($residenceId)
+    {
+        $user = Auth::user();
+        //$this->authorize('viewAny', Building::class);
+
+        // Verificar que el usuario tiene permiso para acceder a los edificios
+        if ($user->type === 'Admin') {
+            // Admin puede acceder a todos los edificios de la residencia
+            $buildings = Building::where('residence_id', $residenceId)->get();
+        } elseif ($user->type === 'Manager') {
+            // Manager solo puede acceder a los edificios de sus residencias
+            $residence = $user->residences()->find($residenceId);
+
+            if (!$residence) {
+                abort(403, 'Unauthorized action.');
+            }
+
+            $buildings = $residence->buildings()->get();
+        } else {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return response()->json(['buildings' => $buildings]);
     }
 }

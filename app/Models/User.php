@@ -22,7 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'type'
+        'type',
+        'avatar'
     ];
 
     /**
@@ -53,7 +54,28 @@ class User extends Authenticatable
      */
     public function residences()
     {
-        return $this->hasMany(Residence::class);
+        return $this->hasMany(Residence::class, 'user_id');
+    }
+
+    /**
+     * Relación con el modelo Resident (un usuario puede ser un residente).
+     */
+    public function resident()
+    {
+        return $this->hasOne(Resident::class);
+    }
+
+    /**
+     * Relación con el modelo Guard (un usuario puede ser un vigilante).
+     */
+    public function securityGuard()
+    {
+        return $this->hasOne(Guard::class);
+    }
+
+    public function residents()
+    {
+        return $this->hasManyThrough(Resident::class, Building::class, 'residence_id', 'building_id');
     }
 
     /**

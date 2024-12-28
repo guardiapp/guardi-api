@@ -20,17 +20,17 @@ class UsersSeeder extends Seeder
         $admin = User::create([
             'name' => 'Administrador',
             'email' => 'admin@example.com',
-            'password' => bcrypt('password123'),
+            'password' => bcrypt('password'),
             'type' => 'Admin'
         ]);
 
         // Crear 3 Managers con sus Residences
         $managers = [];
-        for ($i = 1; $i <= 3; $i++) {
+        for ($i = 1; $i <= 16; $i++) {
             $manager = User::create([
                 'name' => $faker->name,
                 'email' => "manager{$i}@example.com",
-                'password' => bcrypt('password123'),
+                'password' => bcrypt('password'),
                 'type' => 'Manager'
             ]);
             $managers[] = $manager;
@@ -46,6 +46,10 @@ class UsersSeeder extends Seeder
                 Building::create([
                     'residence_id' => $residence->id,
                     'name' => "Edificio {$j}",
+                    'floors_number' => 10,
+                    'apartments_per_floor' => 4,
+                    'active' => true,
+                    'information' => "Cualquier información"
                 ]);
             }
         }
@@ -57,7 +61,7 @@ class UsersSeeder extends Seeder
                 $guard = User::create([
                     'name' => $faker->name,
                     'email' => "guard{$index}{$k}@example.com",
-                    'password' => bcrypt('password123'),
+                    'password' => bcrypt('password'),
                     'type' => 'Guard'
                 ]);
 
@@ -67,6 +71,8 @@ class UsersSeeder extends Seeder
                     'document' => $faker->dni,
                     'first_name' => $faker->firstName,
                     'last_name' => $faker->lastName,
+                    'phone' => $faker->phoneNumber,
+                    'active' => true
                 ]);
             }
         }
@@ -78,7 +84,7 @@ class UsersSeeder extends Seeder
                 $resident = User::create([
                     'name' => $faker->name,
                     'email' => "resident{$index}{$l}@example.com",
-                    'password' => bcrypt('password123'),
+                    'password' => bcrypt('password'),
                     'type' => 'Resident'
                 ]);
 
@@ -89,6 +95,8 @@ class UsersSeeder extends Seeder
                     'first_name' => $faker->firstName,
                     'last_name' => $faker->lastName,
                     'apartment' => $faker->numberBetween(1, 20),
+                    'phone' => $faker->phoneNumber,
+                    'active' => true
                 ]);
             }
         }

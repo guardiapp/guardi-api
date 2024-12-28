@@ -15,6 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('residence_id')->constrained('residences')->onDelete('cascade');
             $table->string('name');
+            $table->integer('floors_number')->nullable();
+            $table->integer('apartments_per_floor')->nullable();
+            $table->boolean('active')->default(1);
+            $table->text('information')->nullable();
             $table->timestamps();
         });
     }

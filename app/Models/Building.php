@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Building extends Model
 {
-    protected $fillable = ['residence_id', 'name'];
+    protected $fillable = ['residence_id', 'name', 'floors_number', 'apartments_per_floor', 'active', 'information'];
 
     /**
      * Relación con el modelo Residence (cada edificio pertenece a un condominio).

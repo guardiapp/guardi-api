@@ -2,65 +2,89 @@
 
 namespace App\Policies;
 
-use App\Models\Guard;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
+use App\Models\Guard;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class GuardPolicy
 {
+    use HandlesAuthorization;
+
     /**
-     * Determine whether the user can view any models.
+     * Determina si un usuario puede ver la lista de Guards.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(User $user)
     {
+        // Admin tiene acceso completo
+        if ($user->type === 'Admin') {
+            return true;
+        }
+
+        // Manager puede acceder a la lista, pero el filtro ocurre en el controlador o repositorio
+        if ($user->type === 'Manager') {
+            return true;
+        }
+
         return false;
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Determina si un usuario puede ver un Guard específico.
      */
-    public function view(User $user, Guard $guard): bool
+    public function view(User $user, Guard $guard)
     {
+        if ($user->type === 'Admin') {
+            return true;
+        }
+
+        if ($user->type === 'Manager') {
+            // Manager solo puede ver Guards asociados a sus Residences
+            return $user->residences->contains('id', $guard->residence_id);
+        }
+
         return false;
     }
 
     /**
-     * Determine whether the user can create models.
+     * Determina si un usuario puede crear Guards.
      */
-    public function create(User $user): bool
+    public function create(User $user)
     {
+        // Solo Admin y Manager pueden crear Guards
+        return in_array($user->type, ['Admin', 'Manager']);
+    }
+
+    /**
+     * Determina si un usuario puede actualizar un Guard.
+     */
+    public function update(User $user, Guard $guard)
+    {
+        if ($user->type === 'Admin') {
+            return true; // Admin tiene acceso completo
+        }
+
+        if ($user->type === 'Manager') {
+            // Manager puede actualizar Guards solo en sus Residences
+            return $user->residences->contains('id', $guard->residence_id);
+        }
+
         return false;
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Determina si un usuario puede eliminar un Guard.
      */
-    public function update(User $user, Guard $guard): bool
+    public function delete(User $user, Guard $guard)
     {
-        return false;
-    }
+        if ($user->type === 'Admin') {
+            return true; // Admin tiene acceso completo
+        }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Guard $guard): bool
-    {
-        return false;
-    }
+        if ($user->type === 'Manager') {
+            // Manager puede eliminar Guards solo en sus Residences
+            return $user->residences->contains('id', $guard->residence_id);
+        }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Guard $guard): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Guard $guard): bool
-    {
         return false;
     }
 }

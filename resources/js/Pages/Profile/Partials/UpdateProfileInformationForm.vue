@@ -20,6 +20,14 @@ const form = useForm({
     email: user.email,
     type: user.type,
 });
+
+const formatType = (type) => {
+    if (type == "Admin") return "Super Administrador";
+    if (type == "Manager") return "Administrador";
+    if (type == "Guard") return "Vigilante";
+    if (type == "Resident") return "Residente";
+    return null;
+}
 </script>
 
 <template>
@@ -29,13 +37,32 @@ const form = useForm({
                 Información del Perfil
             </h2>
 
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+            <p
+                v-if="user.type == 'Admin'"
+                class="mt-1 text-sm text-gray-600 dark:text-gray-400">
                 Actualice la información de su perfil de cuenta y dirección del
+                correo electrónico.
+            </p>
+            <p v-else class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                Información de su perfil de cuenta y dirección del
                 correo electrónico.
             </p>
         </header>
 
+        <p class="mt-5 text-sm text-gray-600 dark:text-gray-400 font-bold">
+            Rol: <span class="text-gray-600 dark:text-gray-400 font-medium">{{ formatType(user.type) }}</span>
+        </p>
+        <div v-if="user.type !== 'Admin'">
+            <p class="mt-5 text-sm text-gray-600 dark:text-gray-400 font-bold">
+                Nombre: <span class="text-gray-600 dark:text-gray-400 font-medium">{{ user.name }}</span>
+            </p>
+            <p class="mt-5 text-sm text-gray-600 dark:text-gray-400 font-bold">
+                Correo electrónico: <span class="text-gray-600 dark:text-gray-400 font-medium">{{ user.email }}</span>
+            </p>
+        </div>
+
         <form
+            v-else
             @submit.prevent="form.patch(route('profile.update'))"
             class="mt-6 space-y-6"
         >

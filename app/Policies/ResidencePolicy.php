@@ -19,7 +19,7 @@ class ResidencePolicy
 
     public function create(User $user)
     {
-        return $user->type === 'Admin';
+        return in_array($user->type, ['Admin', 'Manager']);
     }
 
     public function update(User $user, Residence $residence)
@@ -29,6 +29,6 @@ class ResidencePolicy
 
     public function delete(User $user, Residence $residence)
     {
-        return $user->type === 'Admin';
+        return in_array($user->type, ['Admin', 'Manager']);
     }
 }

@@ -1,5 +1,4 @@
 import defaultTheme from "tailwindcss/defaultTheme";
-import forms from "@tailwindcss/forms";
 const plugin = require("tailwindcss/plugin");
 const Color = require("color");
 
@@ -220,8 +219,9 @@ module.exports = {
     },
     darkMode: "class",
     plugins: [
-        forms,
-        require("tailwindcss-multi-theme"),
+        require('@tailwindcss/forms'),
+        //require('notiwind/dist/plugin'), // Asegura que esté incluido.
+        //require("tailwindcss-multi-theme"),
         plugin(({ addUtilities, e, theme, variants }) => {
             const newUtilities = {};
             Object.entries(theme("colors")).map(([name, value]) => {

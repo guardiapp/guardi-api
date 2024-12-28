@@ -16,8 +16,7 @@ class StoreManagerRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
+            'email' => 'required|email|unique:users,email'
         ];
     }
 
@@ -27,10 +26,7 @@ class StoreManagerRequest extends FormRequest
             'name.required' => 'El nombre es obligatorio.',
             'email.required' => 'El correo electrónico es obligatorio.',
             'email.email' => 'El correo electrónico debe ser válido.',
-            'email.unique' => 'El correo electrónico ya está registrado.',
-            'password.required' => 'La contraseña es obligatoria.',
-            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
-            'password.confirmed' => 'La confirmación de contraseña no coincide.',
+            'email.unique' => 'El correo electrónico ya está registrado.'
         ];
     }
 }

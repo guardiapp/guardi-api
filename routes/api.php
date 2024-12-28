@@ -23,8 +23,8 @@ Route::prefix('auth')->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
 
 
-    Route::get('/managers', [UserController::class, 'index']);
-    Route::get('/users/{id}', [UserController::class, 'show']);
+    //Route::get('/managers', [UserController::class, 'index']);
+    //Route::get('/users/{id}', [UserController::class, 'show']);
 
 
 

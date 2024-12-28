@@ -33,7 +33,7 @@
         </CardTemplate>
       </div>
 
-      <TableTemplate :columns="['Client', 'Amount', 'Status', 'Date']" :data="tableData" :rows-per-page="5">
+      <TableTemplate :columns="['Client', 'Amount', 'Status', 'Date']" :data="tableData" :rows-per-page="5" :show-pagination="false">
         <template #column-client="{ value }">
           <div class="flex items-center text-sm">
             <div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">

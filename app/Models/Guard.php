@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Guard extends Model
 {
-    protected $fillable = ['user_id', 'residence_id', 'document', 'first_name', 'last_name'];
+    protected $fillable = ['user_id', 'residence_id', 'document', 'first_name', 'last_name', 'phone', 'active'];
 
     /**
      * Relación con el modelo Residence (cada vigilante pertenece a un condominio).

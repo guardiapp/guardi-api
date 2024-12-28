@@ -20,6 +20,14 @@ class Residence extends Model
     }
 
     /**
+     * Relación con el modelo Guard (una residencia puede tener varios vigilantes asociados).
+     */
+    public function guards()
+    {
+        return $this->hasMany(Guard::class);
+    }
+
+    /**
      * Relación con el modelo Bulding (una residencia puede tener varios edificios asociados).
      */
     public function buildings()
@@ -28,11 +36,11 @@ class Residence extends Model
     }
 
     /**
-     * Relación con el modelo Guard (una residencia puede tener varios vigilantes asociados).
+     * Get all of the residents for the residence.
      */
-    public function guards()
+    public function residents(): HasManyThrough
     {
-        return $this->hasMany(Guard::class);
+        return $this->hasManyThrough(Resident::class, Building::class);
     }
 
 }

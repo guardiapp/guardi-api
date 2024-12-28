@@ -8,16 +8,16 @@ use Illuminate\Support\Facades\Auth;
 
 class ResidenceRepository
 {
-    public function getAll($perPage = 10)
+    public function getAll($perPage, $page)
     {
         $user = Auth::user();
 
         if ($user->type === 'Admin') {
-            return Residence::with('manager')->paginate($perPage);
+            return Residence::with(['manager', 'buildings', 'buildings.residents'])->paginate($perPage, ['*'], 'page', $page);
         }
 
         if ($user->type === 'Manager') {
-            return Residence::with('manager')->where('user_id', $user->id)->paginate($perPage);
+            return Residence::with(['manager', 'buildings', 'buildings.residents'])->where('user_id', $user->id)->paginate($perPage, ['*'], 'page', $page);
         }
 
         abort(403, 'Unauthorized action.');
@@ -38,11 +38,11 @@ class ResidenceRepository
         $user = Auth::user();
 
         if ($user->type === 'Admin') {
-            return Residence::with('user')->findOrFail($id);
+            return Residence::with(['manager', 'buildings', 'buildings.residents'])->findOrFail($id);
         }
 
         if ($user->type === 'Manager') {
-            return Residence::with('user')->where('id', $id)->where('user_id', $user->id)->firstOrFail();
+            return Residence::with(['manager', 'buildings', 'buildings.residents'])->where('id', $id)->where('user_id', $user->id)->firstOrFail();
         }
 
         abort(403, 'Unauthorized action.');

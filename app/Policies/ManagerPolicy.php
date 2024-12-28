@@ -7,39 +7,31 @@ use App\Models\User;
 class ManagerPolicy
 {
     /**
-     * Determinar si el usuario puede ver la lista de vigilantes.
+     * Determina si el usuario puede ver la lista de managers.
+     * Solo permitido para administradores.
      */
     public function viewAny(User $user)
     {
-        return $user->type === 'Admin' || $user->type === 'Manager';
+        return $user->type === 'Admin';
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
-     * Determinar si el usuario puede ver un manager específico.
+     * Determina si el usuario puede ver a un manager específico.
+     * Los administradores pueden ver cualquier usuario.
+     * Los managers solo pueden ver su propia información.
      */
     public function view(User $user, User $manager)
     {
-        return $user->type === 'Admin' && $manager->type === 'Manager';
+        if ($user->type === 'Admin') {
+            return true;
+        }
+
+        return $user->type === 'Manager' && $user->id === $manager->id;
     }
 
     /**
-     * Determinar si el usuario puede crear managers.
+     * Determina si el usuario puede crear nuevos managers.
+     * Solo permitido para administradores.
      */
     public function create(User $user)
     {
@@ -47,19 +39,30 @@ class ManagerPolicy
     }
 
     /**
-     * Determinar si el usuario puede actualizar un manager.
+     * Determina si el usuario puede actualizar la información de un manager.
+     * Los administradores pueden editar cualquier usuario.
+     * Los managers solo pueden editar su propia información.
      */
     public function update(User $user, User $manager)
     {
-        return $user->type === 'Admin' && $manager->type === 'Manager';
+        if ($user->type === 'Admin') {
+            return true;
+        }
+
+        return $user->type === 'Manager' && $user->id === $manager->id;
     }
 
     /**
-     * Determinar si el usuario puede eliminar un manager.
+     * Determina si el usuario puede eliminar un manager.
+     * Los administradores pueden eliminar cualquier usuario.
+     * Los managers no pueden eliminar otros usuarios, pero pueden eliminarse a sí mismos si eso se permite.
      */
     public function delete(User $user, User $manager)
     {
-        return $user->type === 'Admin' && $manager->type === 'Manager';
+        if ($user->type === 'Admin') {
+            return true;
+        }
+
+        return $user->type === 'Manager' && $user->id === $manager->id;
     }
 }
-

@@ -6,7 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Resident extends Model
 {
-    protected $fillable = ['user_id', 'building_id', 'document', 'first_name', 'last_name', 'apartment'];
+    protected $fillable = ['user_id', 'building_id', 'document', 'first_name', 'last_name', 'apartment', 'phone', 'active' ];
+
+    /**
+     * Relación con el modelo User (cada residente es a un usuario).
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     /**
      * Relación con el modelo Building (cada edificio pertenece a un condominio).

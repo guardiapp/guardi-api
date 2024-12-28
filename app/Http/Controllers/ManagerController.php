@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Repositories\ManagerRepository;
-use App\Http\Requests\ManagerStoreRequest;
-use App\Http\Requests\ManagerUpdateRequest;
+use App\Http\Requests\StoreManagerRequest;
+use App\Http\Requests\UpdateManagerRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use App\Models\Residence;
 
 
 class ManagerController extends Controller
@@ -29,14 +31,14 @@ class ManagerController extends Controller
     /**
      * Listar todos los managers con sus residencias.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Verificar autorización
         $this->authorize('viewAny', User::class);
 
-        // Obtener managers con residencias
-        $managers = $this->managerRepository->getAllWithResidences();
-        return Inertia::render('Managers/Index', ['managers' => $managers]);
+        $perPage = $request->input('per_page', 5);
+        $page = $request->input('page', 1);
+        $managers = $this->managerRepository->getAllWithResidences($perPage, $page);
+        return Inertia::render('Managers/Index', $managers);
     }
 
     /**
@@ -44,8 +46,8 @@ class ManagerController extends Controller
      */
     public function create()
     {
-        // Verificar autorización
-        $this->authorize('create', 'App\Models\User');
+
+        $this->authorize('create', User::class);
 
         return Inertia::render('Managers/Create');
     }
@@ -53,16 +55,20 @@ class ManagerController extends Controller
     /**
      * Guardar un nuevo manager.
      */
-    public function store(ManagerStoreRequest $request)
+    public function store(StoreManagerRequest $request)
     {
-        // Verificar autorización
-        $this->authorize('create', 'App\Models\User');
+        $this->authorize('create', User::class);
 
-        // Crear nuevo manager
-        $this->managerRepository->create($request->validated());
-        return redirect()
-            ->route('managers.index')
-            ->with('success', 'Manager created successfully.');
+        try {
+            $data = $request->validated();
+
+            $data['avatar'] = $request->file('avatar');
+
+            $manager = $this->managerRepository->create($data);
+            return redirect()->route('managers.create')->with('success', 'Administrador creado exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->route('managers.create')->with('error', 'Error al crear el administrador: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -83,30 +89,58 @@ class ManagerController extends Controller
     /**
      * Actualizar un manager existente.
      */
-    public function update(ManagerUpdateRequest $request, $id)
+    public function update(UpdateManagerRequest $request, $id)
     {
-        // Verificar autorización
-        $this->authorize('update', 'App\Models\User');
+        try {
+            $manager = $this->managerRepository->findWithResidences($id);
 
-        // Actualizar manager
-        $this->managerRepository->update($id, $request->validated());
-        return redirect()
-            ->route('managers.index')
-            ->with('success', 'Manager updated successfully.');
+            $this->authorize('update', $manager);
+
+            $data = $request->validated();
+            $avatarFile = $request->file('avatar');
+            $avatarDeleted = $request->input('avatar_deleted', false);
+            $this->managerRepository->update($manager, $data, $avatarFile, $avatarDeleted);
+
+            return redirect()->route('managers.index')->with('success', 'Vigilante actualizado exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->route('managers.index')->with('error', 'Error al actualizar el vigilante: ' . $e->getMessage());
+        }
     }
 
     /**
-     * Eliminar un manager existente.
+     * Eliminar una residencia específica de la base de datos.
      */
-    public function destroy($id)
+    public function destroy(string $id)
     {
-        // Verificar autorización
-        $this->authorize('delete', 'App\Models\User');
+        // Encuentra el manager desde el repositorio y verifica autorización
+        $manager = $this->managerRepository->findWithResidences($id);
+        $this->authorize('delete', $manager);
 
-        // Eliminar manager
-        $this->managerRepository->delete($id);
-        return redirect()
-            ->route('managers.index')
-            ->with('success', 'Manager deleted successfully.');
+        try {
+            $this->managerRepository->delete($id);
+            return redirect()->route('managers.index')->with('success', 'Vigilante eliminado exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->route('managers.index')->with('error', 'Error al eliminar el vigilante: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Obtener residencias asociadas a un administrador.
+     */
+    public function getResidencesByManager($managerId)
+    {
+        $user = Auth::user();
+        $this->authorize('viewAny', Residence::class);
+
+        // Asegúrate de que el usuario autenticado tiene permiso para ver las residencias
+        if ($user->type === 'Admin') {
+            $residences = Residence::where('user_id', $managerId)->get();
+        } elseif ($user->type === 'Manager') {
+            $residences = $user->residences()->get();
+        } else {
+            abort(403, 'Unauthorized action.');
+        }
+
+        return response()->json(['residences' => $residences]);
     }
 }

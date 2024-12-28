@@ -15,10 +15,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('building_id')->constrained('buildings')->onDelete('cascade');
+            $table->string('apartment');
             $table->string('document');
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('apartment');
+            $table->string('phone')->nullable();
+            $table->boolean('active')->default(0);
             $table->timestamps();
         });
     }

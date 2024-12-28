@@ -64,8 +64,7 @@ class ResidenceController extends Controller
 
         $this->residenceRepository->create($request->validated());
 
-        //return redirect()->route('residences.create')->with('success', 'Residence deleted successfully.');
-        return response()->noContent();
+        return redirect()->route('residences.create')->with('success', 'Residencia creada exitosamente.');;
     }
 
     /**
@@ -124,7 +123,7 @@ class ResidenceController extends Controller
         $residences = $this->residenceRepository->getAll($perPage, $page);
 
         // Devolver las residencias actualizadas como respuesta
-        return response()->json($residences);
+        return redirect()->route('residences.index')->with('success', 'Residence updated successfully.');
     }
 
     /**

@@ -4,13 +4,24 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreBuildingRequest extends FormRequest
+class UpdateBuildingRequest extends FormRequest
 {
+    /**
+     * Determinar si el usuario está autorizado para hacer esta solicitud.
+     *
+     * @return bool
+     */
     public function authorize()
     {
+        // Authorization handled by policies; allow if it reaches here.
         return true;
     }
 
+    /**
+     * Obtener las reglas de validación para la solicitud.
+     *
+     * @return array
+     */
     public function rules()
     {
         return [

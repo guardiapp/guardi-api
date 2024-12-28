@@ -9,10 +9,10 @@
                     Visitantes
                 </h2>
             </div>
-            <div v-if="visitors">
+            <div v-if="visits">
                 <TableTemplate
-                    :columns="user.type === 'Admin' ? ['Documento', 'Nombre', 'Residente', 'Residencia', 'Administrador', 'Mostrar'] :  ['Documento', 'Nombre', 'Residente', 'Residencia', 'Mostrar']"
-                    :data="transformedVisitors"
+                    :columns="user.type === 'Admin' ? ['Vistante', 'Residente', 'Residencia', 'Fecha', 'Administrador', 'Mostrar'] :  ['Vistante', 'Residente', 'Residencia', 'Fecha', 'Mostrar']"
+                    :data="transformedVisits"
                     :links="links"
                     :rows-per-page="rowsPerPage"
                     :total="total"
@@ -22,7 +22,7 @@
                     <template #column-actions="{ row }">
                         <div class="flex items-center space-x-4 text-sm">
                             <button
-                                @click="showVisitor(row.actions.id)"
+                                @click="showVisit(row.actions.id)"
                                 class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
                                 :class="
                                     themeStore.dark
@@ -55,34 +55,34 @@ const { props } = usePage();
 
 const user = usePage().props.auth.user;
 
-const visitors = ref(props.data);
+const visits = ref(props.data);
 const links = ref(props.links);
 const total = ref(props.total);
 const currentPage = ref(props.current_page);
 const rowsPerPage = ref(props.per_page ?? 5);
 
-const transformedVisitors = computed(() => {
+const transformedVisits = computed(() => {
     if (user.type === "Admin") {
-        return visitors.value.map((visitor) => ({
-            document: visitor.document,
-            name:  `${visitor.first_name} ${visitor.last_name}`,
-            resident:`${visitor.resident.first_name} ${visitor.resident.last_name}`,
-            residence: visitor.resident.building.residence.name,
-            manager: visitor.resident.building.residence.manager.name,
-            actions: { id: visitor.id },
+        return visits.value.map((visit) => ({
+            visitante:  `${visit.visitor.first_name} ${visit.visitor.last_name}`,
+            resident:`${visit.resident.first_name} ${visit.resident.last_name}`,
+            residence: visit.resident.building.residence.name,
+            date: visit.visit_date,
+            manager: visit.resident.building.residence.manager.name,
+            actions: { id: visit.id },
         }));
     }
 
-    return visitors.value.map((visitor) => ({
-        document: visitor.document,
-        name:  `${visitor.first_name} ${visitor.last_name}`,
-        resident:`${visitor.resident.first_name} ${visitor.resident.last_name}`,
-        residence: visitor.resident.building.residence.name,
-        actions: { id: visitor.id },
+    return visits.value.map((visit) => ({
+        visitante:  `${visit.visitor.first_name} ${visit.visitor.last_name}`,
+        resident:`${visit.resident.first_name} ${visit.resident.last_name}`,
+        residence: visit.resident.building.residence.name,
+        date: visit.visit_date,
+        actions: { id: visit.id },
     }));
 });
 
-const showVisitor = (id) => {
+const showVisit = (id) => {
     console.log(id)
 };
 </script>

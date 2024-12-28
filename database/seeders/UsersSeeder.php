@@ -8,6 +8,9 @@ use App\Models\Residence;
 use App\Models\Building;
 use App\Models\Guard;
 use App\Models\Resident;
+use App\Models\Visitor;
+use App\Models\Visit;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Faker\Factory as Faker;
 
 class UsersSeeder extends Seeder
@@ -24,7 +27,7 @@ class UsersSeeder extends Seeder
             'type' => 'Admin'
         ]);
 
-        // Crear 3 Managers con sus Residences
+        // Crear Managers con sus Residences
         $managers = [];
         for ($i = 1; $i <= 16; $i++) {
             $manager = User::create([
@@ -45,7 +48,7 @@ class UsersSeeder extends Seeder
             for ($j = 1; $j <= 3; $j++) {
                 Building::create([
                     'residence_id' => $residence->id,
-                    'name' => "Edificio {$j}",
+                    'name' => "{$residence->name} {$j}",
                     'floors_number' => 10,
                     'apartments_per_floor' => 4,
                     'active' => true,
@@ -77,7 +80,7 @@ class UsersSeeder extends Seeder
             }
         }
 
-        // Crear 30 residentes distribuidos entre los edificios
+        // Crear residentes distribuidos entre los edificios
         $buildings = Building::all();
         foreach ($buildings as $index => $building) {
             for ($l = 1; $l <= 5; $l++) {
@@ -88,7 +91,7 @@ class UsersSeeder extends Seeder
                     'type' => 'Resident'
                 ]);
 
-                Resident::create([
+                $residentModel= Resident::create([
                     'user_id' => $resident->id,
                     'building_id' => $building->id,
                     'document' => $faker->dni,
@@ -98,6 +101,40 @@ class UsersSeeder extends Seeder
                     'phone' => $faker->phoneNumber,
                     'active' => true
                 ]);
+
+                // Crear visitantes aleatorios para cada residente (50% probabilidad)
+                if (rand(0, 1)) { // 50% de probabilidad
+                    $visitor = Visitor::create([
+                        'resident_id' => $residentModel->id,
+                        'document' => $faker->dni,
+                        'first_name' => $faker->firstName,
+                        'last_name' => $faker->lastName,
+                        'active' => true,
+                    ]);
+
+                    // Crear visitas aleatorias para cada visitante
+                    for ($v = 1; $v <= rand(1, 3); $v++) {
+                        $qrCode = uniqid('visit_', true);
+                        $qrImagePath = "qr_images/{$qrCode}.png";
+
+                        // Generar código QR y guardarlo
+                        QrCode::format('png')
+                            ->size(200)
+                            ->generate("QR: {$qrCode}", storage_path("app/public/{$qrImagePath}"));
+
+                        Visit::create([
+                            'resident_id' => $residentModel->id,
+                            'visitor_id' => $visitor->id,
+                            'qr' => $qrImagePath,
+                            'remarks' => $faker->sentence,
+                            'visit_date' => rand(0, 1) ? $faker->dateTimeThisMonth : null,
+                            'expiration_date' => rand(0, 1) ? $faker->dateTimeBetween('+1 month', '+3 months') : null,
+                            'cancelled' => false,
+                            'visited' => false,
+                            'entry_time' => null,
+                        ]);
+                    }
+                }
             }
         }
     }

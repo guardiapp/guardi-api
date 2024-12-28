@@ -144,16 +144,14 @@ const deleteGuard = (id) => {
         cancelButtonText: "Cancelar",
     }).then((result) => {
         if (result.isConfirmed) {
-            axios
-                .post(`/guards/${id}`, {
-                    _method: "DELETE",
-                })
-                .then(() => {
-                    guards.value = guards.value.filter(
-                        (guard) => guard.id !== id
-                    );
-                    total.value = total.value - 1;
-
+            router.delete(route('guards.destroy', id), {
+                onSuccess: (response) => {
+                    console.log(response.props.data);
+                    guards.value = response.props.data
+                    links.value = response.props.links
+                    total.value = response.props.total
+                    currentPage.value = response.props.currentPage
+                    rowsPerPage.value = response.props.rowsPerPage
                     notify(
                         {
                             group: "info",
@@ -162,13 +160,14 @@ const deleteGuard = (id) => {
                         },
                         4000
                     );
-                })
-                .catch((error) => {
+                },
+                onError:(error) => {
                     console.error(
                         "Error al eliminar:",
                         error.response || error
                     );
-                });
+                }
+            });
         }
     });
 };

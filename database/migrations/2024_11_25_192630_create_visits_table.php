@@ -15,10 +15,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('resident_id')->constrained('residents')->onDelete('cascade');
             $table->foreignId('visitor_id')->nullable()->constrained('visitors')->onDelete('cascade');
+            $table->string('qr');
+            $table->text('remarks');
+            $table->datetime('visit_date')->nullable();
+            $table->date('expiration_date')->nullable();
+            $table->boolean('cancelled')->default(0);
+            $table->boolean('visited')->default(0);
             $table->datetime('entry_time')->nullable();
-            $table->datetime('exit_time')->nullable();
-            $table->text('comments')->nullable();
-            $table->boolean('visit_confirmed')->default(0);
             $table->timestamps();
         });
     }

@@ -156,16 +156,13 @@ const deleteManager = (id) => {
         cancelButtonText: "Cancelar",
     }).then((result) => {
         if (result.isConfirmed) {
-            axios
-                .post(`/managers/${id}`, {
-                    _method: "DELETE",
-                })
-                .then(() => {
-                    managers.value = managers.value.filter(
-                        (manager) => manager.id !== id
-                    );
-                    total.value = total.value - 1;
-
+            router.delete(route('managers.destroy', id), {
+                onSuccess: (response) => {
+                    console.log(response.props);
+                    managers.value = response.props.data;
+                    currentPage.value = response.currentPage
+                    links.value = response.props.links;
+                    total.value = response.props.total;
                     notify(
                         {
                             group: "info",
@@ -174,13 +171,14 @@ const deleteManager = (id) => {
                         },
                         4000
                     );
-                })
-                .catch((error) => {
+                },
+                onError: (error) => {
                     console.error(
                         "Error al eliminar:",
                         error.response || error
                     );
-                });
+                }
+            })
         }
     });
 };

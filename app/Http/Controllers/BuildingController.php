@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBuildingRequest;
+use App\Http\Requests\UpdateBuildingRequest;
 use Illuminate\Http\Request;
 use App\Models\Residence;
 use App\Models\Building;
@@ -43,17 +44,23 @@ class BuildingController extends Controller
                 ->back()
                 ->with('error', 'Error al crear el edificio.');
         }
+    }
 
+    public function update(UpdateBuildingRequest $request, string $id)
+    {
+        try {
+            $building = $this->buildingRepository->findBuilding($id);
 
-        // try {
-        //     $building = $this->buildingRepository->create($data);
+            $this->authorize('update', $building);
 
-        //     // Retorna el nuevo building para ser usado en Vue
-        //     return response()->json(['message' => 'Edificio creado exitosamente.', 'building' => $building], 201);
+            $data = $request->validated();
 
-        // } catch (\Exception $e) {
-        //     return response()->json(['message' => 'Error al crear el edificio.', 'error' => $e->getMessage()], 500);
-        // }
+            $this->buildingRepository->update($building, $data);
+
+            return redirect()->route('residences.edit', $building->residence_id)->with('success', 'Edificio actualizado exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->route('residences.edit', $building->residence_id)->with('error', 'Error al actualizar el edificio: ' . $e->getMessage());
+        }
     }
 
     /**

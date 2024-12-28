@@ -20,6 +20,22 @@ class BuildingPolicy
     }
 
     /**
+     * Determina si un usuario puede actualizar un Building.
+     */
+    public function update(User $user, Building $building)
+    {
+        if ($user->type === 'Admin') {
+            return true;
+        }
+
+        if ($user->type === 'Manager') {
+            return $user->residences->contains('id', $building->residence_id);
+        }
+
+        return false;
+    }
+
+    /**
      * Determina si un usuario puede eliminar un Resident.
      */
     public function delete(User $user, Building $building)
@@ -29,11 +45,7 @@ class BuildingPolicy
         }
 
         if ($user->type === 'Manager') {
-            // Verificar si el Manager puede acceder al Building asociado al Building
-            return $user->residences->pluck('id')
-                ->intersect(
-                    $resident->building()->pluck('residence_id')
-                )->isNotEmpty();
+            return $user->residences->contains('id', $building->residence_id);
         }
 
         return false;

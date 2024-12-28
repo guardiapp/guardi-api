@@ -7,6 +7,8 @@ use App\Http\Controllers\ResidenceController;
 use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\ResidentController;
 use App\Http\Controllers\GuardController;
+use App\Http\Controllers\VisitorController;
+use App\Http\Controllers\VisitController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -43,6 +45,7 @@ Route::middleware('auth')->group(function () {
 
     // Edificios
     Route::post('/buildings', [BuildingController::class, 'store'])->name('buildings.store');
+    Route::put('/buildings/{id}', [BuildingController::class, 'update'])->name('buildings.update');
     Route::delete('/buildings/{id}', [BuildingController::class, 'destroy'])->name('buildings.destroy');
 
     // Rutas para vigilantes
@@ -62,10 +65,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/residents/{id}', [ResidentController::class, 'destroy'])->name('residents.destroy');
 
     // Visitantes
-    Route::get('/visitors', [ResidenceController::class, 'index'])->name('residences.index');
+    Route::get('/visitors', [VisitorController::class, 'index'])->name('visitors.index');
 
     // Visitas
-    Route::get('/visits', [ResidenceController::class, 'index'])->name('residences.index');
+    Route::get('/visits', [VisitController::class, 'index'])->name('visits.index');
 
 });
 

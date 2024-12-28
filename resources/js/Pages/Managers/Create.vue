@@ -27,7 +27,6 @@
                                     >Correo electrónico</span
                                 >
                                 <input
-                                    type="email"
                                     v-model="form.email"
                                     class="block w-full mt-1 text-sm form-input"
                                     :class="{

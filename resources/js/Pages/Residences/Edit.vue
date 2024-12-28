@@ -129,6 +129,27 @@
                     <template #column-actions="{ row }">
                         <div class="flex items-center space-x-4 text-sm">
                             <button
+                                @click="handleUpdateBuilding(row)"
+                                class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
+                                :class="
+                                    themeStore.dark
+                                        ? 'text-gray-400'
+                                        : 'text-purple-600'
+                                "
+                                aria-label="Actualizar"
+                            >
+                            <svg
+                                    class="w-5 h-5"
+                                    aria-hidden="true"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                >
+                                    <path
+                                        d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"
+                                    ></path>
+                                </svg>
+                            </button>
+                            <button
                                 @click="handleDeleteBuilding(row.actions.id)"
                                 class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
                                 :class="
@@ -165,9 +186,11 @@
         </div>
         <CreateBuilding
             :is-modal-open="isBuildingModalOpen"
-            @close-modal="isBuildingModalOpen = false"
             :residence="residence"
+            :building="selectedBuilding"
             @update-buildings="updateBuildings"
+            @reset-building="selectedBuilding = null"
+            @close-modal="isBuildingModalOpen = false"
         />
     </MainLayout>
 </template>
@@ -186,6 +209,8 @@ import Swal from "sweetalert2";
 // Props recibidas
 const { props } = usePage();
 const residence = reactive(props.residence);
+
+const selectedBuilding = ref({});
 
 // Configuración del formulario
 const form = useForm({
@@ -269,6 +294,19 @@ const openBuildingModal = () => {
 const updateBuildings = (updatedBuildings) => {
     residence.buildings = updatedBuildings;
 };
+
+const handleUpdateBuilding = (row) => {
+    const building = residence.buildings.find(
+        (building) => building.id === row.actions.id
+    );
+
+    if (building) {
+        selectedBuilding.value = building;
+        openBuildingModal();
+    } else {
+        console.error("No se encontró el edificio con el ID especificado");
+    }
+}
 
 const handleDeleteBuilding = (id) => {
     Swal.fire({

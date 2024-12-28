@@ -136,7 +136,7 @@
             </form>
         </div>
 
-        <div class="container px-6 mx-auto grid">
+        <!-- <div class="container px-6 mx-auto grid">
             <div class="flex items-center justify-between my-6">
                 <h2
                     class="text-2xl font-semibold"
@@ -205,7 +205,7 @@
             :is-modal-open="isResidenceModalOpen"
             @close-modal="isResidenceModalOpen = false"
             :manager="form"
-        />
+        /> -->
     </MainLayout>
 </template>
 

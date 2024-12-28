@@ -1,4 +1,3 @@
-import axios from "axios";
 import Swal from "sweetalert2";
 import { notify } from "notiwind";
 import { useThemeStore } from "@/stores/themeStore";
@@ -25,19 +24,23 @@ export function useGlobalFunctions() {
 
         if (result.isConfirmed) {
             try {
-                await axios.post(`/residences/${id}`, { _method: "DELETE" });
-
-                notify(
-                    {
-                        group: "info",
-                        title: "Cambio realizado",
-                        text: "La residencia ha sido eliminada.",
+                router.delete(route('residences.destroy', id), {
+                    onSuccess: (response) => {
+                        console.log(response.props.data)
+                        notify(
+                            {
+                                group: "info",
+                                title: "Cambio realizado",
+                                text: "La residencia ha sido eliminada.",
+                            },
+                            4000
+                        );
+                        router.reload({ only: ['residences'] })
                     },
-                    4000
-                );
-
-                // Fuerza la recarga del navegador
-                window.location.reload();
+                    onError: () => {
+                        console.error('fallo para eliminar residencia');
+                    },
+                });
             } catch (error) {
                 console.error("Error al eliminar:", error.response || error);
                 notify(

@@ -1,84 +1,87 @@
 <template>
     <div class="w-full overflow-hidden rounded-lg shadow-xs">
         <!-- Tabla -->
-        <div class="w-full overflow-x-auto">
-            <table class="w-full whitespace-no-wrap">
-                <thead>
-                    <tr
-                        class="text-xs font-semibold tracking-wide text-left uppercase border-b"
+        <div v-if="data.length > 0">
+            <div class="w-full overflow-x-auto">
+                <table class="w-full whitespace-no-wrap">
+                    <thead>
+                        <tr
+                            class="text-xs font-semibold tracking-wide text-left uppercase border-b"
+                            :class="
+                                themeStore.dark
+                                    ? 'border-gray-700 text-gray-400 bg-gray-800'
+                                    : 'text-gray-500 bg-gray-50'
+                            "
+                        >
+                            <th
+                                v-for="(column, index) in columns"
+                                :key="index"
+                                class="px-4 py-3"
+                            >
+                                {{ column }}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody
+                        class="divide-y"
                         :class="
                             themeStore.dark
-                                ? 'border-gray-700 text-gray-400 bg-gray-800'
-                                : 'text-gray-500 bg-gray-50'
+                                ? 'divide-gray-700 bg-gray-800'
+                                : 'bg-white'
                         "
                     >
-                        <th
-                            v-for="(column, index) in columns"
-                            :key="index"
-                            class="px-4 py-3"
+                        <tr
+                            v-for="(row, rowIndex) in data"
+                            :key="rowIndex"
+                            :class="
+                                themeStore.dark
+                                    ? 'text-gray-400'
+                                    : 'text-gray-700'
+                            "
                         >
-                            {{ column }}
-                        </th>
-                    </tr>
-                </thead>
-                <tbody
-                    class="divide-y"
-                    :class="
-                        themeStore.dark
-                            ? 'divide-gray-700 bg-gray-800'
-                            : 'bg-white'
-                    "
-                >
-                    <tr
-                        v-for="(row, rowIndex) in data"
-                        :key="rowIndex"
-                        :class="
-                            themeStore.dark ? 'text-gray-400' : 'text-gray-700'
-                        "
-                    >
-                        <td
-                            v-for="(value, colIndex) in row"
-                            :key="colIndex"
-                            class="px-4 py-3"
-                        >
-                            <!-- Custom render for specific columns -->
-                            <slot
-                                :name="`column-${colIndex}`"
-                                :row="row"
-                                :value="value"
-                                :index="rowIndex"
+                            <td
+                                v-for="(value, colIndex) in row"
+                                :key="colIndex"
+                                class="px-4 py-3"
                             >
-                                <!-- Default rendering -->
-                                <div
-                                    class="px-4 py-3 text-sm overflow-hidden text-ellipsis whitespace-nowrap max-w-xs"
+                                <!-- Custom render for specific columns -->
+                                <slot
+                                    :name="`column-${colIndex}`"
+                                    :row="row"
+                                    :value="value"
+                                    :index="rowIndex"
                                 >
-                                    {{ value }}
-                                </div>
-                            </slot>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+                                    <!-- Default rendering -->
+                                    <div
+                                        class="px-4 py-3 text-sm overflow-hidden text-ellipsis whitespace-nowrap max-w-xs"
+                                    >
+                                        {{ value }}
+                                    </div>
+                                </slot>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-        <!-- Paginación -->
-        <div
-            v-if="showPagination"
-            class="grid px-4 py-3 text-xs font-semibold tracking-wide uppercase border-t sm:grid-cols-9"
-            :class="
-                themeStore.dark
-                    ? 'border-gray-700 bg-gray-50 text-gray-400 bg-gray-800'
-                    : 'text-gray-500 bg-gray-50'
-            "
-        >
-            <span class="flex items-center col-span-3">
-                Mostrando del {{ startIndex }} al {{ endIndex }} de
-                {{ total }} registros
-            </span>
+            <!-- Paginación -->
+            <div
+                v-if="showPagination"
+                class="grid px-4 py-3 text-xs font-semibold tracking-wide uppercase border-t sm:grid-cols-9"
+                :class="
+                    themeStore.dark
+                        ? 'border-gray-700 bg-gray-50 text-gray-400 bg-gray-800'
+                        : 'text-gray-500 bg-gray-50'
+                "
+            >
+                <span class="flex items-center col-span-3">
+                    Mostrando del {{ startIndex }} al {{ endIndex }} de
+                    {{ total }} registros
+                </span>
 
-            <!-- filas por pagina -->
-            <span class="col-span-2">
-                <!-- <div class="flex justify-center items-center">
+                <!-- filas por pagina -->
+                <span class="col-span-2">
+                    <!-- <div class="flex justify-center items-center">
                     <label class="text-xs" for="rowsPerPage">Filas:</label>
                     <select
                         id="rowsPerPage"
@@ -101,50 +104,52 @@
                         </option>
                     </select>
                 </div> -->
-            </span>
+                </span>
 
-            <!-- Paginacion -->
-            <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
-                <nav class="relative flex justify-end">
-                    <template v-for="link in links" :key="link.label">
-                        <div
-                            v-if="link.url === null || link.active"
-                            v-html="
-                                link.label
-                                    .replaceAll('Previous', '')
-                                    .replaceAll('Next', '')
-                            "
-                            class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-                            :class="{
-                                'text-white bg-purple-600 border border-purple-600':
-                                    link.active == true,
-                            }"
-                        />
-                        <Link
-                            v-else
-                            :href="link.url ?? ''"
-                            v-html="
-                                link.label
-                                    .replaceAll('Previous', '')
-                                    .replaceAll('Next', '')
-                            "
-                            class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
-                            :class="{
-                                'text-white bg-purple-600 border border-purple-600':
-                                    link.active == true,
-                            }"
-                        />
-                    </template>
-                </nav>
-            </span>
+                <!-- Paginacion -->
+                <span class="flex col-span-4 mt-2 sm:mt-auto sm:justify-end">
+                    <nav class="relative flex justify-end">
+                        <template v-for="link in links" :key="link.label">
+                            <div
+                                v-if="link.url === null || link.active"
+                                v-html="
+                                    link.label
+                                        .replaceAll('Previous', '')
+                                        .replaceAll('Next', '')
+                                "
+                                class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
+                                :class="{
+                                    'text-white bg-purple-600 border border-purple-600':
+                                        link.active == true,
+                                }"
+                            ></div>
+                            <Link
+                                v-else
+                                :href="link.url ?? ''"
+                                v-html="
+                                    link.label
+                                        .replaceAll('Previous', '')
+                                        .replaceAll('Next', '')
+                                "
+                                class="px-3 py-1 rounded-md focus:outline-none focus:shadow-outline-purple"
+                                :class="{
+                                    'text-white bg-purple-600 border border-purple-600':
+                                        link.active == true,
+                                }"
+                            />
+                        </template>
+                    </nav>
+                </span>
+            </div>
         </div>
+        <div class="my-4 mx-auto" v-else> <p class="text-center my-5 py-5">No hay registros agregados</p></div>
     </div>
 </template>
 
 <script setup>
 import { computed, ref } from "vue";
 import { useThemeStore } from "@/stores/themeStore";
-import { Link, router } from "@inertiajs/vue3";
+import { Link } from "@inertiajs/vue3";
 const themeStore = useThemeStore();
 
 // Props
@@ -183,18 +188,8 @@ const props = defineProps({
     },
 });
 
-const startIndex = computed(
-    () => (props.currentPage - 1) * props.rowsPerPage + 1
-);
+const startIndex = computed(() => (props.currentPage-1) * props.rowsPerPage + 1);
 const endIndex = computed(() =>
     Math.min(startIndex.value + props.rowsPerPage - 1, props.total)
 );
-
-// const localRowsPerPage = ref(props.rowsPerPage);
-
-// const changeRowsPerPage = () => {
-//     const newPerPage = parseInt(localRowsPerPage.value, 10);
-//     router.get(window.location.pathname, { per_page: newPerPage, page: 1 }, { preserveState: true });
-// }
-
 </script>

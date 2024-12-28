@@ -27,6 +27,7 @@
                             <select
                                 v-model="form.user_id"
                                 class="block w-full mt-1 text-sm dark:text-gray-300 dark:border-gray-600 dark:bg-gray-700 form-select focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                                @input="clearError('user_id')"
                             >
                                 <option v-for="manager in managers" :key="manager.id" :value="manager.id">
                                     {{ manager.name }}
@@ -64,6 +65,7 @@
                                         themeStore.dark,
                                 }"
                                 placeholder="Nombre de la residencia"
+                                @input="clearError('name')"
                             />
                             <p
                                 v-if="errors.name"
@@ -96,6 +98,7 @@
                                         themeStore.dark,
                                 }"
                                 placeholder="Dirección de la residencia"
+                                @input="clearError('address')"
                             />
                             <p
                                 v-if="errors.address"
@@ -131,7 +134,7 @@
 <script setup>
 import { useForm, usePage, router } from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
-import { computed, reactive } from "vue";
+import { computed, reactive, ref } from "vue";
 import { useThemeStore } from "@/stores/themeStore";
 const themeStore = useThemeStore();
 import { notify } from "notiwind";
@@ -160,6 +163,9 @@ const errors = reactive({
     address: "",
 });
 
+
+const hasSubmitted = ref(false)
+
 // Manejar el envío del formulario
 const submit = () => {
     errors.user_id = form.user_id === null ? "El Manager es obligatorio." : "";
@@ -168,6 +174,8 @@ const submit = () => {
         form.address.trim() === "" ? "La dirección es obligatoria." : "";
 
     if (!isFormValid.value) return;
+
+    hasSubmitted.value = true
 
     form.post(`/residences`, {
         onSuccess: () => {
@@ -180,11 +188,20 @@ const submit = () => {
                 },
                 4000
             );
-
-            //router.visit("/residences"); // Redirige al listado
+            hasSubmitted.value = false;
         },
+        onError: (errorResponse) => {
+            if (errorResponse.name) errors.name = errorResponse.name
+            if (errorResponse.address) errors.address = errorResponse.address
+        }
     });
 };
+
+const clearError = (error) => {
+    if (error == 'user_id') errors.user_id = '';
+    if (error == 'name') errors.name = '';
+    if (error == 'address') errors.address = '';
+}
 
 // Cancelar y volver al listado
 const cancel = () => {

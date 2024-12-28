@@ -102,7 +102,7 @@
 import MainLayout from "@/Layouts/MainLayout.vue";
 import TableTemplate from "@/Components/TableTemplate.vue";
 import { useThemeStore } from "@/stores/themeStore";
-import { Link, usePage } from "@inertiajs/vue3";
+import { Link, usePage, router } from "@inertiajs/vue3";
 import { ref, computed } from "vue";
 import Swal from "sweetalert2";
 import { notify } from "notiwind";
@@ -155,16 +155,13 @@ const deleteResident = (id) => {
         cancelButtonText: "Cancelar",
     }).then((result) => {
         if (result.isConfirmed) {
-            axios
-                .post(`/residents/${id}`, {
-                    _method: "DELETE",
-                })
-                .then(() => {
-                    residents.value = residents.value.filter(
-                        (resident) => resident.id !== id
-                    );
-                    total.value = total.value - 1;
-
+            router.delete(route('residents.destroy', id), {
+                onSuccess: (response) => {
+                    residents.value = response.props.data;
+                    links.value = response.props.links;
+                    total.value = response.props.total;
+                    currentPage.value = response.props.currentPage;
+                    rowsPerPage.value = response.props.rowsPerPage;
                     notify(
                         {
                             group: "info",
@@ -173,13 +170,14 @@ const deleteResident = (id) => {
                         },
                         4000
                     );
-                })
-                .catch((error) => {
+                },
+                onError: (error) => {
                     console.error(
                         "Error al eliminar:",
                         error.response || error
                     );
-                });
+                }
+            });
         }
     });
 };

@@ -212,7 +212,7 @@
                         type="submit"
                         class="w-full px-5 py-3 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg sm:w-auto sm:px-4 sm:py-2 active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
                     >
-                        Agregar
+                        Guardar
                     </button>
                 </footer>
             </form>
@@ -223,13 +223,14 @@
 <script setup>
 import { useForm, router } from "@inertiajs/vue3";
 import { useThemeStore } from "@/stores/themeStore";
-import { ref } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { notify } from "notiwind";
 const themeStore = useThemeStore();
 
 const props = defineProps({
     isModalOpen: Boolean,
     residence: Object,
+    building: Object
 });
 
 const formBuilding = useForm({
@@ -240,6 +241,35 @@ const formBuilding = useForm({
     information: "",
     active: ""
 });
+
+// Función para inicializar el formulario
+const initializeForm = () => {
+    if (Object.keys(props.building).length > 0) {
+        // Rellenar con los datos de `props.building`
+        formBuilding.residence_id = props.building.residence_id || props.residence.id;
+        formBuilding.name = props.building.name || "";
+        formBuilding.floors_number = props.building.floors_number || "";
+        formBuilding.apartments_per_floor = props.building.apartments_per_floor || "";
+        formBuilding.information = props.building.information || "";
+        formBuilding.active = props.building.active || false;
+    }
+};
+
+// Inicializar el formulario al cargar el componente
+onMounted(() => {
+    initializeForm();
+});
+
+// Reactivar si `props.building` cambia
+watch(
+    () => props.building,
+    (newBuilding) => {
+        if (newBuilding && Object.keys(newBuilding).length > 0) {
+            initializeForm();
+        }
+    },
+    { immediate: true }
+);
 
 const hasSubmitted = ref(false)
 
@@ -254,6 +284,7 @@ const emitCloseModal = () => {
     errorName.value = '';
     hasSubmitted.value = false;
     formBuilding.reset();
+    emit("reset-building");
     emit("closeModal");
 };
 
@@ -270,41 +301,128 @@ const clearError = (err) => {
 
 
 // Manejar el envío del formulario
+// const submit = async () => {
+//     if ( formBuilding.name.trim() === "" ) {
+//         errorName.value = "El nombre es obligatorio";
+//         return;
+//     }
+//     hasSubmitted.value = true;
+//     try {
+//         if (props.building) {
+//             formBuilding.put(`/buildings/${props.building.id}`, {
+//                 onSuccess: (response) => {
+//                     emit("updateBuildings", response.props.residence.buildings);
+//                     hasSubmitted.value = false;
+//                     formBuilding.reset();
+//                     notify(
+//                         {
+//                             group: "success",
+//                             title: "Cambio realizado",
+//                             text: "El edificio ha sido modificado",
+//                         },
+//                         4000
+//                     );
+//                     emitCloseModal();
+//                 },
+//                 onError: (err) => {
+//                     console.log(err)
+//                     if (err.apartments_per_floor) {
+//                         errorApart.value = err.apartments_per_floor
+//                     }
+//                     if (err.floors_number) {
+//                         errorFloors.value = err.floors_number
+//                     }
+//                 }
+//             });
+//         } else {
+//             formBuilding.post(`/buildings`, {
+//                 onSuccess: (response) => {
+//                     emit("updateBuildings", response.props.residence.buildings);
+//                     hasSubmitted.value = false;
+//                     formBuilding.reset();
+//                     notify(
+//                         {
+//                             group: "success",
+//                             title: "Nuevo edificio",
+//                             text: "El edificio ha sido registrado",
+//                         },
+//                         4000
+//                     );
+//                     emitCloseModal();
+//                 },
+//                 onError: (err) => {
+//                     console.log(err)
+//                     if (err.apartments_per_floor) {
+//                         errorApart.value = err.apartments_per_floor
+//                     }
+//                     if (err.floors_number) {
+//                         errorFloors.value = err.floors_number
+//                     }
+//                 }
+//             });
+//         }
+//     } catch (error) {
+//         console.error("Error al enviar:", error);
+//     }
+// };
+
+
+// Manejar el envío del formulario
 const submit = async () => {
-    if ( formBuilding.name.trim() === "" ) {
+    // Validación inicial
+    if (formBuilding.name.trim() === "") {
         errorName.value = "El nombre es obligatorio";
         return;
     }
+
     hasSubmitted.value = true;
+
     try {
-        formBuilding.post(`/buildings`, {
-            onSuccess: (response) => {
-                console.log("updateBuildings", response.props.residence.buildings);
-                emit("updateBuildings", response.props.residence.buildings);
-                hasSubmitted.value = false;
-                formBuilding.reset();
-                notify(
-                    {
-                        group: "success",
-                        title: "Nuevo edificio",
-                        text: "El edificio ha sido registrado",
-                    },
-                    4000
-                );
-                emitCloseModal();
-            },
-            onError: (err) => {
-                console.log(err)
-                if (err.apartments_per_floor) {
-                    errorApart.value = "Debe agregar un valor numérico"
-                }
-                if (err.floors_number) {
-                    errorFloors.value = "Debe agregar un valor numérico"
-                }
-            }
+        // Determinar si es edición o creación
+        const isEditing = !!props.building?.id; // Verifica si existe un ID de building
+
+        // Seleccionar el método y la ruta adecuada
+        const method = isEditing ? "put" : "post";
+        const url = isEditing
+            ? `/buildings/${props.building.id}`
+            : `/buildings`;
+
+        // Enviar solicitud
+        await formBuilding[method](url, {
+            onSuccess: (response) => handleSuccess(response, isEditing),
+            onError: handleError,
         });
     } catch (error) {
         console.error("Error al enviar:", error);
     }
 };
+
+// Manejar éxito del envío
+const handleSuccess = (response, isEditing) => {
+    emit("updateBuildings", response.props.residence.buildings);
+    hasSubmitted.value = false;
+    formBuilding.reset();
+    notify(
+        {
+            group: "success",
+            title: isEditing ? "Cambio realizado" : "Nuevo edificio",
+            text: isEditing
+                ? "El edificio ha sido modificado"
+                : "El edificio ha sido registrado",
+        },
+        4000
+    );
+    emitCloseModal();
+};
+
+// Manejar errores del formulario
+const handleError = (err) => {
+    if (err.apartments_per_floor) {
+        errorApart.value = err.apartments_per_floor;
+    }
+    if (err.floors_number) {
+        errorFloors.value = err.floors_number;
+    }
+};
+
 </script>

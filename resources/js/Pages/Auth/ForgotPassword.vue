@@ -1,11 +1,8 @@
 <script setup>
-import GuestLayout from "@/Layouts/GuestLayout.vue";
-import InputError from "@/Components/InputError.vue";
-import InputLabel from "@/Components/InputLabel.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
-import TextInput from "@/Components/TextInput.vue";
-import { Head, useForm } from "@inertiajs/vue3";
+import { Link, useForm } from "@inertiajs/vue3";
 import AuthLayout from "@/Layouts/AuthLayout.vue";
+import { useThemeStore } from "@/stores/themeStore";
+const themeStore = useThemeStore();
 
 defineProps({
     status: {
@@ -68,6 +65,15 @@ const submit = () => {
                     >
                         Recuperar contraseña
                     </button>
+                    <p class="mt-4">
+                    <Link
+                        :href="route('login')"
+                        class="text-sm font-medium hover:underline"
+                        :class="themeStore.dark ? 'text-purple-400' : 'text-purple-600'"
+                    >
+                        Volver a login
+                    </Link>
+                </p>
                 </form>
             </div>
         </div>

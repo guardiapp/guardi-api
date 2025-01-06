@@ -14,12 +14,15 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::middleware('auth')->group(function () {
-    // Dashboard y perfil
+    Route::get('/', function () {
+        return Inertia::render('Dashboard');
+    })->name('home');
+
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
-    //})->middleware(['verified'])->name('dashboard');
     })->name('dashboard');
 
+    // Dashboard y perfil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -71,20 +74,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/visits', [VisitController::class, 'index'])->name('visits.index');
 
 });
-
-// // Ruta pública para la página principal
-// Route::get('/', function () {
-//     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
-Route::get('/', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['verified'])->name('home');
-
 
 // Rutas de autenticación generadas por Breeze
 require __DIR__.'/auth.php';

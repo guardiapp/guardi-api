@@ -2,6 +2,7 @@
 import { Link, useForm } from "@inertiajs/vue3";
 import AuthLayout from "@/Layouts/AuthLayout.vue";
 import { useThemeStore } from "@/stores/themeStore";
+import { onMounted } from "vue";
 const themeStore = useThemeStore();
 
 defineProps({
@@ -12,6 +13,10 @@ defineProps({
         type: String,
     },
 });
+
+// onMounted(()=>{
+//     window.location.reload()
+// });
 
 const form = useForm({
     email: "",
@@ -110,15 +115,6 @@ const submit = () => {
                     >
                         ¿Olvidaste tu contraseña?
                     </Link>
-                </p>
-                <p class="mt-1">
-                    <a
-                        class="text-sm font-medium hover:underline"
-                        :class="themeStore.dark ? 'text-purple-400' : 'text-purple-600'"
-                        :href="route('register')"
-                    >
-                        Registrarse
-                    </a>
                 </p>
             </div>
         </div>

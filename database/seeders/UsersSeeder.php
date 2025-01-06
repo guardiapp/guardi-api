@@ -24,7 +24,8 @@ class UsersSeeder extends Seeder
             'name' => 'Administrador',
             'email' => 'admin@example.com',
             'password' => bcrypt('password'),
-            'type' => 'Admin'
+            'type' => 'Admin',
+            'email_verified_at' => now()
         ]);
 
         // Crear Managers con sus Residences
@@ -34,7 +35,8 @@ class UsersSeeder extends Seeder
                 'name' => $faker->name,
                 'email' => "manager{$i}@example.com",
                 'password' => bcrypt('password'),
-                'type' => 'Manager'
+                'type' => 'Manager',
+                'email_verified_at' => now()
             ]);
             $managers[] = $manager;
 
@@ -65,7 +67,8 @@ class UsersSeeder extends Seeder
                     'name' => $faker->name,
                     'email' => "guard{$index}{$k}@example.com",
                     'password' => bcrypt('password'),
-                    'type' => 'Guard'
+                    'type' => 'Guard',
+                    'email_verified_at' => now()
                 ]);
 
                 Guard::create([
@@ -88,7 +91,8 @@ class UsersSeeder extends Seeder
                     'name' => $faker->name,
                     'email' => "resident{$index}{$l}@example.com",
                     'password' => bcrypt('password'),
-                    'type' => 'Resident'
+                    'type' => 'Resident',
+                    'email_verified_at' => now()
                 ]);
 
                 $residentModel= Resident::create([

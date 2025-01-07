@@ -22,7 +22,7 @@
                     <template #column-actions="{ row }">
                         <div class="flex items-center space-x-4 text-sm">
                             <button
-                                @click="showVisit(row.actions.id)"
+                                @click="handleShowVisit(row)"
                                 class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
                                 :class="
                                     themeStore.dark
@@ -38,6 +38,11 @@
                 </TableTemplate>
             </div>
         </div>
+        <ShowVisit
+            :is-modal-open="isVisitModalOpen"
+            :visit="selectedVisit"
+            @close-modal="isVisitModalOpen = false"
+        />
     </MainLayout>
 </template>
 
@@ -48,12 +53,20 @@ import { useThemeStore } from "@/stores/themeStore";
 import { usePage } from "@inertiajs/vue3";
 import { ref, computed } from "vue";
 import { EyeIcon } from '@heroicons/vue/24/outline';
+import ShowVisit from "@/Components/modals/ShowVisit.vue";
 
+document.title="Listado de visitas";
 
 const themeStore = useThemeStore();
 const { props } = usePage();
 
 const user = usePage().props.auth.user;
+
+const isVisitModalOpen = ref(false);
+
+const openVisitModal = () => {
+    isVisitModalOpen.value = true;
+};
 
 const visits = ref(props.data);
 const links = ref(props.links);
@@ -82,7 +95,19 @@ const transformedVisits = computed(() => {
     }));
 });
 
-const showVisit = (id) => {
-    console.log(id)
-};
+const selectedVisit = ref({});
+
+const handleShowVisit = (row) => {
+    const visit = visits.value.find(
+        (visit) => visit.id === row.actions.id
+    );
+
+    if (visit) {
+        console.log(visit);
+        selectedVisit.value = visit;
+        openVisitModal();
+    } else {
+        console.error("No se encontró el visitante con el ID especificado");
+    }
+}
 </script>

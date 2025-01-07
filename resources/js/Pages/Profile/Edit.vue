@@ -7,6 +7,8 @@ import MainLayout from "@/Layouts/MainLayout.vue";
 import { useThemeStore } from "@/stores/themeStore";
 const themeStore = useThemeStore();
 
+document.title="Perfil del usuario";
+
 defineProps({
     mustVerifyEmail: {
         type: Boolean,

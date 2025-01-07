@@ -103,6 +103,9 @@ import { ref, computed } from "vue";
 // import { notify } from "notiwind";
 import { useGlobalFunctions } from "@/composables/useGlobalFunctions";
 
+document.title="Gestión de Residencias";
+
+
 const { deleteResidence } = useGlobalFunctions();
 
 const themeStore = useThemeStore();

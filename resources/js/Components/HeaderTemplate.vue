@@ -142,11 +142,11 @@
                                 'border-gray-700 text-gray-300 bg-gray-700': themeStore.dark,
                             }" aria-label="submenu">
                             <li class="flex">
-                                <Link class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md"
+                                <button class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md"
                                     :class="{
                                         'hover:bg-gray-100 hover:text-gray-800': !themeStore.dark,
                                         'hover:bg-gray-800 hover:text-gray-200': themeStore.dark,
-                                    }" href="/profile">
+                                    }" @click="goProfile">
                                     <svg class="w-4 h-4 mr-3" aria-hidden="true" fill="none" stroke-linecap="round"
                                         stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
                                         stroke="currentColor">
@@ -154,7 +154,7 @@
                                         </path>
                                     </svg>
                                     <span>Perfil</span>
-                                </Link>
+                                </button>
                             </li>
                             <!-- <li class="flex">
                                 <a class="inline-flex items-center w-full px-2 py-1 text-sm font-semibold transition-colors duration-150 rounded-md"
@@ -211,6 +211,12 @@ const avatar = user.avatar ? `/storage/${user.avatar}` : `/assets/img/avatar.png
 const themeStore = useThemeStore();
 
 const logout = () => {
+    themeStore.closeProfileMenu()
     router.post('/logout');
 };
+
+const goProfile = () => {
+    themeStore.closeProfileMenu()
+    router.visit('/profile');
+}
 </script>

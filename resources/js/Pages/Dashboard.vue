@@ -224,7 +224,9 @@ import ChartLine from "@/Components/ChartLine.vue";
 import TableTemplate from "@/Components/TableTemplate.vue";
 import { useThemeStore } from "@/stores/themeStore";
 
-const themeStore = useThemeStore();
+const themeStore = useThemeStore()
+
+document.title = `Inicio`;
 
 // Lista de íconos (relaciona las claves con los componentes)
 const icons = {

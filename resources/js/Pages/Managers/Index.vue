@@ -120,6 +120,8 @@ import { ref, computed } from "vue";
 import Swal from "sweetalert2";
 import { notify } from "notiwind";
 
+document.title="Gestión de administradores";
+
 const themeStore = useThemeStore();
 const { props } = usePage();
 

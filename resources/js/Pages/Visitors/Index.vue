@@ -22,7 +22,7 @@
                     <template #column-actions="{ row }">
                         <div class="flex items-center space-x-4 text-sm">
                             <button
-                                @click="showVisitor(row.actions.id)"
+                                @click="handleShowVisitor(row)"
                                 class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
                                 :class="
                                     themeStore.dark
@@ -38,6 +38,11 @@
                 </TableTemplate>
             </div>
         </div>
+        <ShowVisitors
+            :is-modal-open="isVisitorModalOpen"
+            :visitor="selectedVisitor"
+            @close-modal="isVisitorModalOpen = false"
+        />
     </MainLayout>
 </template>
 
@@ -48,12 +53,20 @@ import { useThemeStore } from "@/stores/themeStore";
 import { usePage } from "@inertiajs/vue3";
 import { ref, computed } from "vue";
 import { EyeIcon } from '@heroicons/vue/24/outline';
+import ShowVisitors from "@/Components/modals/ShowVisitors.vue";
 
+document.title="Listado de vistantes";
 
 const themeStore = useThemeStore();
 const { props } = usePage();
 
 const user = usePage().props.auth.user;
+
+const isVisitorModalOpen = ref(false);
+
+const openVisitorModal = () => {
+    isVisitorModalOpen.value = true;
+};
 
 const visitors = ref(props.data);
 const links = ref(props.links);
@@ -82,7 +95,24 @@ const transformedVisitors = computed(() => {
     }));
 });
 
-const showVisitor = (id) => {
-    console.log(id)
-};
+const selectedVisitor = ref({
+    document: '',
+    first_name: '',
+    last_name: '',
+    resident: { first_name: '', last_name: '' },
+});
+
+const handleShowVisitor = (row) => {
+    const visitor = visitors.value.find(
+        (visitor) => visitor.id === row.actions.id
+    );
+
+    if (visitor) {
+        console.log(visitor);
+        selectedVisitor.value = visitor;
+        openVisitorModal();
+    } else {
+        console.error("No se encontró el visitante con el ID especificado");
+    }
+}
 </script>

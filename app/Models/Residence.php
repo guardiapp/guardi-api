@@ -36,11 +36,11 @@ class Residence extends Model
     }
 
     /**
-     * Get all of the residents for the residence.
+     * Get all of the apartments for the residence.
      */
-    public function residents(): HasManyThrough
+    public function apartments()
     {
-        return $this->hasManyThrough(Resident::class, Building::class);
+        return $this->hasManyThrough(Apartment::class, Building::class);
     }
 
 }

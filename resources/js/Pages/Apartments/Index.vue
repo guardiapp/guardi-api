@@ -6,43 +6,48 @@
                     class="text-2xl font-semibold"
                     :class="themeStore.dark ? 'text-gray-200' : 'text-gray-700'"
                 >
-                    Residencias
+                    Apartamentos
                 </h2>
                 <Link
                     class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-                    :href="`/residences/create`"
+                    :href="`/apartments/create`"
                     >
                     Nuevo
                     <span class="ml-2" aria-hidden="true">+</span>
                 </Link>
             </div>
-            <div v-if="residences">
+            <div v-if="apartments">
                 <TableTemplate
-                    :columns="user.type === 'Admin' ? ['Nombre', 'Direccion', 'Administrador', 'Acciones'] : ['Nombre', 'Direccion', 'Acciones']"
-                    :data="transformedResidences"
+                    :columns="user.type === 'Admin' ? ['', 'Identificador', 'Residente', 'Residencia', 'Torre', 'Acciones'] : ['', 'Nombre', 'Torre', 'Acciones']"
+                    :data="transformedApartments"
                     :links="links"
                     :rows-per-page="rowsPerPage"
                     :total="total"
                     :current-page="currentPage"
                 >
-                    <!-- Custom column for manager -->
-                    <template #column-manager="{ value }">
-                        <span
-                            v-if="value"
-                            class="font-semibold"
-                            :class="
-                                themeStore.dark ? 'text-gray-300' : 'text-gray-700'
-                            "
-                        >
-                            {{ value }}
-                        </span>
+                    <!-- Custom column for avatar -->
+                    <template #column-avatar="{ value }">
+                        <div class="w-10 h-10 rounded-full overflow-hidden">
+                            <img
+                                v-if="value"
+                                :src="`/storage/${value}`"
+                                alt="Avatar"
+                                class="object-cover w-full h-full"
+                            />
+                            <div
+                                v-else
+                                class="flex items-center justify-center w-full h-full text-xs text-gray-500 bg-gray-300"
+                            >
+                                N/A
+                            </div>
+                        </div>
                     </template>
 
                     <!-- Custom column for actions -->
                     <template #column-actions="{ row }">
                         <div class="flex items-center space-x-4 text-sm">
                             <Link
-                                :href="`/residences/${row.actions.id}`"
+                                :href="`/apartments/${row.actions.id}`"
                                 class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
                                 :class="
                                     themeStore.dark
@@ -63,7 +68,7 @@
                                 </svg>
                             </Link>
                             <button
-                                @click="handleDeleteResidence(row.actions.id)"
+                                @click="deleteApartment(row.actions.id)"
                                 class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
                                 :class="
                                     themeStore.dark
@@ -99,44 +104,83 @@ import TableTemplate from "@/Components/TableTemplate.vue";
 import { useThemeStore } from "@/stores/themeStore";
 import { Link, usePage, router } from "@inertiajs/vue3";
 import { ref, computed } from "vue";
-import { useGlobalFunctions } from "@/composables/useGlobalFunctions";
+import Swal from "sweetalert2";
+import { notify } from "notiwind";
 
-document.title="Gestión de Residencias";
-
-
-const { deleteResidence } = useGlobalFunctions();
+document.title="Listado de apartamentos";
 
 const themeStore = useThemeStore();
 const { props } = usePage();
 
 const user = usePage().props.auth.user;
 
-const residences = ref(props.data);
+const apartments = ref(props.data);
 const links = ref(props.links);
 const total = ref(props.total);
 const currentPage = ref(props.current_page);
 const rowsPerPage = ref(props.per_page ?? 5);
 
-const transformedResidences = computed(() => {
+const transformedApartments = computed(() => {
     if (user.type === "Admin") {
-        return residences.value.map((residence) => ({
-            name: residence.name,
-            address: residence.address,
-            manager: residence.manager?.name || "N/A",
-            actions: { id: residence.id },
+        return apartments.value.map((apartment) => ({
+            avatar: apartment.user.avatar,
+            identifier:  apartment.identifier,
+            resident: `${apartment.user.profile.first_name} ${apartment.user.profile.last_name}`,
+            residence: apartment.building.residence.name,
+            building: apartment.building.name,
+            actions: { id: apartment.id },
         }));
     }
-    //Para Manager:
-    return residences.value.map((residence) => ({
-        name: residence.name,
-        address: residence.address,
-        actions: { id: residence.id },
+
+    return apartments.value.map((apartment) => ({
+        avatar: apartment.user.avatar,
+        resident: `${apartment.user.profile.first_name} ${apartment.user.profile.last_name}`,
+        identifier:  apartment.identifier,
+        building: apartment.building.name,
+        actions: { id: apartment.id },
     }));
 });
 
-const handleDeleteResidence = (id) => {
-    deleteResidence(id, () => {
-        console.log("Se recargaron los datos correctamente.");
+const deleteApartment = (id) => {
+    Swal.fire({
+        customClass: {
+            popup: themeStore.dark
+                ? "bg-gray-900 text-white"
+                : "bg-white text-gray-900",
+        },
+        text: "¿Desea eliminar este apartamento?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#7e3af2",
+        cancelButtonColor: "#4c4f52",
+        confirmButtonText: "Si, eliminar",
+        cancelButtonText: "Cancelar",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            router.delete(route('apartments.destroy', id), {
+                onSuccess: (response) => {
+                    apartments.value = response.props.data;
+                    links.value = response.props.links;
+                    total.value = response.props.total;
+                    currentPage.value = response.props.currentPage;
+                    rowsPerPage.value = response.props.rowsPerPage;
+                    notify(
+                        {
+                            group: "info",
+                            title: "Cambio realizado",
+                            text: "El apartamento ha sido eliminado",
+                        },
+                        4000
+                    );
+                },
+                onError: (error) => {
+                    console.error(
+                        "Error al eliminar:",
+                        error.response || error
+                    );
+                }
+            });
+        }
     });
 };
 </script>

@@ -20,7 +20,10 @@ return Application::configure(basePath: dirname(__DIR__))
             RedirectIfUnauthorized::class
         ]);
 
-        //
+        $middleware->api(append: [
+            RedirectIfUnauthorized::class
+        ]);
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

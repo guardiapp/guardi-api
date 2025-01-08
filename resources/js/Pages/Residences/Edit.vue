@@ -121,7 +121,7 @@
             >
                 <TableTemplate
                     v-if="transformedBuildings.length > 0"
-                    :columns="['Nombre', 'Cantidad de apartamentos', 'Apartamentos por piso', 'Residentes', 'Eliminar']"
+                    :columns="['Nombre', 'Cantidad de pisos', 'Apartamentos por piso', 'Apartamentos', 'Eliminar']"
                     :data="transformedBuildings"
                     :rows-per-page="5"
                     :show-pagination="false"
@@ -223,7 +223,7 @@ const transformedBuildings = ref(
         name: building.name,
         floors_number: building.floors_number,
         aparments_per_floor: building.apartments_per_floor,
-        residents: building.residents.length ?? '',
+        apartments: residence.apartments.length ?? '',
         actions: { id: building.id },
     }))
 );
@@ -237,7 +237,7 @@ watch(
             name: building.name,
             floors_number: building.floors_number,
             aparments_per_floor: building.apartments_per_floor,
-            residents: building.residents.length ?? '',
+            apartments: residence.apartments.length ?? '',
             actions: { id: building.id },
         }));
     },

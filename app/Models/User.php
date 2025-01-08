@@ -50,6 +50,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Relación con el modelo Profile (un usuario puede tener un perfil).
+     */
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
+
+    /**
      * Relación con el modelo Residence (un usuario puede tener varias residencias asociadas).
      */
     public function residences()
@@ -58,11 +66,11 @@ class User extends Authenticatable
     }
 
     /**
-     * Relación con el modelo Resident (un usuario puede ser un residente).
+     * Relación con el modelo Apartment (un usuario puede tener apartamentos).
      */
-    public function resident()
+    public function residentAparments()
     {
-        return $this->hasOne(Resident::class);
+        return $this->hasMany(Apartment::class);
     }
 
     /**
@@ -73,9 +81,9 @@ class User extends Authenticatable
         return $this->hasOne(Guard::class);
     }
 
-    public function residents()
+    public function managerApartments()
     {
-        return $this->hasManyThrough(Resident::class, Building::class, 'residence_id', 'building_id');
+        return $this->hasManyThrough(Apartment::class, Building::class, 'apartment_id', 'building_id');
     }
 
     /**

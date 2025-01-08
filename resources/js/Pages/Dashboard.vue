@@ -9,8 +9,7 @@
       >
         Inicio
       </h2>
-      <!-- CTA -->
-      <a class="flex items-center justify-between p-4 mb-8 text-sm font-semibold text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple"
+      <!-- <a class="flex items-center justify-between p-4 mb-8 text-sm font-semibold text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple"
         href="https://github.com/estevanmaito/windmill-dashboard">
         <div class="flex items-center">
           <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -22,9 +21,7 @@
         </div>
         <span>View more &RightArrow;</span>
       </a>
-      <!-- Cards -->
       <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-4">
-        <!-- Card -->
         <CardTemplate v-for="(item, index) in cardItems" :key="index" :title="item.title" :value="item.value"
           :iconBgClass="item.iconBgClass">
           <template #icon>
@@ -64,8 +61,6 @@
           </div>
         </template>
       </TableTemplate>
-
-      <!-- Charts -->
       <h2 class="my-6 text-2xl font-semibold"
       :class="{
                 'text-gray-700': !themeStore.dark,
@@ -97,119 +92,10 @@
                         fill: false,
                       },
                     ]" :legend="['Organic', 'Paid']" :colors="['#0694a2', '#7e3af2']" />
-      </div>
+      </div> -->
     </div>
   </MainLayout>
 </template>
-
-<!-- <script>
-import { onMounted } from "vue";
-import MainLayout from "@/Layouts/MainLayout.vue";
-import CardTemplate from "@/Components/CardTemplate.vue";
-import UsersIcon from "@/Components/Icons/UsersIcon.vue";
-import MoneyIcon from "@/Components/Icons/MoneyIcon.vue";
-import ShoppingCartIcon from "@/Components/Icons/ShoppingCartIcon.vue";
-import MessageIcon from "@/Components/Icons/MessageIcon.vue";
-import ChartPie from "@/Components/ChartPie.vue";
-import ChartLine from "@/Components/ChartLine.vue";
-import TableTemplate from "@/Components/TableTemplate.vue";
-
-import { useThemeStore } from "@/stores/themeStore";
-
-const themeStore = useThemeStore();
-
-export default {
-  components: {
-    MainLayout,
-    CardTemplate,
-    UsersIcon,
-    MoneyIcon,
-    ShoppingCartIcon,
-    MessageIcon,
-    ChartPie,
-    ChartLine,
-    TableTemplate,
-    themeStore
-  },
-  methods: {
-    getIconComponent(icon) {
-      const icons = {
-        "users-icon": "UsersIcon",
-        "money-icon": "MoneyIcon",
-        "shopping-cart-icon": "ShoppingCartIcon",
-        "message-icon": "MessageIcon",
-      };
-      return icons[icon];
-    },
-  },
-  data() {
-    return {
-      cardItems: [
-        {
-          title: "Total Clients",
-          value: "6389",
-          iconBgClass:
-            "bg-orange-100 text-orange-500 dark:bg-orange-500 dark:text-orange-100",
-          icon: "users-icon",
-        },
-        {
-          title: "Account balance",
-          value: "$ 46,760.89",
-          iconBgClass:
-            "text-green-500 bg-green-100 dark:text-green-100 dark:bg-green-500",
-          icon: "money-icon",
-        },
-        {
-          title: "New sales",
-          value: "376",
-          iconBgClass:
-            "text-blue-500 bg-blue-100 dark:text-blue-100 dark:bg-blue-500",
-          icon: "shopping-cart-icon",
-        },
-        {
-          title: "Pending contacts",
-          value: "35",
-          iconBgClass:
-            "text-teal-500 bg-teal-100 dark:text-teal-100 dark:bg-teal-500",
-          icon: "message-icon",
-        },
-      ],
-      tableData: [
-        {
-          client: {
-            avatar: "https://via.placeholder.com/100",
-            name: "John Doe",
-            role: "Manager",
-          },
-          amount: "$1000",
-          status: {
-            text: "Approved",
-            class: "text-green-700 bg-green-100",
-          },
-          date: "2024-11-27",
-        },
-        {
-          client: {
-            avatar: "https://via.placeholder.com/100",
-            name: "Jane Doe",
-            role: "Developer",
-          },
-          amount: "$800",
-          status: {
-            text: "Pending",
-            class: "text-yellow-700 bg-yellow-100",
-          },
-          date: "2024-11-26",
-        },
-      ],
-    };
-  },
-};
-</script> -->
-
-
-
-
 
 <script setup>
 import { computed, reactive } from "vue";

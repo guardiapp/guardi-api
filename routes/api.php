@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ResidenceController;
+use App\Http\Controllers\Api\ResidentController;
 use App\Http\Controllers\Api\AuthController;
 
 Route::get('/user', function (Request $request) {
@@ -33,4 +34,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/residences/{id}', [ResidenceController::class, 'show']);
     Route::put('/residences/{id}', [ResidenceController::class, 'update']);
     Route::delete('/residences/{id}', [ResidenceController::class, 'destroy']);
+
+
+    // Route::get('/residents', [ResidentController::class, 'index']);
+    // Route::post('/residents', [ResidentController::class, 'store']);
+    // Route::get('/residents/{id}', [ResidentController::class, 'show']);
+    // Route::put('/residents/{id}', [ResidentController::class, 'update']);
+    // Route::delete('/residents/{id}', [ResidentController::class, 'destroy']);
+    Route::apiResource('residents', ResidentController::class);
+
+
+
 });

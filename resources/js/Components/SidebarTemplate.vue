@@ -142,7 +142,7 @@ import {
     UserCircleIcon,
     BuildingOffice2Icon,
     ShieldExclamationIcon,
-    UsersIcon,
+    HomeIcon,
     UserGroupIcon,
     BookOpenIcon
 } from '@heroicons/vue/24/outline';
@@ -161,7 +161,7 @@ const iconMap = {
     UserCircleIcon,
     BuildingOffice2Icon,
     ShieldExclamationIcon,
-    UsersIcon,
+    HomeIcon,
     UserGroupIcon,
     BookOpenIcon
 };
@@ -176,7 +176,7 @@ const menuItems = [
     { label: "Administradores", link: "/managers", icon: "UserCircleIcon", roles: ["Admin"] },
     { label: "Residencias", link: "/residences", icon:"BuildingOffice2Icon", roles: ["Admin", "Manager"] },
     { label: "Vigilantes", link: "/guards", icon:"ShieldExclamationIcon", roles: ["Admin", "Manager"] },
-    { label: "Residentes", link: "/residents", icon:"UsersIcon", roles: ["Admin", "Manager"] },
+    { label: "Apartamentos", link: "/apartments", icon:"HomeIcon", roles: ["Admin", "Manager"] },
     { label: "Visitantes", link: "/visitors", icon:"UserGroupIcon",roles: ["Admin", "Manager"] },
     { label: "Visitas", link: "/visits", icon:"BookOpenIcon", roles: ["Admin", "Manager"] },
 ];

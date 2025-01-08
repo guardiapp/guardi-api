@@ -4,9 +4,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ResidenceController;
-use App\Http\Controllers\BuildingController;
-use App\Http\Controllers\ResidentController;
 use App\Http\Controllers\GuardController;
+use App\Http\Controllers\BuildingController;
+use App\Http\Controllers\ApartmentController;
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\VisitController;
 use Illuminate\Foundation\Application;
@@ -59,13 +59,13 @@ Route::middleware('auth')->group(function () {
     Route::put('/guards/{id}', [GuardController::class, 'update'])->name('guards.update');
     Route::delete('/guards/{id}', [GuardController::class, 'destroy'])->name('guards.destroy');
 
-    // Residencias
-    Route::get('/residents', [ResidentController::class, 'index'])->name('residents.index');
-    Route::get('/residents/create', [ResidentController::class, 'create'])->name('residents.create');
-    Route::post('/residents', [ResidentController::class, 'store'])->name('residents.store');
-    Route::get('/residents/{id}', [ResidentController::class, 'edit'])->name('residents.edit');
-    Route::put('/residents/{id}', [ResidentController::class, 'update'])->name('residents.update');
-    Route::delete('/residents/{id}', [ResidentController::class, 'destroy'])->name('residents.destroy');
+    // Departamentos
+    Route::get('/apartments', [ApartmentController::class, 'index'])->name('apartments.index');
+    Route::get('/apartments/create', [ApartmentController::class, 'create'])->name('apartments.create');
+    Route::post('/apartments', [ApartmentController::class, 'store'])->name('apartments.store');
+    Route::get('/apartments/{id}', [ApartmentController::class, 'edit'])->name('apartments.edit');
+    Route::put('/apartments/{id}', [ApartmentController::class, 'update'])->name('apartments.update');
+    Route::delete('/apartments/{id}', [ApartmentController::class, 'destroy'])->name('apartments.destroy');
 
     // Visitantes
     Route::get('/visitors', [VisitorController::class, 'index'])->name('visitors.index');

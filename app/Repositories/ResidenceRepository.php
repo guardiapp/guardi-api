@@ -13,11 +13,11 @@ class ResidenceRepository
         $user = Auth::user();
 
         if ($user->type === 'Admin') {
-            return Residence::with(['manager', 'buildings', 'buildings.residents'])->paginate($perPage, ['*'], 'page', $page);
+            return Residence::with(['user', 'user.profile', 'manager', 'buildings', 'apartments'])->paginate($perPage, ['*'], 'page', $page);
         }
 
         if ($user->type === 'Manager') {
-            return Residence::with(['manager', 'buildings', 'buildings.residents'])->where('user_id', $user->id)->paginate($perPage, ['*'], 'page', $page);
+            return Residence::with(['user', 'user.profile', 'manager', 'buildings', 'apartments'])->where('user_id', $user->id)->paginate($perPage, ['*'], 'page', $page);
         }
 
         abort(403, 'Unauthorized action.');
@@ -38,11 +38,11 @@ class ResidenceRepository
         $user = Auth::user();
 
         if ($user->type === 'Admin') {
-            return Residence::with(['manager', 'buildings', 'buildings.residents'])->findOrFail($id);
+            return Residence::with(['manager', 'buildings', 'apartments'])->findOrFail($id);
         }
 
         if ($user->type === 'Manager') {
-            return Residence::with(['manager', 'buildings', 'buildings.residents'])->where('id', $id)->where('user_id', $user->id)->firstOrFail();
+            return Residence::with(['manager', 'buildings', 'apartments'])->where('id', $id)->where('user_id', $user->id)->firstOrFail();
         }
 
         abort(403, 'Unauthorized action.');

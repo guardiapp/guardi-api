@@ -66,4 +66,29 @@ class StoreResidentRequest extends FormRequest
             'avatar.max' => 'El avatar no puede ser mayor a 2 MB.',
         ];
     }
+
+    /**
+     * Preparar los datos para la validación.
+     */
+    protected function prepareForValidation()
+    {
+        if ($this->isJson() && is_null($this->request->get('building_id'))) {
+            // Transforma los datos JSON para asegurarte de que se usen correctamente.
+            $this->merge($this->json()->all());
+        }
+    }
+
+    /**
+     * Acción cuando falla la autorización.
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    protected function failedAuthorization()
+    {
+        throw new \Illuminate\Auth\Access\AuthorizationException(
+            __('No estás autorizado para realizar esta acción.')
+        );
+    }
+
+
 }

@@ -74,7 +74,7 @@ class ResidentController extends Controller
 
             $data['avatar'] = $request->file('avatar');
 
-            $guard = $this->residentRepository->create($data);
+            $resident = $this->residentRepository->create($data);
             return redirect()->route('residents.create')->with('success', 'Residente creado exitosamente.');
         } catch (\Exception $e) {
             return redirect()->route('residents.create')->with('error', 'Error al crear el residente: ' . $e->getMessage());

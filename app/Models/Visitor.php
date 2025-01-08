@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Visitor extends Model
 {
-    protected $fillable = ['resident_id', 'document', 'first_name', 'last_name', 'active'];
+    protected $fillable = ['apartment_id', 'document', 'first_name', 'last_name', 'active'];
 
     /**
-     * Relación con el modelo Resident (cada visitante pertenece a un residente).
+     * Relación con el modelo apartment (cada visitante pertenece a un apartamento).
      */
-    public function resident()
+    public function apartment()
     {
-        return $this->belongsTo(Resident::class);
+        return $this->belongsTo(apartment::class);
     }
 
     /**

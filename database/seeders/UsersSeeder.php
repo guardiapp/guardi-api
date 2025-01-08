@@ -4,10 +4,11 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\Profile;
 use App\Models\Residence;
 use App\Models\Building;
 use App\Models\Guard;
-use App\Models\Resident;
+use App\Models\Apartment;
 use App\Models\Visitor;
 use App\Models\Visit;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -83,9 +84,13 @@ class UsersSeeder extends Seeder
             }
         }
 
-        // Crear residentes distribuidos entre los edificios
+        // Crear apartamentos distribuidos entre los edificios
         $buildings = Building::all();
+        $buildingNumber = 0;
         foreach ($buildings as $index => $building) {
+
+            $buildingNumber ++;
+
             for ($l = 1; $l <= 5; $l++) {
                 $resident = User::create([
                     'name' => $faker->name,
@@ -95,21 +100,25 @@ class UsersSeeder extends Seeder
                     'email_verified_at' => now()
                 ]);
 
-                $residentModel= Resident::create([
+                $residentProfile = Profile::create([
                     'user_id' => $resident->id,
-                    'building_id' => $building->id,
                     'document' => $faker->dni,
                     'first_name' => $faker->firstName,
                     'last_name' => $faker->lastName,
-                    'apartment' => $faker->numberBetween(1, 20),
                     'phone' => $faker->phoneNumber,
+                ]);
+
+                $apartment= Apartment::create([
+                    'user_id' => $resident->id,
+                    'building_id' => $building->id,
+                    'identifier' => $buildingNumber. '-'. $l,
                     'active' => true
                 ]);
 
                 // Crear visitantes aleatorios para cada residente (50% probabilidad)
                 if (rand(0, 1)) { // 50% de probabilidad
                     $visitor = Visitor::create([
-                        'resident_id' => $residentModel->id,
+                        'apartment_id' => $apartment->id,
                         'document' => $faker->dni,
                         'first_name' => $faker->firstName,
                         'last_name' => $faker->lastName,
@@ -127,7 +136,7 @@ class UsersSeeder extends Seeder
                             ->generate("QR: {$qrCode}", storage_path("app/public/{$qrImagePath}"));
 
                         Visit::create([
-                            'resident_id' => $residentModel->id,
+                            'apartment_id' => $apartment->id,
                             'visitor_id' => $visitor->id,
                             'qr' => $qrImagePath,
                             'remarks' => $faker->sentence,

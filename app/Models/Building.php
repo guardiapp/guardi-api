@@ -17,11 +17,10 @@ class Building extends Model
     }
 
     /**
-    * Relación con el modelo Resident (un edificio puede tener varios residentes asociados).
+    * Relación con el modelo Apartment (un edificio puede tener varios apartamentos asociados).
     */
-    public function residents()
+    public function apartments()
     {
-        return $this->hasMany(Resident::class);
+        return $this->hasMany(Apartment::class);
     }
-
 }

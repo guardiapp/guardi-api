@@ -75,13 +75,14 @@ const currentPage = ref(props.current_page);
 const rowsPerPage = ref(props.per_page ?? 5);
 
 const transformedVisitors = computed(() => {
+    console.log(visitors)
     if (user.type === "Admin") {
         return visitors.value.map((visitor) => ({
             document: visitor.document,
             name:  `${visitor.first_name} ${visitor.last_name}`,
-            resident:`${visitor.resident.first_name} ${visitor.resident.last_name}`,
-            residence: visitor.resident.building.residence.name,
-            manager: visitor.resident.building.residence.manager.name,
+            resident:`${visitor.apartment.resident.first_name} ${visitor.apartment.resident.last_name}`,
+            residence: visitor.apartment.building.residence.name,
+            manager: visitor.apartment.building.residence.manager.name,
             actions: { id: visitor.id },
         }));
     }

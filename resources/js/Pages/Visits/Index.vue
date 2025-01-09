@@ -78,18 +78,18 @@ const transformedVisits = computed(() => {
     if (user.type === "Admin") {
         return visits.value.map((visit) => ({
             visitante:  `${visit.visitor.first_name} ${visit.visitor.last_name}`,
-            resident:`${visit.resident.first_name} ${visit.resident.last_name}`,
-            residence: visit.resident.building.residence.name,
+            resident:`${visit.apartment.resident.profile.first_name} ${visit.apartment.resident.profile.last_name}`,
+            residence: visit.apartment.building.residence.name,
             date: visit.visit_date,
-            manager: visit.resident.building.residence.manager.name,
+            manager: visit.apartment.building.residence.manager.name,
             actions: { id: visit.id },
         }));
     }
 
     return visits.value.map((visit) => ({
         visitante:  `${visit.visitor.first_name} ${visit.visitor.last_name}`,
-        resident:`${visit.resident.first_name} ${visit.resident.last_name}`,
-        residence: visit.resident.building.residence.name,
+        resident:`${visit.apartment.resident.first_name} ${visit.apartment.resident.last_name}`,
+        residence: visit.apartment.building.residence.name,
         date: visit.visit_date,
         actions: { id: visit.id },
     }));

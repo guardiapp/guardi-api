@@ -123,9 +123,9 @@ const rowsPerPage = ref(props.per_page ?? 5);
 const transformedApartments = computed(() => {
     if (user.type === "Admin") {
         return apartments.value.map((apartment) => ({
-            avatar: apartment.user.avatar,
+            avatar: apartment.resident.avatar,
             identifier:  apartment.identifier,
-            resident: `${apartment.user.profile.first_name} ${apartment.user.profile.last_name}`,
+            resident: `${apartment.resident.profile.first_name} ${apartment.resident.profile.last_name}`,
             residence: apartment.building.residence.name,
             building: apartment.building.name,
             actions: { id: apartment.id },

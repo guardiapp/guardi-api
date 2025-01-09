@@ -14,14 +14,26 @@ class VisitRepository
         $user = auth()->user();
         //faltal la relacion con Guard
         if ($user->type === 'Admin') {
-            $query = Visit::with(['resident', 'visitor', 'resident.building.residence', 'resident.building.residence.manager']);
+            $query = Visit::with([
+                'visitor',
+                'apartment.resident.profile',
+                'apartment.building.residence.manager'
+            ]);
         } elseif ($user->type === 'Manager') {
             $residenceIds = $user->residences->pluck('id');
-            $query = Visit::whereHas('resident.building.residence', function ($q) use ($residenceIds) {
+            $query = Visit::whereHas('apartment.building.residence', function ($q) use ($residenceIds) {
                 $q->whereIn('id', $residenceIds);
-            })->with(['resident', 'visitor', 'resident.building.residence', 'resident.building.residence.manager']);
+            })->with([
+                'visitor',
+                'apartment.resident.profile',
+                'apartment.building.residence.manager'
+            ]);
         } elseif ($user->type === 'Resident') {
-            $query = Visit::where('resident_id', $user->resident->id)->with(['resident', 'visitor', 'resident.building.residence', 'resident.building.residence.manager']);
+            $query = Visit::where('apartment_id', $user->apartment->id)->with([
+                'visitor',
+                'apartment.resident.profile',
+                'apartment.building.residence.manager'
+            ]);
         } else {
             abort(403, 'Unauthorized action.');
         }

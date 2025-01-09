@@ -62,7 +62,7 @@ class User extends Authenticatable
      */
     public function residences()
     {
-        return $this->hasMany(Residence::class, 'user_id');
+        return $this->hasMany(Residence::class);
     }
 
     /**

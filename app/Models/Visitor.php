@@ -13,7 +13,7 @@ class Visitor extends Model
      */
     public function apartment()
     {
-        return $this->belongsTo(apartment::class);
+        return $this->belongsTo(Apartment::class);
     }
 
     /**

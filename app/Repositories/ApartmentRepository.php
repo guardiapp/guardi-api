@@ -22,7 +22,7 @@ class ApartmentRepository
 
         if ($user->type === 'Admin') {
             // Admin obtiene todos los apartamentos con relaciones necesarias
-            return Apartment::with(['building.residence', 'user', 'user.profile'])
+            return Apartment::with(['building.residence', 'resident', 'resident.profile'])
                 ->paginate($perPage, ['*'], 'page', $page);
         }
 
@@ -31,13 +31,13 @@ class ApartmentRepository
 
             $buildingIds = Building::whereIn('residence_id', $residenceIds)->pluck('id');
 
-            return Apartment::with(['building.residence', 'user', 'user.profile'])
+            return Apartment::with(['building.residence', 'resident', 'resident.profile'])
                 ->whereIn('building_id', $buildingIds)
                 ->paginate($perPage, ['*'], 'page', $page);
         }
 
         if ($user->type === 'Resident') {
-            return Apartment::with(['building.residence', 'user'])
+            return Apartment::with(['building.residence', 'resident', 'resident.profile'])
                 ->where('user_id', $user->id)
                 ->paginate($perPage, ['*'], 'page', $page);
         }

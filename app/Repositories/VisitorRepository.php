@@ -12,24 +12,45 @@ use Illuminate\Support\Str;
 
 class VisitorRepository
 {
-
     public function getAll($perPage, $page)
     {
         $user = auth()->user();
 
         if ($user->type === 'Admin') {
-            $query = Visitor::with(['resident', 'resident.building.residence', 'resident.building.residence.manager']);
+            // Admin puede ver todos los visitors
+            $query = Visitor::with([
+                'apartment.building.residence.manager',
+                'apartment.resident',
+                'apartment.resident.profile',
+            ]);
         } elseif ($user->type === 'Manager') {
+            // Manager puede ver los visitors de las residences que maneja
             $residenceIds = $user->residences->pluck('id');
-            $query = Visitor::whereHas('resident.building.residence', function ($q) use ($residenceIds) {
+
+            $query = Visitor::whereHas('apartment.building.residence', function ($q) use ($residenceIds) {
                 $q->whereIn('id', $residenceIds);
-            })->with(['resident', 'resident.building.residence', 'resident.building.residence.manager']);
+            })->with([
+                'apartment.building.residence',
+                'apartment.user',
+            ]);
         } elseif ($user->type === 'Resident') {
-            $query = Visitor::where('resident_id', $user->resident->id)->with(['resident', 'resident.building.residence', 'resident.building.residence.manager']);
+            // Resident solo puede ver los visitors de su apartment asignado
+            if (!$user->apartment) {
+                abort(403, 'Unauthorized action.');
+            }
+
+            $query = Visitor::where('apartment_id', $user->apartment->id)
+                ->with([
+                    'apartment.building.residence',
+                    'apartment.user',
+                ]);
         } else {
+            // Si no es un tipo de usuario autorizado, no puede acceder
             abort(403, 'Unauthorized action.');
         }
 
+        // Paginación y retorno
         return $query->paginate($perPage, ['*'], 'page', $page);
     }
 }
+

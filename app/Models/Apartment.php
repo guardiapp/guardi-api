@@ -13,9 +13,9 @@ class Apartment extends Model
     /**
      * Relación con el modelo User (cada apartamento pertenece a un usuario).
      */
-    public function user()
+    public function resident()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**

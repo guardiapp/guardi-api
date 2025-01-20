@@ -26,10 +26,7 @@ class ApartmentPolicy
         }
 
         if ($user->type === 'Manager') {
-            return $user->residences->pluck('id')
-                ->intersect(
-                    $resident->building()->pluck('residence_id')
-                )->isNotEmpty();
+            return $user->residences->flatMap->buildings->pluck('id')->contains($apartment->building_id);
         }
 
         if ($user->type === 'Resident') {
@@ -53,19 +50,15 @@ class ApartmentPolicy
     public function update(User $user, Apartment $apartment): bool
     {
         if ($user->type === 'Admin') {
-            return true; // Admin tiene acceso completo
+            return true;
         }
 
         if ($user->type === 'Manager') {
-            // Verificar si el Manager puede acceder al Building asociado al Resident
-            return $user->residences->pluck('id')
-                ->intersect(
-                    $resident->building()->pluck('residence_id')
-                )->isNotEmpty();
+            return $user->residences->flatMap->buildings->pluck('id')->contains($apartment->building_id);
         }
 
         if ($user->type === 'Resident') {
-            return $user->apartments->pluck('id');
+            return $user->id === $apartment->user_id;
         }
 
         return false;
@@ -81,18 +74,13 @@ class ApartmentPolicy
         }
 
         if ($user->type === 'Manager') {
-            // Verificar si el Manager puede acceder al Building asociado al Resident
-            return $user->residences->pluck('id')
-                ->intersect(
-                    $resident->building()->pluck('residence_id')
-                )->isNotEmpty();
+            return $user->residences->flatMap->buildings->pluck('id')->contains($apartment->building_id);
         }
 
         if ($user->type === 'Resident') {
-            return $user->apartments->pluck('id');
+            return $user->id === $apartment->user_id;
         }
 
         return false;
     }
-
 }

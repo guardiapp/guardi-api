@@ -1,11 +1,14 @@
 <script setup>
 import UpdatePasswordForm from "./Partials/UpdatePasswordForm.vue";
 import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm.vue";
+import BreadcrumbTemplate from "@/Components/BreadcrumbTemplate.vue";
 import { usePage } from "@inertiajs/vue3";
 
 import MainLayout from "@/Layouts/MainLayout.vue";
 import { useThemeStore } from "@/stores/themeStore";
 const themeStore = useThemeStore();
+
+const user = usePage().props.auth.user;
 
 document.title="Perfil del usuario";
 
@@ -22,12 +25,13 @@ defineProps({
 <template>
     <MainLayout>
         <div class="container px-6 mx-auto grid">
-            <h2
-                class="my-6 text-2xl font-semibold"
-                :class="themeStore.dark ? 'text-gray-200' : 'text-gray-700'"
-            >
-                Perfil
-            </h2>
+            <BreadcrumbTemplate
+                v-if="user.type !== 'Admin'"
+                :homeLink="{ url: '/', label: 'Inicio' }"
+                :crumbs="[
+                    { label: 'Perfil', isCurrent: true }
+                ]"
+            />
             <div class="py-12">
                 <div class="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
                     <div

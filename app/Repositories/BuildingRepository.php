@@ -10,6 +10,24 @@ use Illuminate\Support\Str;
 
 class BuildingRepository
 {
+    /**
+     * Obtener los edificios asociados a una residencia.
+     */
+    public function getByResidence(Residence $residence, $perPage, $page, array $filters)
+    {
+        $query = $residence->buildings()->with(['residence.manager']);
+
+        if (!empty($filters['name'])) {
+            $query->where('name', 'like', '%' . $filters['name'] . '%');
+        }
+
+        if (isset($filters['active']) && $filters['active'] !== null) {
+            $query->where('active', $filters['active']);
+        }
+
+        return $query->paginate($perPage, ['*'], 'page', $page)->appends($filters);
+    }
+
     public function create(array $data)
     {
         try {

@@ -26,4 +26,19 @@ class Apartment extends Model
         return $this->belongsTo(Building::class);
     }
 
+    /**
+    * Relación con el modelo Visitor (un apartamento puede tener varios visitantes asociados).
+    */
+    public function visitors()
+    {
+        return $this->hasMany(Visitor::class);
+    }
+
+    /**
+    * Relación con el modelo Visit (un apartamento puede tener varias visitas asociados).
+    */
+    public function visits()
+    {
+        return $this->hasMany(Visit::class);
+    }
 }

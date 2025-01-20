@@ -1,5 +1,7 @@
 <template>
-    <div class="w-full overflow-hidden rounded-lg shadow-xs">
+    <div class="w-full overflow-hidden rounded-lg shadow-xs"
+        :class="{'without-top-radius': withoutTopRadius}"
+    >
         <!-- Tabla -->
         <div v-if="data.length > 0">
             <div class="w-full overflow-x-auto">
@@ -75,8 +77,7 @@
                 "
             >
                 <span class="flex items-center col-span-3">
-                    Mostrando del {{ startIndex }} al {{ endIndex }} de
-                    {{ total }} registros
+                    Mostrando del {{ from }} al {{ to }} de {{ total }} registros
                 </span>
 
                 <!-- filas por pagina -->
@@ -142,7 +143,18 @@
                 </span>
             </div>
         </div>
-        <div class="my-4 mx-auto" v-else> <p class="text-center my-5 py-5">No hay registros agregados</p></div>
+        <div class="my-4 mx-auto" v-else>
+            <p
+                class="text-center my-5 py-5"
+                :class="
+                    themeStore.dark
+                        ? 'border-gray-700 text-gray-400 bg-gray-800'
+                        : 'text-gray-500 bg-gray-50'
+                "
+            >
+                No se han agregado o encontrado registros con esta especificación
+            </p>
+        </div>
     </div>
 </template>
 
@@ -178,6 +190,14 @@ const props = defineProps({
         type: Array,
         default: () => [],
     },
+    from: {
+        type: Number,
+        default: null,
+    },
+    to: {
+        type: Number,
+        default: null,
+    },
     total: {
         type: Number,
         default: null,
@@ -186,10 +206,17 @@ const props = defineProps({
         typeof: Number,
         default: null,
     },
+    withoutTopRadius: {
+        type: Boolean,
+        default: false,
+    }
 });
-
-const startIndex = computed(() => (props.currentPage-1) * props.rowsPerPage + 1);
-const endIndex = computed(() =>
-    Math.min(startIndex.value + props.rowsPerPage - 1, props.total)
-);
 </script>
+
+
+<style lang="css" scoped>
+.without-top-radius {
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+}
+</style>

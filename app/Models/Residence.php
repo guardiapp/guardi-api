@@ -43,4 +43,29 @@ class Residence extends Model
         return $this->hasManyThrough(Apartment::class, Building::class);
     }
 
+    public function visitors()
+    {
+        return $this->hasManyThrough(
+            Visitor::class,
+            Apartment::class,
+            'building_id',
+            'apartment_id',
+            'id',
+            'id'
+        )->join('buildings', 'buildings.id', '=', 'apartments.building_id')
+          ->where('buildings.residence_id', '=', $this->id);
+    }
+
+    public function visits()
+    {
+        return $this->hasManyThrough(
+            Visit::class,
+            Apartment::class,
+            'building_id',
+            'apartment_id',
+            'id',
+            'id'
+        )->join('buildings', 'buildings.id', '=', 'apartments.building_id')
+        ->where('buildings.residence_id', '=', $this->id);
+    }
 }

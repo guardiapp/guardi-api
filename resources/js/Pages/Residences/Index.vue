@@ -1,6 +1,17 @@
 <template>
     <MainLayout>
+
+
         <div class="container px-6 mx-auto grid">
+
+            <BreadcrumbTemplate
+            :homeLink="{ url: '/', label: 'Inicio' }"
+            :crumbs="[
+                { label: 'Residencias', isCurrent: true }
+            ]"
+            />
+
+
             <div class="flex items-center justify-between my-6">
                 <h2
                     class="text-2xl font-semibold"
@@ -9,6 +20,7 @@
                     Residencias
                 </h2>
                 <Link
+                    v-if="user.type == 'Admin'"
                     class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
                     :href="`/residences/create`"
                     >
@@ -16,15 +28,36 @@
                     <span class="ml-2" aria-hidden="true">+</span>
                 </Link>
             </div>
+            <FilterTemplate
+                :initial-filters="filters"
+                :filters-enabled="filtersEnabled"
+                current-url="/residences"
+                @update:filters="syncFilters"
+            />
             <div v-if="residences">
                 <TableTemplate
                     :columns="user.type === 'Admin' ? ['Nombre', 'Direccion', 'Administrador', 'Acciones'] : ['Nombre', 'Direccion', 'Acciones']"
                     :data="transformedResidences"
                     :links="links"
                     :rows-per-page="rowsPerPage"
+                    :from="from"
+                    :to="to"
                     :total="total"
                     :current-page="currentPage"
                 >
+                    <!-- Custom column for manager -->
+                    <template #column-name="{ value }">
+                        <Link
+                            v-if="value && value.id"
+                            :href="`/residences/${value.id}`"
+                            class="font-semibold"
+                            :class="themeStore.dark ? 'text-gray-300' : 'text-gray-700'"
+                        >
+                            {{ value.text }}
+                        </Link>
+                        <span v-else>{{ value?.text || 'N/A' }}</span>
+                    </template>
+
                     <!-- Custom column for manager -->
                     <template #column-manager="{ value }">
                         <span
@@ -49,6 +82,19 @@
                                         ? 'text-gray-400'
                                         : 'text-purple-600'
                                 "
+                                aria-label="Show"
+                            >
+                                <EyeIcon class="size-6" />
+                            </Link>
+                            <Link
+                                v-if="user.type == 'Admin'"
+                                :href="`/residences/edit/${row.actions.id}`"
+                                class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
+                                :class="
+                                    themeStore.dark
+                                        ? 'text-gray-400'
+                                        : 'text-purple-600'
+                                "
                                 aria-label="Edit"
                             >
                                 <svg
@@ -63,6 +109,7 @@
                                 </svg>
                             </Link>
                             <button
+                                v-if="user.type == 'Admin'"
                                 @click="handleDeleteResidence(row.actions.id)"
                                 class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
                                 :class="
@@ -96,13 +143,15 @@
 <script setup>
 import MainLayout from "@/Layouts/MainLayout.vue";
 import TableTemplate from "@/Components/TableTemplate.vue";
+import BreadcrumbTemplate from "@/Components/BreadcrumbTemplate.vue";
+import FilterTemplate from "@/Components/FilterTemplate.vue";
 import { useThemeStore } from "@/stores/themeStore";
 import { Link, usePage, router } from "@inertiajs/vue3";
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useGlobalFunctions } from "@/composables/useGlobalFunctions";
+import { EyeIcon } from '@heroicons/vue/24/outline';
 
 document.title="Gestión de Residencias";
-
 
 const { deleteResidence } = useGlobalFunctions();
 
@@ -111,16 +160,18 @@ const { props } = usePage();
 
 const user = usePage().props.auth.user;
 
-const residences = ref(props.data);
-const links = ref(props.links);
-const total = ref(props.total);
-const currentPage = ref(props.current_page);
-const rowsPerPage = ref(props.per_page ?? 5);
+const residences = ref(props.residences.data);
+const links = ref(props.residences.links);
+const from = ref(props.residences.from);
+const to = ref(props.residences.to);
+const total = ref(props.residences.total);
+const currentPage = ref(props.residences.current_page);
+const rowsPerPage = ref(props.residences.per_page ?? 5);
 
 const transformedResidences = computed(() => {
     if (user.type === "Admin") {
         return residences.value.map((residence) => ({
-            name: residence.name,
+            name: { text: residence.name, id: residence.id },
             address: residence.address,
             manager: residence.manager?.name || "N/A",
             actions: { id: residence.id },
@@ -128,15 +179,56 @@ const transformedResidences = computed(() => {
     }
     //Para Manager:
     return residences.value.map((residence) => ({
-        name: residence.name,
+        name: { text: residence.name, id: residence.id },
         address: residence.address,
         actions: { id: residence.id },
     }));
 });
 
+
 const handleDeleteResidence = (id) => {
     deleteResidence(id, () => {
         console.log("Se recargaron los datos correctamente.");
     });
+};
+
+// Variables para filtros reactivos
+const filters = ref({ ...props.filters });
+
+const filtersEnabled = {
+    name: true,
+    address: true,
+    manager: user.type == 'Admin' || false,
+};
+
+// Función para obtener los datos filtrados
+const fetchFilteredResidences = () => {
+    router.get(
+        route("residences.index"),
+        {
+            ...filters.value, // Enviar filtros como parámetros directos
+            preserveScroll: true,
+            preserveState: true,
+        },
+        {
+            onSuccess: (page) => {
+                residences.value = page.props.residences.data;
+                links.value = page.props.residences.links;
+                from.value = page.props.residences.from;
+                to.value = page.props.residences.to;
+                total.value = page.props.residences.total;
+                currentPage.value = page.props.residences.current_page;
+            },
+            onError: (error) => {
+                console.error("Error al obtener residencias filtradas:", error);
+            },
+        }
+    );
+};
+
+// Función para sincronizar filtros al cambiar inputs
+const syncFilters = (updatedFilters) => {
+    filters.value = updatedFilters; // Actualiza todos los filtros reactivamente
+    fetchFilteredResidences();
 };
 </script>

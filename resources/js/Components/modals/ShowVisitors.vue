@@ -64,7 +64,7 @@
                         Nombre: <span class="font-bold">{{ visitor.first_name }} {{ visitor.last_name }}</span>
                     </p>
                     <p class="text-sm text-gray-700 dark:text-gray-400 mt-6">
-                         Residente encargado: <span class="font-bold"> {{ visitor.resident ? `${visitor.resident.first_name} ${visitor.resident.last_name}` : 'Desconocido' }}</span>
+                         Residente encargado: <span class="font-bold"> {{ visitor.apartment?.resident.profile.first_name }} {{ visitor.apartment?.resident.profile.last_name }}</span>
                     </p>
                 </div>
             </div>

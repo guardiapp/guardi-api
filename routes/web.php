@@ -12,16 +12,17 @@ use App\Http\Controllers\VisitController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Middleware\RedirectToResidences;
+
+Route::get('/', function () {
+    return Inertia::render('Dashboard');
+})->middleware('auth', RedirectToResidences::class)->name('home');
+
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware('auth', RedirectToResidences::class)->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', function () {
-        return Inertia::render('Dashboard');
-    })->name('home');
-
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
-
     // Dashboard y perfil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -40,19 +41,22 @@ Route::middleware('auth')->group(function () {
     Route::get('/residences', [ResidenceController::class, 'index'])->name('residences.index');
     Route::get('/residences/create', [ResidenceController::class, 'create'])->name('residences.create');
     Route::post('/residences', [ResidenceController::class, 'store'])->name('residences.store');
-    Route::get('/residences/{id}', [ResidenceController::class, 'edit'])->name('residences.edit');
+    Route::get('/residences/{id}', [ResidenceController::class, 'show'])->name('residences.show');
+    Route::get('/residences/edit/{id}', [ResidenceController::class, 'edit'])->name('residences.edit');
     Route::put('/residences/{id}', [ResidenceController::class, 'update'])->name('residences.update');
     Route::delete('/residences/{id}', [ResidenceController::class, 'destroy'])->name('residences.destroy');
-    Route::get('/residences/{residence}/buildings', [ResidenceController::class, 'getBuildingsByResidence'])
-    ->name('residences.buildings');
+    //Route::get('/residences/{residence}/buildings', [ResidenceController::class, 'getBuildingsByResidence'])
+    //->name('residences.buildings');
 
     // Edificios
+    Route::get('/residences/{residenceId}/buildings', [BuildingController::class, 'indexByResidence'])->name('buildings.indexByResidence');
     Route::post('/buildings', [BuildingController::class, 'store'])->name('buildings.store');
     Route::put('/buildings/{id}', [BuildingController::class, 'update'])->name('buildings.update');
     Route::delete('/buildings/{id}', [BuildingController::class, 'destroy'])->name('buildings.destroy');
 
     // Rutas para vigilantes
     Route::get('/guards', [GuardController::class, 'index'])->name('guards.index');
+    Route::get('/residences/{residenceId}/guards', [GuardController::class, 'indexByResidence'])->name('guards.indexByResidence');
     Route::get('/guards/create', [GuardController::class, 'create'])->name('guards.create');
     Route::post('/guards', [GuardController::class, 'store'])->name('guards.store');
     Route::get('/guards/{id}', [GuardController::class, 'edit'])->name('guards.edit');
@@ -61,6 +65,7 @@ Route::middleware('auth')->group(function () {
 
     // Departamentos
     Route::get('/apartments', [ApartmentController::class, 'index'])->name('apartments.index');
+    Route::get('/residences/{residenceId}/apartments', [ApartmentController::class, 'indexByResidence'])->name('apartments.indexByResidence');
     Route::get('/apartments/create', [ApartmentController::class, 'create'])->name('apartments.create');
     Route::post('/apartments', [ApartmentController::class, 'store'])->name('apartments.store');
     Route::get('/apartments/{id}', [ApartmentController::class, 'edit'])->name('apartments.edit');
@@ -69,10 +74,11 @@ Route::middleware('auth')->group(function () {
 
     // Visitantes
     Route::get('/visitors', [VisitorController::class, 'index'])->name('visitors.index');
+    Route::get('/residences/{residenceId}/visitors', [VisitorController::class, 'indexByResidence'])->name('visitors.indexByResidence');
 
     // Visitas
     Route::get('/visits', [VisitController::class, 'index'])->name('visits.index');
-
+    Route::get('/residences/{residenceId}/visits', [VisitController::class, 'indexByResidence'])->name('visits.indexByResidence');
 });
 
 // Rutas de autenticación generadas por Breeze

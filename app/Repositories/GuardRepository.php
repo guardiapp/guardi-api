@@ -16,23 +16,60 @@ use Illuminate\Support\Facades\Log;
 class GuardRepository
 {
 
-    public function getAll($perPage, $page)
+    public function getAll($perPage, $page, $filters)
     {
         $user = Auth::user();
 
         if ($user->type === 'Admin') {
-            return Guard::with(['residence', 'user'])->paginate($perPage, ['*'], 'page', $page);
-        }
-
-        if ($user->type === 'Manager') {
+            $query = Guard::with(['residence', 'user']);
+        }  elseif ($user->type === 'Manager') {
             $residenceIds = $user->residences()->pluck('id');
-
-            return Guard::with(['residence', 'user'])
-                ->whereIn('residence_id', $residenceIds)
-                ->paginate($perPage, ['*'], 'page', $page);
+            $query = Guard::with(['residence', 'user'])
+                ->whereIn('residence_id', $residenceIds);
+        } else {
+            abort(403, 'Unauthorized action.');
         }
 
-        abort(403, 'Unauthorized action.');
+        $this->applyFilters($query, $filters);
+
+        return $query->paginate($perPage, ['*'], 'page', $page)->appends($filters);
+    }
+
+    /**
+     * Obtener los vigilantes asociados a una residencia.
+     */
+    public function getByResidence(Residence $residence, $perPage, $page, array $filters)
+    {
+        $query = $residence->guards()->with(['user', 'residence']);
+
+        $this->applyFilters($query, $filters);
+
+        return $query->paginate($perPage, ['*'], 'page', $page)->appends($filters);
+    }
+
+    /**
+     * Aplicar filtros dinámicos a la consulta de vigilantes.
+     */
+    protected function applyFilters($query, $filters)
+    {
+        if (!empty($filters['name'])) {
+            $query->where('first_name', 'like', '%' . $filters['name'] . '%')
+            ->orWhere('last_name', 'like', '%' . $filters['name'] . '%');
+        }
+
+        if (!empty($filters['document'])) {
+            $query->where('document', 'like', '%' . $filters['document'] . '%');
+        }
+
+        if (!empty($filters['email'])) {
+            $query->whereHas('user', function ($q) use ($filters) {
+                $q->where('email', 'like', '%' . $filters['email'] . '%');
+            });
+        }
+
+        if (isset($filters['active']) && $filters['active'] !== null) {
+            $query->where('active', $filters['active']);
+        }
     }
 
     public function getResidences()

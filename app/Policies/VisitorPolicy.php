@@ -20,7 +20,9 @@ class VisitorPolicy
         }
 
         if ($user->type === 'Manager') {
-            return $user->residences->flatMap->buildings->flatMap->residents->flatMap->visitors->isNotEmpty();
+            // Manager tiene acceso a visitors de sus apartments
+            return $user->residences()->with('buildings.apartments.visitors')->get()
+                ->flatMap->buildings->flatMap->apartments->isNotEmpty();
         }
 
         if ($user->type === 'Resident') {

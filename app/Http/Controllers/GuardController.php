@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreGuardRequest;
 use App\Http\Requests\UpdateGuardRequest;
 use App\Repositories\GuardRepository;
+use App\Models\Residence;
 use App\Models\Guard;
 use App\Models\User;
 use Inertia\Inertia;
@@ -30,13 +31,42 @@ class GuardController extends Controller
     {
         $this->authorize('viewAny', Guard::class);
 
+        $filters = $request->only(['document', 'name', 'email', 'active']);
+
         $perPage = $request->input('per_page', 5);
 
         $page = $request->input('page', 1);
 
-        $guards = $this->guardRepository->getAll($perPage, $page);
+        $guards = $this->guardRepository->getAll($perPage, $page, $filters);
 
-        return Inertia::render('Guards/Index', $guards);
+        return Inertia::render('Guards/Index', [
+            'guards' => $guards,
+            'filters' => $filters
+        ]);
+    }
+
+    /**
+     * Mostrar los vigilantes filtrados por residencia.
+     */
+    public function indexByResidence(Request $request, $residenceId)
+    {
+        $residence = Residence::with('guards')->findOrFail($residenceId);
+
+        $this->authorize('viewByResidence', $residence);
+
+        $filters = $request->only(['document', 'name', 'email', 'active']);
+
+        $perPage = $request->input('per_page', 5);
+
+        $page = $request->input('page', 1);
+
+        $guards = $this->guardRepository->getByResidence($residence, $perPage, $page, $filters);
+
+        return Inertia::render('Guards/Index', [
+            'guards' => $guards,
+            'residence' => $residence,
+            'filters' => $filters
+        ]);
     }
 
     /**

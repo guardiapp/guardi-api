@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
@@ -33,6 +34,23 @@ class ProfileController extends Controller
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
+        }
+
+        $avatarFile = $request->file('avatar');
+        $avatarDeleted = $request->input('avatar_deleted', false);
+
+        if ($avatarFile) {
+            if ($request->user()->avatar) {
+                Storage::disk('public')->delete($request->user()->avatar);
+            }
+
+            $avatarPath = $avatarFile->store('avatars', 'public');
+            $request->user()->update(['avatar' => $avatarPath]);
+        } elseif ($avatarDeleted) {
+            if ($request->user()->avatar) {
+                Storage::disk('public')->delete($request->user()->avatar);
+            }
+            $request->user()->update(['avatar' => null]);
         }
 
         $request->user()->save();

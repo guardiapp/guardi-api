@@ -7,6 +7,7 @@ export const useThemeStore = defineStore("themeStore", {
         isNotificationsMenuOpen: false,
         isProfileMenuOpen: false,
         isPagesMenuOpen: false,
+        avatar: null,
     }),
     actions: {
         syncThemeWithLocalStorage() {
@@ -14,11 +15,17 @@ export const useThemeStore = defineStore("themeStore", {
             if (storedTheme !== null) {
                 this.dark = JSON.parse(storedTheme);
             } else {
-                // Detectar el tema preferido del navegador
                 this.dark = window.matchMedia("(prefers-color-scheme: dark)").matches;
                 localStorage.setItem("dark", JSON.stringify(this.dark));
             }
         },
+        setAvatar(newAvatar) {
+            this.avatar = newAvatar; // Actualiza la propiedad del avatar
+        },
+        clearAvatar() {
+            this.avatar = null; // Limpia la propiedad del avatar
+        },
+        // Acciones existentes...
         toggleTheme() {
             this.dark = !this.dark;
             localStorage.setItem("dark", JSON.stringify(this.dark));
@@ -47,5 +54,5 @@ export const useThemeStore = defineStore("themeStore", {
         closePagesMenu() {
             this.isPagesMenuOpen = false;
         },
-    },
+    }
 });

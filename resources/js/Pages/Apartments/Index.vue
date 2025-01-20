@@ -1,6 +1,15 @@
 <template>
     <MainLayout>
         <div class="container px-6 mx-auto grid">
+            <BreadcrumbTemplate
+                v-if="residence"
+                :homeLink="{ url: '/', label: 'Inicio' }"
+                :crumbs="[
+                    { url: '/residences', label: 'Residencias' },
+                    { url: `/residences/${residenceId}`, label: residenceName },
+                    { label: 'Apartamentos', isCurrent: true }
+                ]"
+            />
             <div class="flex items-center justify-between my-6">
                 <h2
                     class="text-2xl font-semibold"
@@ -16,12 +25,20 @@
                     <span class="ml-2" aria-hidden="true">+</span>
                 </Link>
             </div>
+            <FilterTemplate
+                :initial-filters="filters"
+                :filters-enabled="filtersEnabled"
+                :current-url="residence ? `/residences/${residenceId}/apartments` : '/apartments'"
+                @update:filters="syncFilters"
+            />
             <div v-if="apartments">
                 <TableTemplate
-                    :columns="user.type === 'Admin' ? ['', 'Identificador', 'Residente', 'Residencia', 'Torre', 'Acciones'] : ['', 'Nombre', 'Torre', 'Acciones']"
+                    :columns="user.type == 'Admin' ? ['', 'Identificador', 'Residente', 'Edificio', 'Residencia', 'Acciones'] : ['', 'Identificador', 'Residente', 'Edificio', 'Acciones']"
                     :data="transformedApartments"
                     :links="links"
                     :rows-per-page="rowsPerPage"
+                    :from="from"
+                    :to="to"
                     :total="total"
                     :current-page="currentPage"
                 >
@@ -101,6 +118,8 @@
 <script setup>
 import MainLayout from "@/Layouts/MainLayout.vue";
 import TableTemplate from "@/Components/TableTemplate.vue";
+import BreadcrumbTemplate from "@/Components/BreadcrumbTemplate.vue";
+import FilterTemplate from "@/Components/FilterTemplate.vue";
 import { useThemeStore } from "@/stores/themeStore";
 import { Link, usePage, router } from "@inertiajs/vue3";
 import { ref, computed } from "vue";
@@ -114,28 +133,33 @@ const { props } = usePage();
 
 const user = usePage().props.auth.user;
 
-const apartments = ref(props.data);
-const links = ref(props.links);
-const total = ref(props.total);
-const currentPage = ref(props.current_page);
-const rowsPerPage = ref(props.per_page ?? 5);
+const apartments = ref(props.apartments.data);
+const residence = ref(props.residence || null);
+const residenceId = residence.value?.id || null;
+const residenceName = residence.value?.name || null;
+const links = ref(props.apartments.links);
+const from = ref(props.apartments.from);
+const to = ref(props.apartments.to);
+const total = ref(props.apartments.total);
+const currentPage = ref(props.apartments.current_page);
+const rowsPerPage = ref(props.apartments.per_page ?? 5);
 
 const transformedApartments = computed(() => {
-    if (user.type === "Admin") {
+    if (user.type == "Admin") {
         return apartments.value.map((apartment) => ({
             avatar: apartment.resident.avatar,
             identifier:  apartment.identifier,
             resident: `${apartment.resident.profile.first_name} ${apartment.resident.profile.last_name}`,
-            residence: apartment.building.residence.name,
             building: apartment.building.name,
+            residence: apartment.building.residence.name,
             actions: { id: apartment.id },
         }));
     }
 
     return apartments.value.map((apartment) => ({
-        avatar: apartment.user.avatar,
-        resident: `${apartment.user.profile.first_name} ${apartment.user.profile.last_name}`,
+        avatar: apartment.resident.avatar,
         identifier:  apartment.identifier,
+        resident: `${apartment.resident.profile.first_name} ${apartment.resident.profile.last_name}`,
         building: apartment.building.name,
         actions: { id: apartment.id },
     }));
@@ -161,6 +185,8 @@ const deleteApartment = (id) => {
                 onSuccess: (response) => {
                     apartments.value = response.props.data;
                     links.value = response.props.links;
+                    from.value = response.props.from;
+                    to.value = response.props.to;
                     total.value = response.props.total;
                     currentPage.value = response.props.currentPage;
                     rowsPerPage.value = response.props.rowsPerPage;
@@ -182,5 +208,49 @@ const deleteApartment = (id) => {
             });
         }
     });
+};
+
+// Variables para filtros reactivos
+const filters = ref({ ...props.filters });
+
+const filtersEnabled = {
+    identifier: true,
+    resident_name: true,
+    building_name: true,
+};
+
+// Función para obtener los datos filtrados
+const fetchFilteredApartments = () => {
+    const endpoint = residenceId
+        ? route("apartments.indexByResidence", { residenceId })
+        : route("apartments.index");
+
+        router.get(
+            endpoint,
+        {
+            ...filters.value,
+            preserveScroll: true,
+            preserveState: true,
+        },
+        {
+            onSuccess: (page) => {
+                apartments.value = page.props.apartments.data;
+                links.value = page.props.apartments.links;
+                from.value = page.props.apartments.from;
+                to.value = page.props.apartments.to;
+                total.value = page.props.apartments.total;
+                currentPage.value = page.props.apartments.current_page;
+            },
+            onError: (error) => {
+                console.error("Error al obtener residencias filtradas:", error);
+            },
+        }
+    );
+};
+
+// Función para sincronizar filtros al cambiar inputs
+const syncFilters = (updatedFilters) => {
+    filters.value = updatedFilters; // Actualiza todos los filtros reactivamente
+    fetchFilteredApartments();
 };
 </script>

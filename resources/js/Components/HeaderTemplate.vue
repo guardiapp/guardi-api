@@ -202,13 +202,11 @@
 
 <script setup>
 import { useThemeStore } from "@/stores/themeStore";
-import { Link, usePage, router } from '@inertiajs/vue3';
-const page = usePage()
-const user = page.props.auth.user;
-
-const avatar = user.avatar ? `/storage/${user.avatar}` : `/assets/img/avatar.png`;
-
+import { router } from '@inertiajs/vue3';
+import { computed } from "vue";
 const themeStore = useThemeStore();
+
+const avatar = computed(() => themeStore.avatar || `/assets/img/avatar.png`);
 
 const logout = () => {
     themeStore.closeProfileMenu()

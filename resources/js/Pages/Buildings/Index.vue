@@ -2,12 +2,11 @@
     <MainLayout>
         <div class="container px-6 mx-auto grid">
             <BreadcrumbTemplate
-                v-if="residence"
                 :homeLink="{ url: '/', label: 'Inicio' }"
                 :crumbs="[
                     { url: '/residences', label: 'Residencias' },
                     { url: `/residences/${residenceId}`, label: residenceName },
-                    { label: 'Vigilantes', isCurrent: true }
+                    { label: 'Edificios', isCurrent: true }
                 ]"
             />
             <div class="flex items-center justify-between my-6">
@@ -15,11 +14,11 @@
                     class="text-2xl font-semibold"
                     :class="themeStore.dark ? 'text-gray-200' : 'text-gray-700'"
                 >
-                    Vigilantes
+                    Edificios
                 </h2>
                 <Link
                     class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
-                    :href="`/guards/create`"
+                    :href="`/buildings/create`"
                     >
                     Nuevo
                     <span class="ml-2" aria-hidden="true">+</span>
@@ -28,13 +27,13 @@
             <FilterTemplate
                 :initial-filters="filters"
                 :filters-enabled="filtersEnabled"
-                :current-url="residenceId ? `/residences/${residenceId}/guards`: '/guards'"
+                :current-url="`/residences/${residenceId}/buildings`"
                 @update:filters="syncFilters"
             />
-            <div v-if="guards">
+            <div v-if="buildings">
                 <TableTemplate
-                    :columns="user.type == 'Admin' ? ['', 'Documento', 'Nombre', 'Correo Electrónico', 'Residencia', 'Estatus','Acciones'] : ['', 'Documento', 'Nombre', 'Correo Electrónico', 'Estatus','Acciones']"
-                    :data="transformedGuards"
+                    :columns="user.type == 'Admin' ? ['Administrador', 'Nombre', 'Pisos', 'Estatus', 'Acciones'] : ['Nombre', 'Pisos', 'Estatus', 'Acciones']"
+                    :data="transformedBuildings"
                     :links="links"
                     :rows-per-page="rowsPerPage"
                     :from="from"
@@ -42,24 +41,6 @@
                     :total="total"
                     :current-page="currentPage"
                 >
-                    <!-- Custom column for avatar -->
-                    <template #column-avatar="{ value }">
-                        <div class="w-10 h-10 rounded-full overflow-hidden">
-                            <img
-                                v-if="value"
-                                :src="`/storage/${value}`"
-                                alt="Avatar"
-                                class="object-cover w-full h-full"
-                            />
-                            <div
-                                v-else
-                                class="flex items-center justify-center w-full h-full text-xs text-gray-500 bg-gray-300"
-                            >
-                                N/A
-                            </div>
-                        </div>
-                    </template>
-
                     <!-- Custom column for avatar -->
                     <template #column-active="{ value }">
                         <span v-if="value === 1">Activo</span>
@@ -70,7 +51,7 @@
                     <template #column-actions="{ row }">
                         <div class="flex items-center space-x-4 text-sm">
                             <Link
-                                :href="`/guards/${row.actions.id}`"
+                                :href="`/buildings/${row.actions.id}`"
                                 class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
                                 :class="
                                     themeStore.dark
@@ -91,7 +72,7 @@
                                 </svg>
                             </Link>
                             <button
-                                @click="deleteGuard(row.actions.id)"
+                                @click="deleteBuilding(row.actions.id)"
                                 class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
                                 :class="
                                     themeStore.dark
@@ -131,56 +112,53 @@ import { Link, usePage, router } from "@inertiajs/vue3";
 import { ref, computed } from "vue";
 import Swal from "sweetalert2";
 import { notify } from "notiwind";
+import { fromJSON } from "postcss";
 
-document.title="Gestión de Vigilantes";
+document.title="Listado de edificios";
 
 const themeStore = useThemeStore();
 const { props } = usePage();
 
 const user = usePage().props.auth.user;
 
-const guards = ref(props.guards.data);
+const buildings = ref(props.buildings.data);
 const residence = ref(props.residence);
-const residenceId = residence.value?.id || null;
-const residenceName = residence.value?.name || null;
-const links = ref(props.guards.links);
-const from = ref(props.guards.from);
-const to = ref(props.guards.to);
-const total = ref(props.guards.total);
-const currentPage = ref(props.guards.current_page);
-const rowsPerPage = ref(props.guards.per_page ?? 5);
+const residenceId = residence.value.id;
+const residenceName = residence.value.name;
+const links = ref(props.buildings.links);
+const from = ref(props.buildings.from);
+const to = ref(props.buildings.to);
+const total = ref(props.buildings.total);
+const currentPage = ref(props.buildings.current_page);
+const rowsPerPage = ref(props.buildings.per_page ?? 5);
 
-const transformedGuards = computed(() => {
-    if (user.type == 'Admin') {
-        return guards.value.map((guard) => ({
-            avatar: guard.user.avatar,
-            document: guard.document,
-            first_name: `${guard.first_name} ${guard.last_name}`,
-            last_name: guard.user.email,
-            residence: guard.residence.name,
-            active: guard.active,
-            actions: { id: guard.id },
+const transformedBuildings = computed(() => {
+    if (user.type == "Admin") {
+        return buildings.value.map((building) => ({
+            manager: building.residence.manager.name,
+            building: building.name,
+            floorsNumber: building.floors_number,
+            active: building.active,
+            actions: { id: building.id },
         }));
     }
 
-    return guards.value.map((guard) => ({
-        avatar: guard.user.avatar,
-        document: guard.document,
-        first_name: `${guard.first_name} ${guard.last_name}`,
-        last_name: guard.user.email,
-        active: guard.active,
-        actions: { id: guard.id },
+    return buildings.value.map((building) => ({
+        building: building.name,
+        floorsNumber: building.floors_number,
+        active: building.active,
+        actions: { id: building.id },
     }));
 });
 
-const deleteGuard = (id) => {
+const deleteBuilding = (id) => {
     Swal.fire({
         customClass: {
             popup: themeStore.dark
                 ? "bg-gray-900 text-white"
                 : "bg-white text-gray-900",
         },
-        text: "¿Desea eliminar este vigilante?",
+        text: "¿Desea eliminar este edificio?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#7e3af2",
@@ -189,25 +167,23 @@ const deleteGuard = (id) => {
         cancelButtonText: "Cancelar",
     }).then((result) => {
         if (result.isConfirmed) {
-            router.delete(route('guards.destroy', id), {
+            router.delete(route('buildings.destroy', id), {
                 onSuccess: (response) => {
-                    guards.value = response.props.data
-                    links.value = response.props.links
-                    from.value = response.props.from
-                    to.value = response.props.to
-                    total.value = response.props.total
-                    currentPage.value = response.props.currentPage
-                    rowsPerPage.value = response.props.rowsPerPage
+                    buildings.value = response.props.data;
+                    links.value = response.props.links;
+                    total.value = response.props.total;
+                    currentPage.value = response.props.currentPage;
+                    rowsPerPage.value = response.props.rowsPerPage;
                     notify(
                         {
                             group: "info",
                             title: "Cambio realizado",
-                            text: "El vigilante ha sido eliminado",
+                            text: "El edificio ha sido eliminado",
                         },
                         4000
                     );
                 },
-                onError:(error) => {
+                onError: (error) => {
                     console.error(
                         "Error al eliminar:",
                         error.response || error
@@ -222,18 +198,13 @@ const deleteGuard = (id) => {
 const filters = ref({ ...props.filters });
 
 const filtersEnabled = {
-    document: true,
     name: true,
-    email: true,
     active: true,
 };
 
 // Función para obtener los datos filtrados
-const fetchFilteredGuards = () => {
-    const endpoint = residenceId
-    ? route("guards.indexByResidence", { residenceId })
-    : route("guards.index");
-    router.get(endpoint,
+const fetchFilteredBuildings = () => {
+    router.get(route("buildings.indexByResidence", { residenceId }),
         {
             ...filters.value,
             preserveScroll: true,
@@ -241,12 +212,13 @@ const fetchFilteredGuards = () => {
         },
         {
             onSuccess: (page) => {
-                guards.value = page.props.guards.data;
-                links.value = page.props.guards.links;
-                from.value = page.props.guards.from;
-                to.value = page.props.guards.to;
-                total.value = page.props.guards.total;
-                currentPage.value = page.props.guards.current_page;
+                console.log(page)
+                buildings.value = page.props.buildings.data;
+                links.value = page.props.buildings.links;
+                total.value = page.props.buildings.total;
+                currentPage.value = page.props.buildings.current_page;
+                from.value = page.props.buildings.from;
+                to.value = page.props.buildings.to;
             },
             onError: (error) => {
                 console.error("Error al obtener residencias filtradas:", error);
@@ -258,6 +230,6 @@ const fetchFilteredGuards = () => {
 // Función para sincronizar filtros al cambiar inputs
 const syncFilters = (updatedFilters) => {
     filters.value = updatedFilters; // Actualiza todos los filtros reactivamente
-    fetchFilteredGuards();
+    fetchFilteredBuildings();
 };
 </script>

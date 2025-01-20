@@ -30,10 +30,16 @@ class ResidenceController extends Controller
     {
         $this->authorize('viewAny', Residence::class);
 
+        $filters = $request->only(['name', 'address', 'manager']);
         $perPage = $request->input('per_page', 5);
         $page = $request->input('page', 1);
-        $residences = $this->residenceRepository->getAll($perPage, $page);
-        return Inertia::render('Residences/Index', $residences);
+
+        $residences = $this->residenceRepository->getFiltered($perPage, $page, $filters);
+
+        return Inertia::render('Residences/Index', [
+            'residences' => $residences,
+            'filters' => $filters,
+        ]);
     }
 
     /**

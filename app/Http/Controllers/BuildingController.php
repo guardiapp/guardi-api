@@ -24,6 +24,33 @@ class BuildingController extends Controller
     }
 
     /**
+     * Mostrar los apartamentos filtrados por residencia.
+     */
+    public function indexByResidence(Request $request, $residenceId)
+    {
+        $residence = Residence::with('buildings')->findOrFail($residenceId);
+
+        $this->authorize('viewByResidence', $residence);
+
+        $filters = $request->only(['name', 'active']);
+
+        $perPage = $request->input('per_page', 5);
+
+        $page = $request->input('page', 1);
+
+        $buildings = $this->buildingRepository->getByResidence($residence, $perPage, $page, $filters);
+
+        return Inertia::render('Buildings/Index', [
+            'buildings' => $buildings,
+            'filters' => $filters,
+            'residence' => [
+                'id' => $residence->id,
+                'name' => $residence->name,
+            ],
+        ]);
+    }
+
+    /**
      * Guardar un nuevo edificio en la base de datos.
      */
     public function store(StoreBuildingRequest $request)

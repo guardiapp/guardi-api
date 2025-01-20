@@ -4,45 +4,72 @@ namespace App\Repositories;
 
 use Illuminate\Support\Facades\Storage;
 use App\Models\Apartment;
+use App\Models\Profile;
 use App\Models\Residence;
 use App\Models\Building;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-//use App\Mail\ResidentCreated;
-// use Illuminate\Support\Facades\Mail;
-// use Illuminate\Support\Facades\Log;
+use App\Mail\ResidentCreated;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class ApartmentRepository
 {
-    public function getAll($perPage, $page)
+    public function getAll($perPage, $page, array $filters)
     {
         $user = Auth::user();
 
         if ($user->type === 'Admin') {
-            // Admin obtiene todos los apartamentos con relaciones necesarias
-            return Apartment::with(['building.residence', 'resident', 'resident.profile'])
-                ->paginate($perPage, ['*'], 'page', $page);
-        }
-
-        if ($user->type === 'Manager') {
+            $query = Apartment::with(['building.residence', 'resident', 'resident.profile']);
+        } elseif ($user->type === 'Manager') {
             $residenceIds = $user->residences()->pluck('id');
-
             $buildingIds = Building::whereIn('residence_id', $residenceIds)->pluck('id');
-
-            return Apartment::with(['building.residence', 'resident', 'resident.profile'])
-                ->whereIn('building_id', $buildingIds)
-                ->paginate($perPage, ['*'], 'page', $page);
+            $query = Apartment::with(['building.residence', 'resident', 'resident.profile'])
+                ->whereIn('building_id', $buildingIds);
+        } else {
+            abort(403, 'Unauthorized action.');
         }
 
-        if ($user->type === 'Resident') {
-            return Apartment::with(['building.residence', 'resident', 'resident.profile'])
-                ->where('user_id', $user->id)
-                ->paginate($perPage, ['*'], 'page', $page);
+        $this->applyFilters($query, $filters);
+
+        return $query->paginate($perPage, ['*'], 'page', $page)->appends($filters);
+    }
+
+    /**
+     * Obtener los apartamentos asociados a una residencia.
+     */
+    public function getByResidence(Residence $residence, $perPage, $page, $filters)
+    {
+        $query = $residence->apartments()->with(['resident.profile', 'building.residence']);
+
+        $this->applyFilters($query, $filters);
+
+        return $query->paginate($perPage, ['*'], 'page', $page)->appends($filters);
+    }
+
+    /**
+     * Aplicar filtros dinámicos a la consulta de apartamentos.
+     */
+    protected function applyFilters($query, $filters)
+    {
+        if (!empty($filters['identifier'])) {
+            $query->where('identifier', 'like', '%' . $filters['identifier'] . '%');
         }
 
-        abort(403, 'Unauthorized action.');
+        if (!empty($filters['resident_name'])) {
+            $query->whereHas('resident.profile', function ($q) use ($filters) {
+                $q->where('first_name', 'like', '%' . $filters['resident_name'] . '%')
+                ->orWhere('last_name', 'like', '%' . $filters['resident_name'] . '%');
+            });
+        }
+
+        if (!empty($filters['building_name'])) {
+            $query->whereHas('building', function ($q) use ($filters) {
+                $q->where('name', 'like', '%' . $filters['building_name'] . '%');
+            });
+        }
     }
 
     public function create(array $data)
@@ -59,7 +86,7 @@ class ApartmentRepository
             }
 
             $user = User::create([
-                'name' => $data['first_name'],
+                'name' => $data['name'],
                 'email' => $data['email'],
                 'password' => $data['password'],
                 'type' => $data['type'],
@@ -73,20 +100,20 @@ class ApartmentRepository
                 'first_name' => $data['first_name'],
                 'last_name' => $data['last_name'],
                 'phone' => $data['phone'],
-                'birthday' => $data['birthday'],
+                'birthday' => $data['birthday'] ?? null,
             ]);
 
             $apartment = Apartment::create([
                 'user_id' => $data['user_id'],
                 'building_id' => $data['building_id'],
-                'indentifier' => $data['identifier'],
+                'identifier' => $data['identifier'],
                 'active' => true
             ]);
 
             // Simular envío de correo en desarrollo
             Mail::to($user->email)->send(new \App\Mail\ResidentCreated($user, $password));
 
-            return $resident;
+            return $apartment;
         } catch (\Exception $e) {
             // Registrar errores en el log
             Log::error('Error al crear el apartamento: ' . $e->getMessage());
@@ -96,7 +123,7 @@ class ApartmentRepository
 
     public function findApartment($id)
     {
-        return Aparment::with(['user', 'user.profile', 'building', 'building.residence', 'building.residence.manager'])
+        return Apartment::with([ 'resident.profile', 'building.residence.manager' ])
             ->findOrFail($id);
     }
 
@@ -128,18 +155,18 @@ class ApartmentRepository
 
             $data['user_id'] = $user->id;
 
-            $avatar->user->profile->update([
+            $apartment->user->profile->update([
                 'document' => $data['document'],
                 'first_name' => $data['first_name'],
                 'last_name' => $data['last_name'],
                 'phone' => $data['phone'],
-                'birthday' => $data['birthday'],
+                'birthday' => $data['birthday'] ?? null,
             ]);
 
             // Actualizar otros campos
             $apartment->update([
-                'building_id' => $data['building_id'],
-                'active' => $data['active'],
+                'identifier' => $data['identifier'],
+                'active' => $data['active']
             ]);
 
             return $apartment;

@@ -135,13 +135,16 @@ class UsersSeeder extends Seeder
                             ->size(200)
                             ->generate("QR: {$qrCode}", storage_path("app/public/{$qrImagePath}"));
 
+
+                        $normalVisit = rand(0, 1);
+
                         Visit::create([
                             'apartment_id' => $apartment->id,
                             'visitor_id' => $visitor->id,
                             'qr' => $qrImagePath,
                             'remarks' => $faker->sentence,
-                            'visit_date' => rand(0, 1) ? $faker->dateTimeThisMonth : null,
-                            'expiration_date' => rand(0, 1) ? $faker->dateTimeBetween('+1 month', '+3 months') : null,
+                            'visit_date' => $normalVisit ? $faker->dateTimeThisMonth : null,
+                            'expiration_date' => $normalVisit ? null : $faker->dateTimeBetween('+1 month', '+3 months'),
                             'cancelled' => false,
                             'visited' => false,
                             'entry_time' => null,

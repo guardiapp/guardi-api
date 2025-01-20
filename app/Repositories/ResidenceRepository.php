@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ResidenceRepository
 {
-    public function getAll($perPage, $page)
+    public function getAll($perPage, $page, $filters =[])
     {
         $user = Auth::user();
 
@@ -23,6 +23,39 @@ class ResidenceRepository
         abort(403, 'Unauthorized action.');
     }
 
+    public function getFiltered($perPage, $page, $filters = [])
+    {
+        $user = Auth::user();
+
+        $query = Residence::with(['manager', 'buildings', 'apartments']);
+
+        if (!empty($filters['name'])) {
+            $query->where('name', 'like', '%' . $filters['name'] . '%');
+        }
+        if (!empty($filters['address'])) {
+            $query->where('address', 'like', '%' . $filters['address'] . '%');
+        }
+        if (!empty($filters['manager'])) {
+            $query->whereHas('manager', function ($q) use ($filters) {
+                $q->where('name', 'like', '%' . $filters['manager'] . '%');
+            });
+        }
+
+        // Restricciones de tipo de usuario
+        if ($user->type === 'Admin') {
+            $paginator = $query->paginate($perPage, ['*'], 'page', $page);
+        } elseif ($user->type === 'Manager') {
+            $query->where('user_id', $user->id);
+            $paginator = $query->paginate($perPage, ['*'], 'page', $page);
+        } else {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Agregar filtros a los links de la paginación
+        return $paginator->appends($filters);
+    }
+
+
     public function create(array $data)
     {
         $user = User::findOrFail($data['user_id']);
@@ -31,6 +64,21 @@ class ResidenceRepository
             'address' => $data['address'],
             'user_id' => $user->id,
         ]);
+    }
+
+    public function find($id)
+    {
+        $user = Auth::user();
+
+        if ($user->type === 'Admin') {
+            return Residence::with(['manager', 'buildings', 'apartments.visits', 'apartments.visitors', 'guards'])->findOrFail($id);
+        }
+
+        if ($user->type === 'Manager') {
+            return Residence::with(['manager', 'buildings', 'apartments.visits', 'apartments.visitors', 'guards'])->where('id', $id)->where('user_id', $user->id)->firstOrFail();
+        }
+
+        abort(403, 'Unauthorized action.');
     }
 
     public function findByUser($id)

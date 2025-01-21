@@ -11,6 +11,24 @@ class BuildingPolicy
     use HandlesAuthorization;
 
     /**
+     * Determina si un usuario puede ver la lista de Buildings.
+     */
+    public function viewAny(User $user)
+    {
+
+        if ($user->type === 'Admin') {
+            return true;
+        }
+
+        if ($user->type === 'Manager') {
+            return $user->residences->contains('id', $building->residence_id);
+        }
+
+        return false;
+    }
+
+
+    /**
      * Determina si un usuario puede crear Residents.
      */
     public function create(User $user)

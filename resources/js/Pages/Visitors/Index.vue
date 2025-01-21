@@ -39,7 +39,7 @@
                     <template #column-actions="{ row }">
                         <div class="flex items-center space-x-4 text-sm">
                             <button
-                                @click="handleShowVisitor(row)"
+                                @click="handleShowDetails(row.actions.id)"
                                 class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
                                 :class="
                                     themeStore.dark
@@ -55,10 +55,21 @@
                 </TableTemplate>
             </div>
         </div>
-        <ShowVisitors
-            :is-modal-open="isVisitorModalOpen"
-            :visitor="selectedVisitor"
-            @close-modal="isVisitorModalOpen = false"
+        <!-- Modal Details-->
+        <ShowDetails
+            v-if="isModalOpen && selectedRow"
+            :is-modal-open="isModalOpen"
+            :selected-row="selectedRow || {}"
+            :fields-to-show="{
+                document: 'Documento',
+                name: 'Nombre',
+                resident: 'Residente',
+                apartment: 'Apartamento',
+                building: 'Edificio',
+                residence: 'Residencia',
+            }"
+            title="Detalles del Edificio"
+            @close="closeModal"
         />
     </MainLayout>
 </template>
@@ -68,11 +79,11 @@ import MainLayout from "@/Layouts/MainLayout.vue";
 import TableTemplate from "@/Components/TableTemplate.vue";
 import BreadcrumbTemplate from "@/Components/BreadcrumbTemplate.vue";
 import FilterTemplate from "@/Components/FilterTemplate.vue";
+import ShowDetails from "@/Components/modals/ShowDetails.vue";
 import { useThemeStore } from "@/stores/themeStore";
 import { usePage, router } from "@inertiajs/vue3";
 import { ref, computed } from "vue";
-import { EyeIcon } from '@heroicons/vue/24/outline';
-import ShowVisitors from "@/Components/modals/ShowVisitors.vue";
+import { EyeIcon } from '@heroicons/vue/24/solid';
 
 document.title="Listado de vistantes";
 
@@ -119,25 +130,36 @@ const transformedVisitors = computed(() => {
     }));
 });
 
-const selectedVisitor = ref({
-    document: '',
-    first_name: '',
-    last_name: '',
-    resident: { first_name: '', last_name: '' },
-});
+const isModalOpen = ref(false);
+const selectedRow = ref({});
 
-const handleShowVisitor = (row) => {
-    const visitor = visitors.value.find(
-        (visitor) => visitor.id === row.actions.id
-    );
-
+const handleShowDetails = (id) => {
+    const visitor = visitors.value.find((visitor) => visitor.id === id);
     if (visitor) {
-        selectedVisitor.value = visitor;
-        openVisitorModal();
+        selectedRow.value = formatData(visitor);
+        isModalOpen.value = true;;
     } else {
         console.error("No se encontró el visitante con el ID especificado");
     }
-}
+};
+
+const formatData = (visitor) => {
+    if (!visitor) return {};
+
+    return {
+        ...visitor,
+        resident: `${visitor.apartment.resident.profile.first_name} ${visitor.apartment.resident.profile.last_name}`,
+        apartment: visitor.apartment?.identifier || 'No definido',
+        building: visitor.apartment.building?.name || 'No definido',
+        residence: visitor.apartment.building.residence?.name || 'No definido',
+    };
+};
+
+const closeModal = () => {
+    isModalOpen.value = false;
+    selectedRow.value = null;
+};
+
 
 // Variables para filtros reactivos
 const filters = ref({ ...props.filters });

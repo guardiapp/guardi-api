@@ -5,7 +5,7 @@
                 class="my-6 text-2xl font-semibold"
                 :class="themeStore.dark ? 'text-gray-200' : 'text-gray-700'"
             >
-                Nuevo Apartamento
+                Nuevo Edificio
             </h2>
             <form @submit.prevent="submit">
                 <div
@@ -73,157 +73,6 @@
                             </label>
                         </div>
 
-                        <!-- Input para Edificio -->
-                        <div class="text-sm my-5">
-                            <label class="block text-sm">
-                                <span
-                                    :class="
-                                        themeStore.dark
-                                            ? 'text-gray-400'
-                                            : 'text-gray-700'
-                                    "
-                                    >Edificio</span
-                                >
-                                <select
-                                    v-model="form.building_id"
-                                    class="block w-full mt-1 text-sm form-input"
-                                    :class="{
-                                        'border-red-500': errors.building_id,
-                                        ' focus:border-purple-400 focus:outline-none focus:shadow-outline-purple':
-                                            !themeStore.dark,
-                                        'border-gray-600 bg-gray-700 text-gray-300 focus:shadow-outline-gray ':
-                                            themeStore.dark,
-                                    }"
-                                    @input="handleInput('building_id')"
-                                    >
-                                    <option
-                                        v-for="building in buildings"
-                                        :key="building.id"
-                                        :value="building.id"
-                                    >
-                                        {{ building.name }}
-                                    </option>
-                                </select>
-                                <p
-                                    v-if="errors.building_id"
-                                    class="mt-1 text-xs text-red-600"
-                                >
-                                    {{ errors.building_id }}
-                                </p>
-                            </label>
-                        </div>
-
-                        <!-- Input para Identificador -->
-                        <div class="text-sm my-5">
-                            <label class="block text-sm">
-                                <span
-                                    :class="
-                                        themeStore.dark
-                                            ? 'text-gray-400'
-                                            : 'text-gray-700'
-                                    "
-                                    >Identificador</span
-                                >
-                                <input
-                                    v-model="form.identifier"
-                                    class="block w-full mt-1 text-sm form-input"
-                                    :class="{
-                                        'border-red-500': errors.identifier,
-                                        ' focus:border-purple-400 focus:outline-none focus:shadow-outline-purple':
-                                            !themeStore.dark,
-                                        'border-gray-600 bg-gray-700 text-gray-300 focus:shadow-outline-gray ':
-                                            themeStore.dark,
-                                    }"
-                                    @input="handleInput('identifier')"
-                                />
-                                <p
-                                    v-if="errors.identifier"
-                                    class="mt-1 text-xs text-red-600"
-                                >
-                                    {{ errors.identifier }}
-                                </p>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <h3 class="my-6 text-1xl font-semibold"
-                :class="themeStore.dark ? 'text-gray-200' : 'text-gray-700'"
-                >Datos del Residente</h3>
-
-
-                <div
-                    class="grid grid-cols-1 md:grid-cols-3 gap-4 px-4 py-3 mb-8 rounded-lg shadow-md"
-                    :class="themeStore.dark ? 'bg-gray-800' : 'bg-white'"
-                >
-
-                    <!-- Columna del formulario -->
-                    <div class="col-span-2 space-y-4">
-
-                        <!-- Input para correo -->
-                        <div class="text-sm my-5">
-                            <label class="block text-sm">
-                                <span
-                                    :class="
-                                        themeStore.dark
-                                            ? 'text-gray-400'
-                                            : 'text-gray-700'
-                                    "
-                                    >Correo electrónico</span
-                                >
-                                <input
-                                    v-model="form.email"
-                                    class="block w-full mt-1 text-sm form-input"
-                                    :class="{
-                                        'border-red-500': errors.email,
-                                        ' focus:border-purple-400 focus:outline-none focus:shadow-outline-purple':
-                                            !themeStore.dark,
-                                        'border-gray-600 bg-gray-700 text-gray-300 focus:shadow-outline-gray ':
-                                            themeStore.dark,
-                                    }"
-                                    @input="handleInput('email')"
-                                />
-                                <p
-                                    v-if="errors.email"
-                                    class="mt-1 text-xs text-red-600"
-                                >
-                                    {{ errors.email }}
-                                </p>
-                            </label>
-                        </div>
-
-                        <!-- Input para documento -->
-                        <div class="text-sm my-5">
-                            <label class="block text-sm">
-                                <span
-                                    :class="
-                                        themeStore.dark
-                                            ? 'text-gray-400'
-                                            : 'text-gray-700'
-                                    "
-                                    >Documento de identidad</span
-                                >
-                                <input
-                                    v-model="form.document"
-                                    class="block w-full mt-1 text-sm form-input"
-                                    :class="{
-                                        'border-red-500': errors.document,
-                                        ' focus:border-purple-400 focus:outline-none focus:shadow-outline-purple':
-                                            !themeStore.dark,
-                                        'border-gray-600 bg-gray-700 text-gray-300 focus:shadow-outline-gray ':
-                                            themeStore.dark,
-                                    }"
-                                    @input="handleInput('document')"
-                                />
-                                <p
-                                    v-if="errors.document"
-                                    class="mt-1 text-xs text-red-600"
-                                >
-                                    {{ errors.document }}
-                                </p>
-                            </label>
-                        </div>
-
                         <!-- Input para Nombre -->
                         <div class="text-sm my-5">
                             <label class="block text-sm">
@@ -236,27 +85,27 @@
                                     >Nombre</span
                                 >
                                 <input
-                                    v-model="form.first_name"
+                                    v-model="form.name"
                                     class="block w-full mt-1 text-sm form-input"
                                     :class="{
-                                        'border-red-500': errors.first_name,
+                                        'border-red-500': errors.name,
                                         ' focus:border-purple-400 focus:outline-none focus:shadow-outline-purple':
                                             !themeStore.dark,
                                         'border-gray-600 bg-gray-700 text-gray-300 focus:shadow-outline-gray ':
                                             themeStore.dark,
                                     }"
-                                    @input="handleInput('first_name')"
+                                    @input="handleInput('name')"
                                 />
                                 <p
-                                    v-if="errors.first_name"
+                                    v-if="errors.name"
                                     class="mt-1 text-xs text-red-600"
                                 >
-                                    {{ errors.first_name }}
+                                    {{ errors.name }}
                                 </p>
                             </label>
                         </div>
 
-                        <!-- Input para Apellido -->
+                        <!-- Input para Cantidad de pisos -->
                         <div class="text-sm my-5">
                             <label class="block text-sm">
                                 <span
@@ -265,30 +114,30 @@
                                             ? 'text-gray-400'
                                             : 'text-gray-700'
                                     "
-                                    >Apellidos</span
+                                    >Cantidad de pisos</span
                                 >
                                 <input
-                                    v-model="form.last_name"
+                                    v-model="form.floors_number"
                                     class="block w-full mt-1 text-sm form-input"
                                     :class="{
-                                        'border-red-500': errors.last_name,
+                                        'border-red-500': errors.floors_number,
                                         ' focus:border-purple-400 focus:outline-none focus:shadow-outline-purple':
                                             !themeStore.dark,
                                         'border-gray-600 bg-gray-700 text-gray-300 focus:shadow-outline-gray ':
                                             themeStore.dark,
                                     }"
-                                    @input="handleInput('last_name')"
+                                    @input="handleInput('floors_number')"
                                 />
                                 <p
-                                    v-if="errors.last_name"
+                                    v-if="errors.floors_number"
                                     class="mt-1 text-xs text-red-600"
                                 >
-                                    {{ errors.last_name }}
+                                    {{ errors.floors_number }}
                                 </p>
                             </label>
                         </div>
 
-                        <!-- Input para teléfono -->
+                        <!-- Input para Apartamentos por piso -->
                         <div class="text-sm my-5">
                             <label class="block text-sm">
                                 <span
@@ -297,64 +146,60 @@
                                             ? 'text-gray-400'
                                             : 'text-gray-700'
                                     "
-                                    >Teléfono</span
+                                    >Apartamentos por piso</span
                                 >
                                 <input
-                                    v-model="form.phone"
+                                    v-model="form.apartments_per_floor"
                                     class="block w-full mt-1 text-sm form-input"
                                     :class="{
-                                        'border-red-500': errors.phone,
+                                        'border-red-500': errors.apartments_per_floor,
                                         ' focus:border-purple-400 focus:outline-none focus:shadow-outline-purple':
                                             !themeStore.dark,
                                         'border-gray-600 bg-gray-700 text-gray-300 focus:shadow-outline-gray ':
                                             themeStore.dark,
                                     }"
-                                    @input="handleInput('phone')"
+                                    @input="handleInput('apartments_per_floor')"
                                 />
                                 <p
-                                    v-if="errors.phone"
+                                    v-if="errors.apartments_per_floor"
                                     class="mt-1 text-xs text-red-600"
                                 >
-                                    {{ errors.phone }}
+                                    {{ errors.apartments_per_floor }}
                                 </p>
                             </label>
                         </div>
 
-
-                    </div>
-
-                    <!-- Columna del avatar -->
-                    <div class="flex flex-col items-center justify-center space-y-4">
-
-                        <div
-                            class="relative w-32 h-32 overflow-hidden rounded-full border-2 border-dashed border-gray-300"
-                            :class="themeStore.dark ? 'border-gray-600' : 'border-gray-300'"
-                        >
-                            <img
-                                v-if="avatar"
-                                :src="avatar"
-                                alt="Avatar preview"
-                                class="w-full h-full object-cover"
-                            />
-                            <div v-else class="w-full h-full flex items-center justify-center text-gray-400">
-                                Sin avatar
-                            </div>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                @change="handleAvatar"
-                            />
+                        <!-- Input para Información -->
+                        <div class="text-sm my-5">
+                            <label class="block text-sm">
+                                <span
+                                    :class="
+                                        themeStore.dark
+                                            ? 'text-gray-400'
+                                            : 'text-gray-700'
+                                    "
+                                    >Información</span
+                                >
+                                <input
+                                    v-model="form.information"
+                                    class="block w-full mt-1 text-sm form-input"
+                                    :class="{
+                                        'border-red-500': errors.information,
+                                        ' focus:border-purple-400 focus:outline-none focus:shadow-outline-purple':
+                                            !themeStore.dark,
+                                        'border-gray-600 bg-gray-700 text-gray-300 focus:shadow-outline-gray ':
+                                            themeStore.dark,
+                                    }"
+                                    @input="handleInput('information')"
+                                />
+                                <p
+                                    v-if="errors.information"
+                                    class="mt-1 text-xs text-red-600"
+                                >
+                                    {{ errors.information }}
+                                </p>
+                            </label>
                         </div>
-
-                        <button
-                            v-if="avatar"
-                            type="button"
-                            @click="removeAvatar"
-                            class="px-3 py-1 text-sm font-medium leading-5 text-white bg-red-600 rounded-lg hover:bg-red-700 focus:outline-none focus:shadow-outline-red"
-                        >
-                            Eliminar Avatar
-                        </button>
                     </div>
                 </div>
 
@@ -409,94 +254,43 @@ if (props.buildings) {
 
 // Configuración del formulario
 const form = useForm({
-    email: "",
-    name:"",
-    building_id: "",
-    identifier: "",
-    first_name: "",
-    last_name: "",
-    document: "",
-    phone: "",
-    avatar: null
+    residence_id: "",
+    name: "",
+    floors_number: "",
+    apartments_per_floor: "",
+    information: "",
+    active: true
 });
 
 const avatar = ref(null); // Para manejar la vista previa del avatar
 
 // Estados y errores
 const errors = reactive({
-    email: "",
-    building_id: "",
-    identifier: "",
-    first_name: "",
-    last_name: "",
-    document: "",
-    phone: ""
+    residence_id: "",
+    name: "",
 });
-
-// Manejo del avatar
-const handleAvatar = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = () => {
-            avatar.value = reader.result; // Vista previa del archivo cargado
-            form.avatar = file; // Almacena en el formulario para envío
-        };
-        reader.readAsDataURL(file);
-    }
-};
-
-const removeAvatar = () => {
-    avatar.value = null;
-    form.avatar = null; // Limpia el campo
-};
 
 const hasSubmitted = ref(false);
 
 const isFormValid = computed(() =>
-    form.email !== "" &&
-    form.building_id != "" &&
-    form.identifier != "" &&
-    form.first_name.trim() !== "" &&
-    form.last_name.trim() !== "" &&
-    form.phone.trim() !== "" &&
-    form.document.trim() !== ""
+    form.residence_id != "" &&
+    form.name !== ""
 );
 
 const validateField = (fieldName) => {
     switch (fieldName) {
-        case "email":
-            errors.email = form.email === "" ? "El correo electrónico es obligatorio." : "";
+        case "residence_id":
+            errors.residence_id = form.building_id === "" ? "La residencia es obligatoria." : "";
             break;
-        case "building_id":
-            errors.building_id = form.building_id === "" ? "El edificio es obligatorio." : "";
-            break;
-        case "identifier":
-            errors.identifier = form.identifier === "" ? "El identificador es obligatorio." : "";
-            break;
-        case "first_name":
-            errors.first_name = form.first_name.trim() === "" ? "El nombre es obligatorio." : "";
-            break;
-        case "last_name":
-            errors.last_name = form.last_name.trim() === "" ? "El apellido es obligatorio." : "";
-            break;
-        case "document":
-            errors.document = form.document.trim() === "" ? "El documento de identidad es obligatorio." : "";
-            break;
-        case "phone":
-            errors.phone = form.phone.trim() === "" ? "El teléfono es obligatorio." : "";
+        case "name":
+            errors.name = form.name === "" ? "El nombre es obligatorio." : "";
             break;
     }
 };
 
 const validateAll = () => {
-    validateField("email");
-    validateField("building_id");
-    validateField("identifier");
-    validateField("first_name");
-    validateField("last_name");
-    validateField("document");
-    validateField("phone");
+    validateField("residence_id");
+    validateField("name");
 };
 
 watch(selectedManager, async (newManagerId) => {
@@ -511,31 +305,12 @@ watch(selectedManager, async (newManagerId) => {
     try {
         const response = await axios.get(`/managers/${newManagerId}/residences`);
         residences.value = response.data.residences;
-        selectedResidence.value = ""; // Resetear residencia seleccionada
-        buildings.value = []; // Limpiar edificios relacionados
-        form.building_id = ""; // Resetear edificio
+        selectedResidence.value = "";
+        buildings.value = [];
+        form.building_id = "";
     } catch (error) {
         console.error("Error al cargar residencias:", error);
         residences.value = [];
-        buildings.value = [];
-    }
-});
-
-
-// Observador para la residencia seleccionada
-watch(selectedResidence, async (newResidenceId) => {
-    if (!newResidenceId) {
-        buildings.value = [];
-        form.building_id = "";
-        return;
-    }
-
-    try {
-        const response = await axios.get(`/residences/${newResidenceId}/buildings`);
-        buildings.value = response.data.buildings;
-        form.building_id = ""; // Resetear edificio si cambia la residencia
-    } catch (error) {
-        console.error("Error al cargar edificios:", error);
         buildings.value = [];
     }
 });

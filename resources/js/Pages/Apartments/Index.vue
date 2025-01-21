@@ -63,6 +63,18 @@
                     <!-- Custom column for actions -->
                     <template #column-actions="{ row }">
                         <div class="flex items-center space-x-4 text-sm">
+                            <button
+                                @click="handleShowDetails(row.actions.id)"
+                                class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
+                                :class="
+                                    themeStore.dark
+                                        ? 'text-gray-400'
+                                        : 'text-purple-600'
+                                "
+                                aria-label="Show"
+                            >
+                                <EyeIcon class="size-6" />
+                            </button>
                             <Link
                                 :href="`/apartments/${row.actions.id}`"
                                 class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
@@ -112,6 +124,20 @@
                 </TableTemplate>
             </div>
         </div>
+        <!-- Modal Details-->
+        <ShowDetails
+            v-if="isModalOpen && selectedRow"
+            :is-modal-open="isModalOpen"
+            :selected-row="selectedRow || {}"
+            :fields-to-show="{
+                identifier: 'Identificador',
+                resident: 'Residente',
+                building: 'Edificio',
+                residence: 'Residencia',
+            }"
+            title="Detalles del Apartamento"
+            @close="closeModal"
+        />
     </MainLayout>
 </template>
 
@@ -120,12 +146,14 @@ import MainLayout from "@/Layouts/MainLayout.vue";
 import TableTemplate from "@/Components/TableTemplate.vue";
 import BreadcrumbTemplate from "@/Components/BreadcrumbTemplate.vue";
 import FilterTemplate from "@/Components/FilterTemplate.vue";
+import ShowDetails from "@/Components/modals/ShowDetails.vue";
 import { useThemeStore } from "@/stores/themeStore";
 import { Link, usePage, router } from "@inertiajs/vue3";
 import { ref, computed } from "vue";
 import Swal from "sweetalert2";
 import { notify } from "notiwind";
-
+import { EyeIcon } from "@heroicons/vue/24/solid";
+EyeIcon
 document.title="Listado de apartamentos";
 
 const themeStore = useThemeStore();
@@ -209,6 +237,41 @@ const deleteApartment = (id) => {
         }
     });
 };
+
+const isModalOpen = ref(false);
+const selectedRow = ref({});
+
+const handleShowDetails = (id) => {
+    const apartment = apartments.value.find((apartment) => apartment.id === id);
+    if (apartment) {
+        selectedRow.value = formatData(apartment);
+        isModalOpen.value = true;;
+    } else {
+        console.error("No se encontró el apartamento con el ID especificado");
+    }
+};
+
+const formatData = (apartment) => {
+    if (!apartment) return {};
+
+    return {
+        ...apartment,
+        resident: apartment.resident?.profile
+            ? `${apartment.resident.profile.first_name} ${apartment.resident.profile.last_name}`
+            : "Sin asignar",
+        building: apartment.building
+            ? `${apartment.building.name}`
+            : "Sin asignar",
+        residence: apartment.building.residence ? apartment.building.residence.name : "Sin asignar",
+    };
+};
+
+const closeModal = () => {
+    isModalOpen.value = false;
+    selectedRow.value = null;
+};
+
+
 
 // Variables para filtros reactivos
 const filters = ref({ ...props.filters });

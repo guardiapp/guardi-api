@@ -98,7 +98,7 @@
                     <template #column-actions="{ row }">
                         <div class="flex items-center space-x-4 text-sm">
                             <button
-                                @click="handleShowVisit(row)"
+                                @click="handleShowDetails(row.actions.id)"
                                 class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
                                 :class="
                                     themeStore.dark
@@ -114,10 +114,22 @@
                 </TableTemplate>
             </div>
         </div>
-        <ShowVisit
-            :is-modal-open="isVisitModalOpen"
-            :visit="selectedVisit"
-            @close-modal="isVisitModalOpen = false"
+        <!-- Modal Details-->
+        <ShowDetails
+            v-if="isModalOpen && selectedRow"
+            :is-modal-open="isModalOpen"
+            :selected-row="selectedRow || {}"
+            :fields-to-show="{
+                date: selectedRow.visit_date? 'Fecha' : 'Fecha de vencimiento',
+                type: 'Tipo',
+                visitor: 'Visitante',
+                resident: 'Residente',
+                apartment: 'Apartamento',
+                residence: 'Residencia',
+                active: 'Estatus',
+            }"
+            title="Detalles de la visita"
+            @close="closeModal"
         />
     </MainLayout>
 </template>
@@ -127,11 +139,11 @@ import MainLayout from "@/Layouts/MainLayout.vue";
 import TableTemplate from "@/Components/TableTemplate.vue";
 import BreadcrumbTemplate from "@/Components/BreadcrumbTemplate.vue";
 import FilterTemplate from "@/Components/FilterTemplate.vue";
+import ShowDetails from "@/Components/modals/ShowDetails.vue";
+import { EyeIcon } from '@heroicons/vue/24/solid';
 import { useThemeStore } from "@/stores/themeStore";
 import { usePage, router } from "@inertiajs/vue3";
 import { ref, computed, watch } from "vue";
-import { EyeIcon } from '@heroicons/vue/24/outline';
-import ShowVisit from "@/Components/modals/ShowVisit.vue";
 
 document.title="Listado de visitas";
 
@@ -192,19 +204,48 @@ const columnsList = computed(() => {
         : ['Visitante', 'Residente', 'Fecha de expiración', 'Acciones'];
 });
 
-const selectedVisit = ref({});
+const isModalOpen = ref(false);
+const selectedRow = ref({});
 
-const handleShowVisit = (row) => {
-
-    const visit = visits.value.find((visit) => visit.id === row.actions.id);
-
+const handleShowDetails = (id) => {
+    const visit = visits.value.find((visit) => visit.id === id);
     if (visit) {
-        selectedVisit.value = visit;
-        openVisitModal();
+        selectedRow.value = formatData(visit);
+        isModalOpen.value = true;;
     } else {
-        console.error("No se encontró la visita con el ID especificado");
+        console.error("No se encontró el edificio con el ID especificado");
     }
+};
+
+const formatData = (visit) => {
+    if (!visit) return {};
+
+    return {
+        ...visit,
+        visitor:  `${visit.visitor.first_name} ${visit.visitor.last_name}`,
+        resident:`${visit.apartment.resident.profile.first_name} ${visit.apartment.resident.profile.last_name}`,
+        residence: visit.apartment.building.residence.name,
+        apartment: visit.apartment.identifier,
+        type: visit.visit_date ? 'Unica' : 'Recurrente',
+        date: formatVisitDate(visit),
+        active: visit.active ? "Efectuada" : "Pendiente",
+    };
+};
+
+const formatVisitDate = (visit) => {
+    if (visit.visit_date) {
+        return `${new Date(visit.visit_date).toLocaleDateString('es-VE')} a las ${new Date(visit.visit_date).toLocaleTimeString('es-VE')}`;
+    } else if (visit.expiration_date) {
+        return`${new Date(visit.expiration_date).toLocaleDateString('es-VE')}`
+    }
+    return  'No defiinida';
 }
+
+const closeModal = () => {
+    isModalOpen.value = false;
+    selectedRow.value = null;
+};
+
 
 const filters = ref({ ...props.filters });
 

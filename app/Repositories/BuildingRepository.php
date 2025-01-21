@@ -7,16 +7,44 @@ use App\Models\Building;
 use App\Models\Residence;
 use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+
 
 class BuildingRepository
 {
-    /**
-     * Obtener los edificios asociados a una residencia.
-     */
+    public function getAll($perPage, $page, $filters)
+    {
+        $user = Auth::user();
+
+        if ($user->type === 'Admin') {
+            $query = Building::with(['residence.manager']);
+        }  elseif ($user->type === 'Manager') {
+            $residenceIds = $user->residences()->pluck('id');
+            $query = Building::with(['residence.manager'])
+                ->whereIn('residence_id', $residenceIds);
+        } else {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $this->applyFilters($query, $filters);
+
+        return $query->paginate($perPage, ['*'], 'page', $page)->appends($filters);
+    }
+
     public function getByResidence(Residence $residence, $perPage, $page, array $filters)
     {
         $query = $residence->buildings()->with(['residence.manager']);
 
+        $this->applyFilters($query, $filters);
+
+        return $query->paginate($perPage, ['*'], 'page', $page)->appends($filters);
+    }
+
+    /**
+     * Aplicar filtros dinámicos a la consulta de vigilantes.
+     */
+    protected function applyFilters($query, $filters)
+    {
         if (!empty($filters['name'])) {
             $query->where('name', 'like', '%' . $filters['name'] . '%');
         }
@@ -24,8 +52,29 @@ class BuildingRepository
         if (isset($filters['active']) && $filters['active'] !== null) {
             $query->where('active', $filters['active']);
         }
+    }
 
-        return $query->paginate($perPage, ['*'], 'page', $page)->appends($filters);
+    public function getResidences()
+    {
+        $user = Auth::user();
+
+        if ($user->type === 'Admin') {
+            return Residence::get();
+        }
+
+        if ($user->type === 'Manager') {
+            return Residence::where('user_id', $user->id)->get();
+        }
+
+        abort(403, 'Unauthorized action.');
+    }
+
+    public function getManagers()
+    {
+
+        return User::byType('Manager')->get();
+
+        abort(403, 'Unauthorized action.');
     }
 
     public function create(array $data)

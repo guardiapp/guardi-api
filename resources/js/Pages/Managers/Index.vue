@@ -59,6 +59,18 @@
                     <!-- Custom column for actions -->
                     <template #column-actions="{ row }">
                         <div class="flex items-center space-x-4 text-sm">
+                            <button
+                                @click="handleShowDetails(row.actions.id)"
+                                class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
+                                :class="
+                                    themeStore.dark
+                                        ? 'text-gray-400'
+                                        : 'text-purple-600'
+                                "
+                                aria-label="Show"
+                            >
+                                <EyeIcon class="size-6" />
+                            </button>
                             <Link
                                 :href="`/managers/${row.actions.id}`"
                                 class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
@@ -108,17 +120,32 @@
                 </TableTemplate>
             </div>
         </div>
+        <!-- Modal Detalles-->
+        <ShowDetails
+            v-if="isModalOpen && selectedRow"
+            :is-modal-open="isModalOpen"
+            :selected-row="selectedRow || {}"
+            :fields-to-show="{
+                name: 'Nombre',
+                email: 'Correo electrónico',
+                residences: 'Cantidad de residencias'
+            }"
+            title="Detalles del Administrador"
+            @close="closeModal"
+        />
     </MainLayout>
 </template>
 
 <script setup>
 import MainLayout from "@/Layouts/MainLayout.vue";
 import TableTemplate from "@/Components/TableTemplate.vue";
+import ShowDetails from "@/Components/modals/ShowDetails.vue";
 import { useThemeStore } from "@/stores/themeStore";
 import { Link, usePage, router } from "@inertiajs/vue3";
 import { ref, computed } from "vue";
 import Swal from "sweetalert2";
 import { notify } from "notiwind";
+import { EyeIcon } from "@heroicons/vue/24/solid";
 
 document.title="Gestión de administradores";
 
@@ -184,4 +211,33 @@ const deleteManager = (id) => {
         }
     });
 };
+
+const isModalOpen = ref(false);
+const selectedRow = ref({});
+
+const handleShowDetails = (id) => {
+    const manager = managers.value.find((manager) => manager.id === id);
+    if (manager) {
+        selectedRow.value = formatData(manager);
+        isModalOpen.value = true;;
+    } else {
+        console.error("No se encontró el administrador con el ID especificado");
+    }
+};
+
+const formatData = (manager) => {
+    if (!manager) return {};
+
+    return {
+        ...manager,
+        residences: manager.residences.length
+    };
+};
+
+const closeModal = () => {
+    isModalOpen.value = false;
+    selectedRow.value = null;
+};
+
+
 </script>

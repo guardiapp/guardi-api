@@ -49,8 +49,10 @@ Route::middleware('auth')->group(function () {
     //->name('residences.buildings');
 
     // Edificios
+    Route::get('/buildings', [BuildingController::class, 'index'])->name('buildings.index');
     Route::get('/residences/{residenceId}/buildings', [BuildingController::class, 'indexByResidence'])->name('buildings.indexByResidence');
     Route::post('/buildings', [BuildingController::class, 'store'])->name('buildings.store');
+    Route::get('/buildings/create', [BuildingController::class, 'create'])->name('buildings.create');
     Route::put('/buildings/{id}', [BuildingController::class, 'update'])->name('buildings.update');
     Route::delete('/buildings/{id}', [BuildingController::class, 'destroy'])->name('buildings.destroy');
 

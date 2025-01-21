@@ -24,6 +24,27 @@ class BuildingController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        //$this->authorize('viewAny', Buliding::class);
+
+        $filters = $request->only(['name', 'active']);
+
+        $perPage = $request->input('per_page', 5);
+
+        $page = $request->input('page', 1);
+
+        $buildings = $this->buildingRepository->getAll($perPage, $page, $filters);
+
+        return Inertia::render('Buildings/Index', [
+            'buildings' => $buildings,
+            'filters' => $filters
+        ]);
+    }
+
+    /**
      * Mostrar los apartamentos filtrados por residencia.
      */
     public function indexByResidence(Request $request, $residenceId)
@@ -48,6 +69,27 @@ class BuildingController extends Controller
                 'name' => $residence->name,
             ],
         ]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        $this->authorize('create', Building::class);
+
+        $user = Auth::user();
+
+        $data = [];
+
+        if ($user->type === 'Admin') {
+            $data['managers'] = $this->buildingRepository->getManagers();
+            $data['residences'] = [];
+        } elseif ($user->type === 'Manager') {
+            $data['residences'] = $this->buildingRepository->getResidences();
+        }
+
+        return Inertia::render('Buildings/Create', $data);
     }
 
     /**

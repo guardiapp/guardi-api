@@ -98,7 +98,7 @@
             </form>
         </div>
 
-        <div class="container px-6 mx-auto grid">
+        <!-- <div class="container px-6 mx-auto grid">
             <div class="flex items-center justify-between my-6">
                 <h2
                     class="text-2xl font-semibold"
@@ -183,21 +183,21 @@
                     No se han agregado residencias
                 </div>
             </div>
-        </div>
-        <CreateBuilding
+        </div> -->
+        <!-- <CreateBuilding
             :is-modal-open="isBuildingModalOpen"
             :residence="residence"
             :building="selectedBuilding"
             @update-buildings="updateBuildings"
             @reset-building="selectedBuilding = null"
             @close-modal="isBuildingModalOpen = false"
-        />
+        /> -->
     </MainLayout>
 </template>
 
 <script setup>
 import TableTemplate from "@/Components/TableTemplate.vue";
-import CreateBuilding from "@/Components/modals/CreateBuilding.vue";
+//import CreateBuilding from "@/Components/modals/CreateBuilding.vue";
 import { useForm, usePage, router } from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
 import { computed, reactive, ref, watch } from "vue";
@@ -291,68 +291,68 @@ const openBuildingModal = () => {
     isBuildingModalOpen.value = true;
 };
 
-const updateBuildings = (updatedBuildings) => {
-    residence.buildings = updatedBuildings;
-};
+// const updateBuildings = (updatedBuildings) => {
+//     residence.buildings = updatedBuildings;
+// };
 
-const handleUpdateBuilding = (row) => {
-    const building = residence.buildings.find(
-        (building) => building.id === row.actions.id
-    );
+// const handleUpdateBuilding = (row) => {
+//     const building = residence.buildings.find(
+//         (building) => building.id === row.actions.id
+//     );
 
-    if (building) {
-        selectedBuilding.value = building;
-        openBuildingModal();
-    } else {
-        console.error("No se encontró el edificio con el ID especificado");
-    }
-}
+//     if (building) {
+//         selectedBuilding.value = building;
+//         openBuildingModal();
+//     } else {
+//         console.error("No se encontró el edificio con el ID especificado");
+//     }
+// }
 
-const handleDeleteBuilding = (id) => {
-    Swal.fire({
-        customClass: {
-            popup: themeStore.dark
-                ? "bg-gray-900 text-white"
-                : "bg-white text-gray-900",
-        },
-        text: "¿Desea eliminar este edificio?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#7e3af2",
-        cancelButtonColor: "#4c4f52",
-        confirmButtonText: "Si, eliminar",
-        cancelButtonText: "Cancelar",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            router.delete(route('buildings.destroy', id),{
-                // onBefore: () => {
-                //     return window.confirm('Are you sure you want to delete this post?');
-                // },
-                onSuccess: (response) => {
-                    residence.buildings = response.props.residence.buildings;
-                    notify(
-                        {
-                            group: "info",
-                            title: "Cambio realizado",
-                            text: "El edificio ha sido eliminado",
-                        },
-                        4000
-                    );
-                },
-                onError: () => {
-                    notify(
-                        {
-                            group: "error",
-                            title: "Falló",
-                            text: "No se pudo eliminar",
-                        },
-                        4000
-                    );
-                }
-            });
-        }
-    });
-};
+// const handleDeleteBuilding = (id) => {
+//     Swal.fire({
+//         customClass: {
+//             popup: themeStore.dark
+//                 ? "bg-gray-900 text-white"
+//                 : "bg-white text-gray-900",
+//         },
+//         text: "¿Desea eliminar este edificio?",
+//         icon: "warning",
+//         showCancelButton: true,
+//         confirmButtonColor: "#7e3af2",
+//         cancelButtonColor: "#4c4f52",
+//         confirmButtonText: "Si, eliminar",
+//         cancelButtonText: "Cancelar",
+//     }).then((result) => {
+//         if (result.isConfirmed) {
+//             router.delete(route('buildings.destroy', id),{
+//                 // onBefore: () => {
+//                 //     return window.confirm('Are you sure you want to delete this post?');
+//                 // },
+//                 onSuccess: (response) => {
+//                     residence.buildings = response.props.residence.buildings;
+//                     notify(
+//                         {
+//                             group: "info",
+//                             title: "Cambio realizado",
+//                             text: "El edificio ha sido eliminado",
+//                         },
+//                         4000
+//                     );
+//                 },
+//                 onError: () => {
+//                     notify(
+//                         {
+//                             group: "error",
+//                             title: "Falló",
+//                             text: "No se pudo eliminar",
+//                         },
+//                         4000
+//                     );
+//                 }
+//             });
+//         }
+//     });
+// };
 
 
 </script>

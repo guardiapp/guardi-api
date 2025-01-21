@@ -69,6 +69,18 @@
                     <!-- Custom column for actions -->
                     <template #column-actions="{ row }">
                         <div class="flex items-center space-x-4 text-sm">
+                            <button
+                                @click="handleShowDetails(row.actions.id)"
+                                class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
+                                :class="
+                                    themeStore.dark
+                                        ? 'text-gray-400'
+                                        : 'text-purple-600'
+                                "
+                                aria-label="Show"
+                            >
+                                <EyeIcon class="size-6" />
+                            </button>
                             <Link
                                 :href="`/guards/${row.actions.id}`"
                                 class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
@@ -118,6 +130,21 @@
                 </TableTemplate>
             </div>
         </div>
+
+        <!-- Modal Details-->
+        <ShowDetails
+            v-if="isModalOpen && selectedRow"
+            :is-modal-open="isModalOpen"
+            :selected-row="selectedRow || {}"
+            :fields-to-show="{
+                document: 'Documento',
+                name: 'Nombre',
+                email: 'Correo Electrónico',
+                active: 'Estatus',
+            }"
+            title="Detalles del vigilante"
+            @close="closeModal"
+        />
     </MainLayout>
 </template>
 
@@ -126,6 +153,8 @@ import MainLayout from "@/Layouts/MainLayout.vue";
 import TableTemplate from "@/Components/TableTemplate.vue";
 import BreadcrumbTemplate from "@/Components/BreadcrumbTemplate.vue";
 import FilterTemplate from "@/Components/FilterTemplate.vue";
+import ShowDetails from "@/Components/modals/ShowDetails.vue";
+import { EyeIcon } from "@heroicons/vue/24/solid";
 import { useThemeStore } from "@/stores/themeStore";
 import { Link, usePage, router } from "@inertiajs/vue3";
 import { ref, computed } from "vue";
@@ -216,6 +245,39 @@ const deleteGuard = (id) => {
             });
         }
     });
+};
+
+const isModalOpen = ref(false);
+const selectedRow = ref({});
+
+const handleShowDetails = (id) => {
+    const guard = guards.value.find((guard) => guard.id === id);
+    if (guard) {
+        selectedRow.value = formatData(guard);
+        isModalOpen.value = true;;
+    } else {
+        console.error("No se encontró el vigilante con el ID especificado");
+    }
+};
+
+const formatData = (guard) => {
+    if (!guard) return {};
+
+    return {
+        ...guard,
+        name: `${guard.first_name} ${guard.last_name}`,
+        email: guard.user.email,
+        residence: guard.residence
+            ? `${guard.residence.name}`
+            : "Sin asignar",
+        active: guard.active ? "Activo" : "Inactivo",
+        avatar: guard.user.avatar || null
+    };
+};
+
+const closeModal = () => {
+    isModalOpen.value = false;
+    selectedRow.value = null;
 };
 
 // Variables para filtros reactivos

@@ -2,6 +2,7 @@
     <MainLayout>
         <div class="container px-6 mx-auto grid">
             <BreadcrumbTemplate
+                v-if="residence"
                 :homeLink="{ url: '/', label: 'Inicio' }"
                 :crumbs="[
                     { url: '/residences', label: 'Residencias' },
@@ -27,7 +28,7 @@
             <FilterTemplate
                 :initial-filters="filters"
                 :filters-enabled="filtersEnabled"
-                :current-url="`/residences/${residenceId}/buildings`"
+                :current-url="residenceId ? `/residences/${residenceId}/buildings` : '/buildings'"
                 @update:filters="syncFilters"
             />
             <div v-if="buildings">
@@ -49,7 +50,19 @@
 
                     <!-- Custom column for actions -->
                     <template #column-actions="{ row }">
-                        <div class="flex items-center space-x-4 text-sm">
+                        <div class="flex items-center space-x-1 text-sm">
+                            <button
+                                @click="handleShowDetails(row.actions.id)"
+                                class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
+                                :class="
+                                    themeStore.dark
+                                        ? 'text-gray-400'
+                                        : 'text-purple-600'
+                                "
+                                aria-label="Show"
+                            >
+                                <EyeIcon class="size-6" />
+                            </button>
                             <Link
                                 :href="`/buildings/${row.actions.id}`"
                                 class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
@@ -99,6 +112,23 @@
                 </TableTemplate>
             </div>
         </div>
+
+        <!-- Modal Details-->
+        <ShowDetails
+            v-if="isModalOpen && selectedRow"
+            :is-modal-open="isModalOpen"
+            :selected-row="selectedRow || {}"
+            :fields-to-show="{
+                name: 'Nombre',
+                residence: 'Residencia',
+                manager_name: 'Administrador',
+                floors_number: 'Cantidad de pisos',
+                apartments_per_floor: 'Apartamentos por piso',
+                active: 'Estatus',
+            }"
+            title="Detalles del Edificio"
+            @close="closeModal"
+        />
     </MainLayout>
 </template>
 
@@ -106,13 +136,14 @@
 import MainLayout from "@/Layouts/MainLayout.vue";
 import TableTemplate from "@/Components/TableTemplate.vue";
 import BreadcrumbTemplate from "@/Components/BreadcrumbTemplate.vue";
+import ShowDetails from "@/Components/modals/ShowDetails.vue";
 import FilterTemplate from "@/Components/FilterTemplate.vue";
 import { useThemeStore } from "@/stores/themeStore";
 import { Link, usePage, router } from "@inertiajs/vue3";
 import { ref, computed } from "vue";
 import Swal from "sweetalert2";
 import { notify } from "notiwind";
-import { fromJSON } from "postcss";
+import { EyeIcon } from '@heroicons/vue/24/solid';
 
 document.title="Listado de edificios";
 
@@ -122,9 +153,9 @@ const { props } = usePage();
 const user = usePage().props.auth.user;
 
 const buildings = ref(props.buildings.data);
-const residence = ref(props.residence);
-const residenceId = residence.value.id;
-const residenceName = residence.value.name;
+const residence = ref(props.residence || null);
+const residenceId = residence.value?.id || null;
+const residenceName = residence.value?.name || null;
 const links = ref(props.buildings.links);
 const from = ref(props.buildings.from);
 const to = ref(props.buildings.to);
@@ -192,6 +223,37 @@ const deleteBuilding = (id) => {
             });
         }
     });
+};
+
+const isModalOpen = ref(false);
+const selectedRow = ref({});
+
+const handleShowDetails = (id) => {
+    const building = buildings.value.find((building) => building.id === id);
+    if (building) {
+        selectedRow.value = formatData(building);
+        isModalOpen.value = true;;
+    } else {
+        console.error("No se encontró el edificio con el ID especificado");
+    }
+};
+
+const formatData = (building) => {
+    if (!building) return {};
+
+    return {
+        ...building,
+        residence: building.residence.name,
+        manager_name: building.residence?.manager
+            ? `${building.residence.manager.name}`
+            : "Sin asignar",
+        active: building.active ? "Activo" : "Inactivo",
+    };
+};
+
+const closeModal = () => {
+    isModalOpen.value = false;
+    selectedRow.value = null;
 };
 
 // Variables para filtros reactivos

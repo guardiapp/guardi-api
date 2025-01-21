@@ -149,7 +149,7 @@ import { useThemeStore } from "@/stores/themeStore";
 import { Link, usePage, router } from "@inertiajs/vue3";
 import { ref, computed, watch } from "vue";
 import { useGlobalFunctions } from "@/composables/useGlobalFunctions";
-import { EyeIcon } from '@heroicons/vue/24/outline';
+import { EyeIcon } from '@heroicons/vue/24/solid';
 
 document.title="Gestión de Residencias";
 

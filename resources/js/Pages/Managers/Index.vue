@@ -22,6 +22,8 @@
                     :data="transformedManagers"
                     :links="links"
                     :rows-per-page="rowsPerPage"
+                    :from="from"
+                    :to="to"
                     :total="total"
                     :current-page="currentPage"
                 >
@@ -156,6 +158,8 @@ const user = usePage().props.auth.user;
 
 const managers = ref(props.data);
 const links = ref(props.links);
+const from = ref(props.from);
+const to = ref(props.to);
 const total = ref(props.total);
 const currentPage = ref(props.current_page);
 const rowsPerPage = ref(props.per_page ?? 5);
@@ -191,6 +195,8 @@ const deleteManager = (id) => {
                     managers.value = response.props.data;
                     currentPage.value = response.currentPage
                     links.value = response.props.links;
+                    from.value = response.props.from;
+                    to.value = response.props.to;
                     total.value = response.props.total;
                     notify(
                         {
@@ -230,7 +236,7 @@ const formatData = (manager) => {
 
     return {
         ...manager,
-        residences: manager.residences.length
+        residences: manager.residences?.length || '0'
     };
 };
 

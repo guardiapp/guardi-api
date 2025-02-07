@@ -227,10 +227,12 @@
 <script setup>
 import { useForm, usePage, router } from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
-import { computed, reactive, ref, watch } from "vue";
+import { computed, reactive, ref, watch, watchEffect } from "vue";
 import { useThemeStore } from "@/stores/themeStore";
+import { useResidenceStore } from "@/stores/residenceStore";
 import { notify } from "notiwind";
 const themeStore = useThemeStore();
+const residenceStore = useResidenceStore();
 
 const user = usePage().props.auth.user;
 
@@ -251,6 +253,16 @@ if (props.residences) {
 if (props.buildings) {
     buildings.value = props.buildings;
 }
+watch(
+    () => residenceStore.selectedResidence,
+    (newResidence) => {
+        if (newResidence) {
+            console.log("Nueva residencia seleccionada:", newResidence);
+            selectedResidence.value = newResidence.id;
+        }
+    },
+    { immediate: true } // 🔥 Ejecuta una vez al inicio
+);
 
 // Configuración del formulario
 const form = useForm({

@@ -68,7 +68,7 @@
                 building: 'Edificio',
                 residence: 'Residencia',
             }"
-            title="Detalles del Edificio"
+            title="Detalles del visitante"
             @close="closeModal"
         />
     </MainLayout>

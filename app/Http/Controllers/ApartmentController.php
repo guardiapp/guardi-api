@@ -171,7 +171,7 @@ class ApartmentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Apartment $apartment)
+    public function destroy(string $id)
     {
         $apartment = $this->apartmentRepository->findApartment($id);
         $this->authorize('delete', $apartment);

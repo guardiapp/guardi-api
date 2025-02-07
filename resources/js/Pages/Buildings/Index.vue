@@ -200,11 +200,13 @@ const deleteBuilding = (id) => {
         if (result.isConfirmed) {
             router.delete(route('buildings.destroy', id), {
                 onSuccess: (response) => {
-                    buildings.value = response.props.data;
-                    links.value = response.props.links;
-                    total.value = response.props.total;
-                    currentPage.value = response.props.currentPage;
-                    rowsPerPage.value = response.props.rowsPerPage;
+                    buildings.value = response.props.buildings.data;
+                    links.value = response.props.buildings.links;
+                    from.value = response.props.buildings.from;
+                    to.value = response.props.buildings.to;
+                    total.value = response.props.buildings.total;
+                    currentPage.value = response.props.buildings.currentPage;
+                    rowsPerPage.value = response.props.buildings.rowsPerPage;
                     notify(
                         {
                             group: "info",

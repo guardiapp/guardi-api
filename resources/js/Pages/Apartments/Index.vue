@@ -153,7 +153,6 @@ import { ref, computed } from "vue";
 import Swal from "sweetalert2";
 import { notify } from "notiwind";
 import { EyeIcon } from "@heroicons/vue/24/solid";
-EyeIcon
 document.title="Listado de apartamentos";
 
 const themeStore = useThemeStore();
@@ -211,13 +210,13 @@ const deleteApartment = (id) => {
         if (result.isConfirmed) {
             router.delete(route('apartments.destroy', id), {
                 onSuccess: (response) => {
-                    apartments.value = response.props.data;
-                    links.value = response.props.links;
-                    from.value = response.props.from;
-                    to.value = response.props.to;
-                    total.value = response.props.total;
-                    currentPage.value = response.props.currentPage;
-                    rowsPerPage.value = response.props.rowsPerPage;
+                    apartments.value = response.props.apartments.data;
+                    links.value = response.props.apartments.links;
+                    from.value = response.props.apartments.from;
+                    to.value = response.props.apartments.to;
+                    total.value = response.props.apartments.total;
+                    currentPage.value = response.props.apartments.currentPage;
+                    rowsPerPage.value = response.props.apartments.rowsPerPage;
                     notify(
                         {
                             group: "info",

@@ -1,0 +1,443 @@
+openapi: 3.0.3
+info:
+  title: Visitas
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost'
+paths:
+  /api/user:
+    get:
+      summary: ''
+      operationId: getApiUser
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+  /api/auth/register:
+    post:
+      summary: 'Registro de nuevos usuarios.'
+      operationId: registroDeNuevosUsuarios
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: pe
+                  nullable: false
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: marietta23@example.net
+                  nullable: false
+                password:
+                  type: string
+                  description: 'Must be at least 8 characters.'
+                  example: 'n~jDw}]'
+                  nullable: false
+              required:
+                - name
+                - email
+                - password
+      security: []
+  /api/auth/login:
+    post:
+      summary: 'Inicio de sesión de usuarios.'
+      operationId: inicioDeSesinDeUsuarios
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address.'
+                  example: desiree16@example.org
+                  nullable: false
+                password:
+                  type: string
+                  description: ''
+                  example: 'PZ")S>KJYFP"<[TXy6s'
+                  nullable: false
+              required:
+                - email
+                - password
+      security: []
+  /api/auth/logout:
+    post:
+      summary: 'Cierre de sesión del usuario autenticado.'
+      operationId: cierreDeSesinDelUsuarioAutenticado
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  /api/auth/me:
+    get:
+      summary: 'Información del usuario autenticado.'
+      operationId: informacinDelUsuarioAutenticado
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+  /api/residences:
+    get:
+      summary: ''
+      operationId: getApiResidences
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: ''
+      operationId: postApiResidences
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: zxykrfgcgf
+                  nullable: false
+                address:
+                  type: string
+                  description: 'Must not be greater than 500 characters.'
+                  example: pknssungcpjluqjsyvmmh
+                  nullable: false
+                user_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the users table.'
+                  example: debitis
+                  nullable: false
+              required:
+                - name
+                - address
+                - user_id
+      security: []
+  '/api/residences/{id}':
+    get:
+      summary: ''
+      operationId: getApiResidencesId
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: ''
+      operationId: putApiResidencesId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 'Must not be greater than 255 characters.'
+                  example: krbkbuiidsgzmkt
+                  nullable: false
+                address:
+                  type: string
+                  description: 'Must not be greater than 500 characters.'
+                  example: jekyjbzjtdune
+                  nullable: false
+              required:
+                - name
+                - address
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiResidencesId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the residence.'
+        example: voluptatem
+        required: true
+        schema:
+          type: string
+  /api/residents:
+    get:
+      summary: ''
+      operationId: getApiResidents
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: ''
+      operationId: postApiResidents
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Must be a valid email address. Must not be greater than 255 characters.'
+                  example: boehm.archibald@example.org
+                  nullable: false
+                building_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the buildings table.'
+                  example: vitae
+                  nullable: false
+                document:
+                  type: string
+                  description: 'Must not be greater than 20 characters.'
+                  example: fkfxydfumvy
+                  nullable: false
+                first_name:
+                  type: string
+                  description: 'Must not be greater than 50 characters.'
+                  example: avutxtcunmsikfcffqkn
+                  nullable: false
+                last_name:
+                  type: string
+                  description: 'Must not be greater than 50 characters.'
+                  example: yx
+                  nullable: false
+                phone:
+                  type: string
+                  description: 'Must not be greater than 20 characters.'
+                  example: omcg
+                  nullable: false
+                avatar:
+                  type: string
+                  format: binary
+                  description: 'Must be an image. Must not be greater than 2048 kilobytes.'
+                  nullable: true
+                apartment:
+                  type: string
+                  description: 'Must not be greater than 20 characters.'
+                  example: ljtc
+                  nullable: false
+              required:
+                - email
+                - building_id
+                - document
+                - first_name
+                - last_name
+                - phone
+                - apartment
+      security: []
+  '/api/residents/{id}':
+    get:
+      summary: ''
+      operationId: getApiResidentsId
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: ''
+      operationId: putApiResidentsId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                building_id:
+                  type: string
+                  description: 'The <code>id</code> of an existing record in the buildings table.'
+                  example: similique
+                  nullable: false
+                apartment:
+                  type: string
+                  description: 'Must not be greater than 20 characters.'
+                  example: tonlupvrgmrlaw
+                  nullable: false
+                document:
+                  type: string
+                  description: 'Must not be greater than 20 characters.'
+                  example: oiyhgdtieeuvilcqcgj
+                  nullable: false
+                first_name:
+                  type: string
+                  description: 'Must not be greater than 50 characters.'
+                  example: soumwjhdfvgqzrounzg
+                  nullable: false
+                last_name:
+                  type: string
+                  description: 'Must not be greater than 50 characters.'
+                  example: yhvodflsfc
+                  nullable: false
+                phone:
+                  type: string
+                  description: 'Must not be greater than 20 characters.'
+                  example: sorlqryvdeawx
+                  nullable: false
+                avatar:
+                  type: string
+                  description: ''
+                  example: eos
+                  nullable: true
+              required:
+                - building_id
+                - apartment
+                - document
+                - first_name
+                - last_name
+                - phone
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiResidentsId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the resident.'
+        example: in
+        required: true
+        schema:
+          type: string
+tags:
+  -
+    name: Endpoints
+    description: ''

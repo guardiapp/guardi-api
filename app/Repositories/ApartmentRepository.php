@@ -179,15 +179,15 @@ class ApartmentRepository
     public function delete($id)
     {
         try {
-            $apartment = $this->findResident($id);
+            $apartment =  Apartment::findOrFail($id);
 
             // Manejo del avatar: eliminar si existe
-            if ($apartment->user->avatar) {
-                Storage::disk('public')->delete($apartment->user->avatar);
+            if ($apartment->resident->avatar) {
+                Storage::disk('public')->delete($apartment->resident->avatar);
             }
 
             // Eliminar al usuario asociado
-            $apartment->user->delete();
+            $apartment->resident->delete();
 
             // Eliminar el resident
             return $apartment->delete();

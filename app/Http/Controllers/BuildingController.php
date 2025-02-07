@@ -142,7 +142,7 @@ class BuildingController extends Controller
 
         try {
             $this->buildingRepository->delete($id);
-            return redirect()->route('residences.edit', $building->residence_id)->with('success', 'Edificio eliminado exitosamente.');
+            return redirect()->route('buildings.index')->with('success', 'Edificio eliminado exitosamente.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error al eliminar el vigilante: ' . $e->getMessage());
         }

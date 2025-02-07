@@ -220,13 +220,13 @@ const deleteGuard = (id) => {
         if (result.isConfirmed) {
             router.delete(route('guards.destroy', id), {
                 onSuccess: (response) => {
-                    guards.value = response.props.data
-                    links.value = response.props.links
-                    from.value = response.props.from
-                    to.value = response.props.to
-                    total.value = response.props.total
-                    currentPage.value = response.props.currentPage
-                    rowsPerPage.value = response.props.rowsPerPage
+                    guards.value = response.props.guards.data
+                    links.value = response.props.guards.links
+                    from.value = response.props.guards.from
+                    to.value = response.props.guards.to
+                    total.value = response.props.guards.total
+                    currentPage.value = response.props.guards.currentPage
+                    rowsPerPage.value = response.props.guards.rowsPerPage
                     notify(
                         {
                             group: "info",

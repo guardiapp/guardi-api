@@ -107,25 +107,24 @@
                                             ? 'text-gray-400'
                                             : 'text-gray-700'
                                     "
-                                    >Apartamento</span
+                                    >Identificador</span
                                 >
                                 <input
-                                    v-model="form.apartment"
+                                    v-model="form.identifier"
                                     class="block w-full mt-1 text-sm form-input"
                                     :class="{
-                                        'border-red-500': errors.apartment,
+                                        'border-red-500': errors.identifier,
                                         ' focus:border-purple-400 focus:outline-none focus:shadow-outline-purple':
                                             !themeStore.dark,
                                         'border-gray-600 bg-gray-700 text-gray-300 focus:shadow-outline-gray ':
                                             themeStore.dark,
                                     }"
-                                    @input="handleInput('apartment')"
                                 />
                                 <p
-                                    v-if="errors.apartment"
+                                    v-if="errors.identifier"
                                     class="mt-1 text-xs text-red-600"
                                 >
-                                    {{ errors.apartment }}
+                                    {{ errors.identifier }}
                                 </p>
                             </label>
                         </div>
@@ -320,11 +319,13 @@
 <script setup>
 import { useForm, usePage, router } from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
-import { computed, ref, reactive, watch } from "vue";
+import { computed, ref, reactive, watch, onMounted } from "vue";
 import { useThemeStore } from "@/stores/themeStore";
+import { useResidenceStore } from "@/stores/residenceStore";
 import { notify } from "notiwind";
 
 const themeStore = useThemeStore();
+const residenceStore = useResidenceStore();
 const user = usePage().props.auth.user;
 
 // Props iniciales
@@ -337,20 +338,28 @@ const buildings = ref(props.buildings || []);
 const selectedManager = ref(null);
 const selectedResidence = ref(null);
 
+onMounted(() => {
+    if (residenceStore.selectedResidence) {
+        selectedManager.value = residenceStore.selectedResidence.user_id;
+        selectedResidence.value = residenceStore.selectedResidence.id;
+    }
+});
+
+
 // Inicializar formulario
 const form = useForm({
     _method: 'PUT',
-    building_id: apartment.building_id,
+    building_id: buildings ? apartment.building_id : '',
     identifier: apartment.identifier,
-    first_name: apartment.first_name,
-    last_name: apartment.last_name,
-    document: apartment.document,
-    phone: apartment.phone,
-    avatar: apartment.user.avatar,
+    first_name: apartment.resident.profile.first_name,
+    last_name: apartment.resident.profile.last_name,
+    document: apartment.resident.profile.document,
+    phone: apartment.resident.profile.phone,
+    avatar: apartment.resident.avatar,
     avatar_deleted: false,
 });
 
-const avatarPreview = ref(resident.user.avatar ? `/storage/${resident.user.avatar}` : null);
+const avatarPreview = ref(apartment.resident.avatar ? `/storage/${apartment.resident.user.avatar}` : null);
 
 // Controladores de errores
 const errors = reactive({
@@ -362,42 +371,42 @@ const errors = reactive({
     phone: ""
 });
 
-watch(
-    () => form.building_id,
-    (newBuildingId) => {
-        if (!newBuildingId) return;
+// watch(
+//     () => form.building_id,
+//     (newBuildingId) => {
+//         if (!newBuildingId) return;
 
-        // Encuentra la residencia relacionada al building_id
-        const relatedResidence = residences.value.find((residence) =>
-            buildings.value.some(
-                (building) =>
-                    building.id === newBuildingId &&
-                    building.residence_id === residence.id
-            )
-        );
+//         // Encuentra la residencia relacionada al building_id
+//         const relatedResidence = residences.value.find((residence) =>
+//             buildings.value.some(
+//                 (building) =>
+//                     building.id === newBuildingId &&
+//                     building.residence_id === residence.id
+//             )
+//         );
 
-        // Actualiza el selectedResidence si hay un cambio necesario
-        if (
-            relatedResidence &&
-            selectedResidence.value !== relatedResidence.id
-        ) {
-            selectedResidence.value = relatedResidence.id;
+//         // Actualiza el selectedResidence si hay un cambio necesario
+//         if (
+//             relatedResidence &&
+//             selectedResidence.value !== relatedResidence.id
+//         ) {
+//             selectedResidence.value = relatedResidence.id;
 
-            // Encuentra el manager relacionado con la residencia seleccionada
-            const relatedManager = managers.value.find(
-                (manager) => manager.id === relatedResidence.user_id
-            );
+//             // Encuentra el manager relacionado con la residencia seleccionada
+//             const relatedManager = managers.value.find(
+//                 (manager) => manager.id === relatedResidence.user_id
+//             );
 
-            if (
-                relatedManager &&
-                selectedManager.value !== relatedManager.id
-            ) {
-                selectedManager.value = relatedManager.id;
-            }
-        }
-    },
-    { immediate: true } // Escuchar desde el inicio
-);
+//             if (
+//                 relatedManager &&
+//                 selectedManager.value !== relatedManager.id
+//             ) {
+//                 selectedManager.value = relatedManager.id;
+//             }
+//         }
+//     },
+//     { immediate: true } // Escuchar desde el inicio
+// );
 
 const hasSubmitted = ref(false);
 
@@ -419,8 +428,8 @@ const validateField = (fieldName) => {
         case "building_id":
             errors.building_id = form.building_id === "" ? "El edificio es obligatoria." : "";
             break;
-        case "apartment":
-            errors.apartment = form.apartment === "" ? "El apartamento es obligatorio." : "";
+        case "identifier":
+            errors.identifier = form.identifier === "" ? "El identificador es obligatorio." : "";
             break;
         case "first_name":
             errors.first_name = form.first_name.trim() === "" ? "El nombre es obligatorio." : "";
@@ -440,7 +449,7 @@ const validateField = (fieldName) => {
 const validateAll = () => {
     validateField("email");
     validateField("building_id");
-    validateField("apartment");
+    validateField("identifier");
     validateField("first_name");
     validateField("last_name");
     validateField("document");
@@ -476,9 +485,10 @@ watch(
 
                 if (associatedResidence) {
                     const buildingsResponse = await axios.get(
-                        `/residences/${associatedResidence.id}/buildings`
+                        `/residences/${associatedResidence.id}/buildings/list`
                     );
                     buildings.value = buildingsResponse.data.buildings;
+                    form.building_id = apartment.building_id;
                 } else {
                     buildings.value = [];
                 }
@@ -503,9 +513,10 @@ watch(
 
         try {
             const response = await axios.get(
-                `/residences/${newResidenceId}/buildings`
+                `/residences/${newResidenceId}/buildings/list`
             );
             buildings.value = response.data.buildings;
+            form.building_id = apartment.building_id;
         } catch (error) {
             console.error("Error al cargar edificios:", error);
         }
@@ -538,15 +549,14 @@ const submit = () => {
     // Incluir el nombre si es necesario (puedes eliminar esto si el backend no lo usa)
     form.name = form.first_name;
 
-    form.post(`/residents/${resident.id}`, {
-        // Incluye la opción `preserveState` si quieres mantener el estado del formulario en caso de éxito
+    form.post(`/apartments/${apartment.id}`, {
         onSuccess: () => {
             form.reset('avatar'); // No resetees la vista previa del avatar
             hasSubmitted.value = false;
             notify({
                 group: "success",
                 title: "Actualizado",
-                text: "Vigilante actualizado correctamente",
+                text: "Apartamento actualizado correctamente",
             }, 4000);
         },
         onError: (errors) => {
@@ -554,18 +564,22 @@ const submit = () => {
             notify({
                 group: "error",
                 title: "Error",
-                text: "Error al actualizar el vigilante",
+                text: "Error al actualizar el apartamento",
             }, 4000);
         },
     }, {
         headers: {
-            "Content-Type": "multipart/form-data", // Inertia se encargará de este detalle automáticamente
+            "Content-Type": "multipart/form-data",
         },
     });
 };
 
 // Cancelar y volver al listado
 const cancel = () => {
-    router.visit("/residents");
+    if (residenceStore.selectedResidence) {
+        router.visit(`/residences/${residenceStore.selectedResidence.id}/apartments`);
+    } else {
+        router.visit("/apartments");
+    }
 };
 </script>

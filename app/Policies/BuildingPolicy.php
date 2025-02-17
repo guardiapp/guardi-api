@@ -15,13 +15,13 @@ class BuildingPolicy
      */
     public function viewAny(User $user)
     {
-
         if ($user->type === 'Admin') {
             return true;
         }
 
         if ($user->type === 'Manager') {
-            return $user->residences->contains('id', $building->residence_id);
+            // Asumiendo que un Manager puede ver cualquier Building asociado a sus residencias
+            return $user->residences->isNotEmpty();
         }
 
         return false;
@@ -29,11 +29,11 @@ class BuildingPolicy
 
 
     /**
-     * Determina si un usuario puede crear Residents.
+     * Determina si un usuario puede crear Builidings.
      */
     public function create(User $user)
     {
-        // Solo Admin y Manager pueden crear Residents
+        // Solo Admin y Manager pueden crear Guards
         return in_array($user->type, ['Admin', 'Manager']);
     }
 

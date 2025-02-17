@@ -60,11 +60,20 @@
 </template>
 
 <script setup>
+import { usePage, Link } from "@inertiajs/vue3";
+import MainLayout from "@/Layouts/MainLayout.vue";
+import { useThemeStore } from "@/stores/themeStore";
+const themeStore = useThemeStore();
+import { reactive, computed, onMounted } from "vue";
+import BreadcrumbTemplate from "@/Components/BreadcrumbTemplate.vue";
+import { MapIcon } from "@heroicons/vue/24/outline";
 import UsersIcon from "@/Components/Icons/UsersIcon.vue";
 import MoneyIcon from "@/Components/Icons/MoneyIcon.vue";
 import ShoppingCartIcon from "@/Components/Icons/ShoppingCartIcon.vue";
 import MessageIcon from "@/Components/Icons/MessageIcon.vue";
 import CardTemplate from "@/Components/CardTemplate.vue";
+
+import { useResidenceStore } from "@/stores/residenceStore";
 
 import {
     ComputerDesktopIcon,
@@ -87,15 +96,6 @@ const iconMap = {
     UserGroupIcon,
     BookOpenIcon
 };
-
-
-import { usePage, Link } from "@inertiajs/vue3";
-import MainLayout from "@/Layouts/MainLayout.vue";
-import { useThemeStore } from "@/stores/themeStore";
-const themeStore = useThemeStore();
-import { reactive, computed } from "vue";
-import BreadcrumbTemplate from "@/Components/BreadcrumbTemplate.vue";
-import { MapIcon } from "@heroicons/vue/24/outline";
 
 const { props } = usePage();
 const residence = props.residence;
@@ -177,4 +177,14 @@ const cardItems = reactive([
         ),
     },
 ]);
+
+const residenceStore = useResidenceStore();
+
+onMounted(() => {
+    if (props.residence) {
+        residenceStore.setSelectedResidence(props.residence);
+    }
+});
+
+
 </script>

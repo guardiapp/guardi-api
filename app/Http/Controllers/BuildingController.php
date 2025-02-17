@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreBuildingRequest;
 use App\Http\Requests\UpdateBuildingRequest;
-use Illuminate\Http\Request;
+use App\Repositories\BuildingRepository;
 use App\Models\Residence;
 use App\Models\Building;
-use App\Repositories\BuildingRepository;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Inertia\Inertia;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class BuildingController extends Controller
 {
@@ -28,7 +29,7 @@ class BuildingController extends Controller
      */
     public function index(Request $request)
     {
-        //$this->authorize('viewAny', Buliding::class);
+        $this->authorize('viewAny', Building::class);
 
         $filters = $request->only(['name', 'active']);
 
@@ -105,7 +106,7 @@ class BuildingController extends Controller
             $building = $this->buildingRepository->create($data);
 
             return redirect()
-                ->route('residences.edit', $data['residence_id'])
+                ->route('buildings.create')
                 ->with('success', 'Edificio creado exitosamente.');
 
         } catch (\Exception $e) {
@@ -113,6 +114,28 @@ class BuildingController extends Controller
                 ->back()
                 ->with('error', 'Error al crear el edificio.');
         }
+    }
+
+    public function edit(string $id)
+    {
+        $building = $this->buildingRepository->findBuilding($id);
+
+        $this->authorize('update', $building);
+
+        $user = Auth::user();
+
+        $data = [
+            'building' => $building,
+        ];
+
+        if ($user->type === 'Admin') {
+            $data['managers'] = $this->buildingRepository->getManagers();
+            $data['residences'] = $this->buildingRepository->getResidences();
+        } elseif ($user->type === 'Manager') {
+            $data['residences'] = $this->buildingRepository->getResidences();
+        }
+
+        return Inertia::render('Buildings/Edit', $data);
     }
 
     public function update(UpdateBuildingRequest $request, string $id)
@@ -126,9 +149,16 @@ class BuildingController extends Controller
 
             $this->buildingRepository->update($building, $data);
 
-            return redirect()->route('residences.edit', $building->residence_id)->with('success', 'Edificio actualizado exitosamente.');
+            $user = Auth::user();
+
+            if ($user->type === 'Admin') {
+                return redirect()->route('buildings.index')->with('success', 'Edificio actualizado exitosamente.');
+            } else {
+                return redirect()->route('buildings.indexByResidence', ['residenceId' => $building->residence_id])->with('success', 'Edificio actualizado exitosamente.');
+            }
+
         } catch (\Exception $e) {
-            return redirect()->route('residences.edit', $building->residence_id)->with('error', 'Error al actualizar el edificio: ' . $e->getMessage());
+            return redirect()->route('buildings.edit', $building->residence_id)->with('error', 'Error al actualizar el edificio: ' . $e->getMessage());
         }
     }
 

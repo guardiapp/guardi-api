@@ -138,15 +138,17 @@ import TableTemplate from "@/Components/TableTemplate.vue";
 import BreadcrumbTemplate from "@/Components/BreadcrumbTemplate.vue";
 import ShowDetails from "@/Components/modals/ShowDetails.vue";
 import FilterTemplate from "@/Components/FilterTemplate.vue";
+import { useResidenceStore } from "@/stores/residenceStore";
 import { useThemeStore } from "@/stores/themeStore";
 import { Link, usePage, router } from "@inertiajs/vue3";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import Swal from "sweetalert2";
 import { notify } from "notiwind";
 import { EyeIcon } from '@heroicons/vue/24/solid';
 
 document.title="Listado de edificios";
 
+const residenceStore = useResidenceStore();
 const themeStore = useThemeStore();
 const { props } = usePage();
 
@@ -268,7 +270,10 @@ const filtersEnabled = {
 
 // Función para obtener los datos filtrados
 const fetchFilteredBuildings = () => {
-    router.get(route("buildings.indexByResidence", { residenceId }),
+    const routeName = residenceId ? "buildings.indexByResidence" : "buildings.index";
+    const routeParams = residenceId ? { residenceId } : {};
+
+    router.get(route(routeName, routeParams),
         {
             ...filters.value,
             preserveScroll: true,
@@ -285,7 +290,7 @@ const fetchFilteredBuildings = () => {
                 to.value = page.props.buildings.to;
             },
             onError: (error) => {
-                console.error("Error al obtener residencias filtradas:", error);
+                console.error("Error al obtener edificios filtrados:", error);
             },
         }
     );
@@ -296,4 +301,11 @@ const syncFilters = (updatedFilters) => {
     filters.value = updatedFilters; // Actualiza todos los filtros reactivamente
     fetchFilteredBuildings();
 };
+
+// Limpiar el store de residencia al montar el componente
+onMounted(() => {
+    if (!residenceId) {
+        residenceStore.clearSelectedResidence();
+    }
+});
 </script>

@@ -1,6 +1,16 @@
 <template>
     <MainLayout>
         <div class="container px-6 mx-auto grid">
+            <BreadcrumbTemplate
+                v-if="residenceStore.selectedResidence"
+                :homeLink="{ url: '/', label: 'Inicio' }"
+                :crumbs="[
+                    { url: '/residences', label: 'Residencias' },
+                    { url: `/residences/${residence.id}`, label: residence.name },
+                    { url: `/residences/${residence.id}/buildings`, label: 'apartments' },
+                    { label: 'Crear', isCurrent: true },
+                ]"
+            />
             <h2
                 class="my-6 text-2xl font-semibold"
                 :class="themeStore.dark ? 'text-gray-200' : 'text-gray-700'"
@@ -382,30 +392,24 @@
 <script setup>
 import { useForm, usePage, router } from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
-import { computed, reactive, ref, watch } from "vue";
+import BreadcrumbTemplate from "@/Components/BreadcrumbTemplate.vue";
+import { computed, reactive, ref, watch, onMounted } from "vue";
 import { useThemeStore } from "@/stores/themeStore";
+import { useResidenceStore } from "@/stores/residenceStore";
 import { notify } from "notiwind";
 const themeStore = useThemeStore();
+const residenceStore = useResidenceStore();
 
 const user = usePage().props.auth.user;
 
 // Props recibidas
 const { props } = usePage();
 const managers = props.managers || [];
-const residences = ref([]);
-const buildings = ref([]);
+const residences = ref(props.residences || []);
+const buildings = ref(props.buildings || []);
 const selectedManager = ref("");
 const selectedResidence = ref("");
-
-// Carga inicial de residencias
-if (props.residences) {
-    residences.value = props.residences;
-}
-
-// Carga inicial de residencias
-if (props.buildings) {
-    buildings.value = props.buildings;
-}
+const residence = computed(() => residenceStore.selectedResidence);
 
 // Configuración del formulario
 const form = useForm({
@@ -419,6 +423,24 @@ const form = useForm({
     phone: "",
     avatar: null
 });
+
+onMounted(() => {
+    if (residenceStore.selectedResidence) {
+        selectedManager.value = residenceStore.selectedResidence.user_id;
+        selectedResidence.value = residenceStore.selectedResidence.id;
+    }
+});
+
+
+// // Carga inicial de residencias
+// if (props.residences) {
+//     residences.value = props.residences;
+// }
+
+// // Carga inicial de residencias
+// if (props.buildings) {
+//     buildings.value = props.buildings;
+// }
 
 const avatar = ref(null); // Para manejar la vista previa del avatar
 
@@ -511,9 +533,11 @@ watch(selectedManager, async (newManagerId) => {
     try {
         const response = await axios.get(`/managers/${newManagerId}/residences`);
         residences.value = response.data.residences;
-        selectedResidence.value = ""; // Resetear residencia seleccionada
-        buildings.value = []; // Limpiar edificios relacionados
-        form.building_id = ""; // Resetear edificio
+        selectedResidence.value = residenceStore.selectedResidence
+            ? residenceStore.selectedResidence.id
+            : "";
+        buildings.value = [];
+        form.building_id = "";
     } catch (error) {
         console.error("Error al cargar residencias:", error);
         residences.value = [];
@@ -524,16 +548,17 @@ watch(selectedManager, async (newManagerId) => {
 
 // Observador para la residencia seleccionada
 watch(selectedResidence, async (newResidenceId) => {
+    console.log('selecteResidence:', newResidenceId);
     if (!newResidenceId) {
         buildings.value = [];
         form.building_id = "";
         return;
     }
-
     try {
-        const response = await axios.get(`/residences/${newResidenceId}/buildings`);
+        const response = await axios.get(`/residences/${newResidenceId}/buildings/list`);
+        console.log('response:', response);
         buildings.value = response.data.buildings;
-        form.building_id = ""; // Resetear edificio si cambia la residencia
+        form.building_id = "";
     } catch (error) {
         console.error("Error al cargar edificios:", error);
         buildings.value = [];
@@ -585,6 +610,10 @@ const handleInput = (fieldName) => {
 
 // Cancelar y volver al listado
 const cancel = () => {
-    router.visit("/apartments");
+    if (residenceStore.selectedResidence) {
+        router.visit(`/residences/${residenceStore.selectedResidence.id}/apartments`);
+    } else {
+        router.visit("/apartments");
+    }
 };
 </script>

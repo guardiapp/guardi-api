@@ -45,14 +45,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/residences/edit/{id}', [ResidenceController::class, 'edit'])->name('residences.edit');
     Route::put('/residences/{id}', [ResidenceController::class, 'update'])->name('residences.update');
     Route::delete('/residences/{id}', [ResidenceController::class, 'destroy'])->name('residences.destroy');
-    //Route::get('/residences/{residence}/buildings', [ResidenceController::class, 'getBuildingsByResidence'])
-    //->name('residences.buildings');
+    Route::get('/residences/{residenceId}/buildings/list', [ResidenceController::class, 'getBuildingsByResidence'])->name('residences.buildings');
 
     // Edificios
     Route::get('/buildings', [BuildingController::class, 'index'])->name('buildings.index');
     Route::get('/residences/{residenceId}/buildings', [BuildingController::class, 'indexByResidence'])->name('buildings.indexByResidence');
-    Route::post('/buildings', [BuildingController::class, 'store'])->name('buildings.store');
     Route::get('/buildings/create', [BuildingController::class, 'create'])->name('buildings.create');
+    Route::post('/buildings', [BuildingController::class, 'store'])->name('buildings.store');
+    Route::get('/buildings/{id}', [BuildingController::class, 'edit'])->name('buildings.edit');
     Route::put('/buildings/{id}', [BuildingController::class, 'update'])->name('buildings.update');
     Route::delete('/buildings/{id}', [BuildingController::class, 'destroy'])->name('buildings.destroy');
 

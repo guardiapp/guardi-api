@@ -148,13 +148,15 @@ import BreadcrumbTemplate from "@/Components/BreadcrumbTemplate.vue";
 import FilterTemplate from "@/Components/FilterTemplate.vue";
 import ShowDetails from "@/Components/modals/ShowDetails.vue";
 import { useThemeStore } from "@/stores/themeStore";
+import { useResidenceStore } from "@/stores/residenceStore";
 import { Link, usePage, router } from "@inertiajs/vue3";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import Swal from "sweetalert2";
 import { notify } from "notiwind";
 import { EyeIcon } from "@heroicons/vue/24/solid";
 document.title="Listado de apartamentos";
 
+const residenceStore = useResidenceStore();
 const themeStore = useThemeStore();
 const { props } = usePage();
 
@@ -315,4 +317,11 @@ const syncFilters = (updatedFilters) => {
     filters.value = updatedFilters; // Actualiza todos los filtros reactivamente
     fetchFilteredApartments();
 };
+
+// Limpiar el store de residencia al montar el componente
+onMounted(() => {
+    if (!residenceId) {
+        residenceStore.clearSelectedResidence();
+    }
+});
 </script>

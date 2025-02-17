@@ -97,7 +97,8 @@ class BuildingRepository
 
     public function findBuilding($id)
     {
-        return Building::findOrFail($id);
+        return Building::with(['residence.manager'])
+        ->findOrFail($id);
     }
 
     public function update(Building $building, array $data)
@@ -109,7 +110,7 @@ class BuildingRepository
                 'floors_number' => $data['floors_number'],
                 'apartments_per_floor' => $data['apartments_per_floor'],
                 'information' => $data['information'],
-                'active' => true,
+                'active' => $data['active'],
             ]);
 
             return $building;

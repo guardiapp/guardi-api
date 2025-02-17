@@ -123,7 +123,7 @@ class ApartmentRepository
 
     public function findApartment($id)
     {
-        return Apartment::with([ 'resident.profile', 'building.residence.manager' ])
+        return Apartment::with([ 'resident','resident.profile', 'building.residence.manager' ])
             ->findOrFail($id);
     }
 

@@ -135,7 +135,7 @@ class ResidenceController extends Controller
     /**
      * Obtener edificios asociados a una residencia.
      */
-    public function getBuildingsByResidence($residenceId)
+    public function getBuildingsByResidence(Request $request, $residenceId)
     {
         $user = Auth::user();
         //$this->authorize('viewAny', Building::class);
@@ -157,6 +157,10 @@ class ResidenceController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
+
         return response()->json(['buildings' => $buildings]);
+
+
+
     }
 }

@@ -149,8 +149,9 @@ class ApartmentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateApartmentRequest $request, Apartment $apartment)
+    public function update(UpdateApartmentRequest $request,  string $id)
     {
+        dd('hoola');
         try {
             $apartment = $this->apartmentRepository->findApartment($id);
 

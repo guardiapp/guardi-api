@@ -1,6 +1,17 @@
 <template>
     <MainLayout>
         <div class="container px-6 mx-auto grid">
+            <BreadcrumbTemplate
+                v-if="residenceStore.selectedResidence"
+                :homeLink="{ url: '/', label: 'Inicio' }"
+                :crumbs="[
+                    { url: '/residences', label: 'Residencias' },
+                    { url: `/residences/${residence.id}`, label: residence.name },
+                    { url: `/residences/${residence.id}/buildings`, label: 'Edificios' },
+                    { label: 'Crear', isCurrent: true },
+                ]"
+            />
+
             <h2
                 class="my-6 text-2xl font-semibold"
                 :class="themeStore.dark ? 'text-gray-200' : 'text-gray-700'"
@@ -53,7 +64,7 @@
                                     >Residencia</span
                                 >
                                 <select
-                                    v-model="selectedResidence"
+                                    v-model="form.residence_id"
                                     class="block w-full mt-1 text-sm form-input"
                                     :class="{
                                         ' focus:border-purple-400 focus:outline-none focus:shadow-outline-purple':
@@ -227,10 +238,12 @@
 <script setup>
 import { useForm, usePage, router } from "@inertiajs/vue3";
 import MainLayout from "@/Layouts/MainLayout.vue";
-import { computed, reactive, ref, watch, watchEffect } from "vue";
+import { computed, reactive, ref, watch, onMounted } from "vue";
 import { useThemeStore } from "@/stores/themeStore";
 import { useResidenceStore } from "@/stores/residenceStore";
 import { notify } from "notiwind";
+import BreadcrumbTemplate from "@/Components/BreadcrumbTemplate.vue";
+
 const themeStore = useThemeStore();
 const residenceStore = useResidenceStore();
 
@@ -239,30 +252,10 @@ const user = usePage().props.auth.user;
 // Props recibidas
 const { props } = usePage();
 const managers = props.managers || [];
-const residences = ref([]);
-const buildings = ref([]);
+const residences = ref(props.residences || []);
 const selectedManager = ref("");
 const selectedResidence = ref("");
-
-// Carga inicial de residencias
-if (props.residences) {
-    residences.value = props.residences;
-}
-
-// Carga inicial de residencias
-if (props.buildings) {
-    buildings.value = props.buildings;
-}
-watch(
-    () => residenceStore.selectedResidence,
-    (newResidence) => {
-        if (newResidence) {
-            console.log("Nueva residencia seleccionada:", newResidence);
-            selectedResidence.value = newResidence.id;
-        }
-    },
-    { immediate: true } // 🔥 Ejecuta una vez al inicio
-);
+const residence = computed(() => residenceStore.selectedResidence);
 
 // Configuración del formulario
 const form = useForm({
@@ -274,7 +267,16 @@ const form = useForm({
     active: true
 });
 
-const avatar = ref(null); // Para manejar la vista previa del avatar
+onMounted(() => {
+    if (residenceStore.selectedResidence) {
+        form.residence_id = residenceStore.selectedResidence.id;
+        selectedManager.value = residenceStore.selectedResidence.user_id;
+    }
+});
+
+
+
+const avatar = ref(null);
 
 // Estados y errores
 const errors = reactive({
@@ -306,9 +308,10 @@ const validateAll = () => {
 };
 
 watch(selectedManager, async (newManagerId) => {
+
+    console.log('se ejecuto el watch', newManagerId);
     if (!newManagerId) {
         residences.value = [];
-        buildings.value = [];
         selectedResidence.value = "";
         form.building_id = "";
         return;
@@ -316,26 +319,25 @@ watch(selectedManager, async (newManagerId) => {
 
     try {
         const response = await axios.get(`/managers/${newManagerId}/residences`);
+        console.log(response.data.residences);
         residences.value = response.data.residences;
         selectedResidence.value = "";
-        buildings.value = [];
         form.building_id = "";
     } catch (error) {
         console.error("Error al cargar residencias:", error);
         residences.value = [];
-        buildings.value = [];
     }
 });
 
 const submit = async () => {
+    console.log('submit edificio:')
     hasSubmitted.value = true;
-    validateAll();
+    //validateAll();
+    console.log('validacion:');
 
     if (!isFormValid.value) return;
 
-    form.name = form.email;
-
-    await form.post(`/apartments`, {
+    await form.post(`/buildings`, {
         onSuccess: (response) => {
             console.log(response)
             form.reset();
@@ -343,7 +345,7 @@ const submit = async () => {
             notify({
                 group: "success",
                 title: "Guardado",
-                text: "Nuevo apartamento creado",
+                text: "Nuevo edificio creado",
             }, 4000);
         },
         onError: (errors) => {
@@ -372,6 +374,10 @@ const handleInput = (fieldName) => {
 
 // Cancelar y volver al listado
 const cancel = () => {
-    router.visit("/apartments");
+    if (residenceStore.selectedResidence) {
+        router.visit(`/residences/${residenceStore.selectedResidence.id}/buildings`);
+    } else {
+        router.visit("/buildings");
+    }
 };
 </script>

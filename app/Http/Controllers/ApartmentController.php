@@ -184,4 +184,18 @@ class ApartmentController extends Controller
             return redirect()->route('apartments.index')->with('error', 'Error al eliminar el apartmento: ' . $e->getMessage());
         }
     }
+
+    public function findAll(Request $request) {
+        return response()->json(
+            Apartment::with(['building' => function ($query) use ($request) {
+                if($request->managerUserId && $request->managerUserId != "") {
+                    $query->with(['residence' => function ($query) use ($request) {
+                        $query->with(['manager' => function ($query) use ($request) {
+                            $query->where("id", "=", $request->managerUserId)->where("type", "=", "Manager");
+                        }]);
+                    }]);
+                }
+            }])->get()
+        );
+    }
 }

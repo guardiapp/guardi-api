@@ -23,6 +23,15 @@ class VisitorController extends Controller
         $this->visitorRepository = $visitorRepository;
     }
 
+    public function create() {
+        return Inertia::render('Visitors/Create');
+    }
+
+    public function edit($id) {
+        $visitor = Visitor::findOrFail($id);
+        if (!$visitor) return back();
+        return Inertia::render("Visitors/Create", ["visitor" => $visitor]);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -72,4 +81,28 @@ class VisitorController extends Controller
         ]);
     }
 
+    public function store(StoreVisitorRequest $request) {
+        $this->authorize("create", Visitor::class);
+        try {
+            $payload = $request->validated();
+            $id = $request->id;
+            $visitor = Visitor::firstOrNew(["id" => $id]);
+            $visitor->fill($payload);
+            $visitor->save();
+            return redirect()->route("visitors.create")
+                ->with('success', 'Visitante '. $id ? 'actualizado' : 'creado' .' exitosamente.');
+        } catch (\Exception $e) {
+            return redirect()->route('visitors.create')
+                ->with('error', 'Error al crear visitante: ' . $e->getMessage());
+        }
+    }
+
+    public function destroy($id) {
+        $visitor = Visitor::findOrFail($id);
+        if(!$visitor) return redirect()->route("visitors.index")
+            ->with("error", "El visitante no existe");
+        Visitor::destroy($id);
+        return redirect()->route("visitors.index")
+            ->with("success", "Se elimino el visitante exitosamente.");
+    }
 }

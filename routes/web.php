@@ -67,6 +67,7 @@ Route::middleware('auth')->group(function () {
 
     // Departamentos
     Route::get('/apartments', [ApartmentController::class, 'index'])->name('apartments.index');
+    Route::get('/apartaments/findAll', [ApartmentController::Class, 'findAll'])->name('apartments.findAll');
     Route::get('/residences/{residenceId}/apartments', [ApartmentController::class, 'indexByResidence'])->name('apartments.indexByResidence');
     Route::get('/apartments/create', [ApartmentController::class, 'create'])->name('apartments.create');
     Route::post('/apartments', [ApartmentController::class, 'store'])->name('apartments.store');
@@ -76,6 +77,11 @@ Route::middleware('auth')->group(function () {
 
     // Visitantes
     Route::get('/visitors', [VisitorController::class, 'index'])->name('visitors.index');
+    Route::post('/visitors', [VisitorController::class, 'store'])->name('visitors.store');
+    Route::put('/visitors/{id}', [VisitorController::class, 'store'])->name('visitors.update');
+    Route::delete('/visitors/{id}', [VisitorController::class, 'destroy'])->name('visitors.destroy');
+    Route::get('/visitors/create', [VisitorController::class, 'create'])->name('visitors.create');
+    Route::get('/visitors/edit/{id}', [VisitorController::class, 'edit'])->name('visitors.edit');
     Route::get('/residences/{residenceId}/visitors', [VisitorController::class, 'indexByResidence'])->name('visitors.indexByResidence');
 
     // Visitas

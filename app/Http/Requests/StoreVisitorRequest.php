@@ -24,7 +24,7 @@ class StoreVisitorRequest extends FormRequest
     public function rules()
     {
         return [
-            'resident_id' => ['required', 'exists:residents,id'],
+            'apartment_id' => ['required', 'exists:apartments,id'],
             'document' => ['required', 'string', 'max:50'],
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
@@ -40,8 +40,8 @@ class StoreVisitorRequest extends FormRequest
     public function messages()
     {
         return [
-            'resident_id.required' => 'El ID del residente es obligatorio.',
-            'resident_id.exists' => 'El residente seleccionado no existe.',
+            'apartment_id.required' => 'El ID del residente es obligatorio.',
+            'apartment_id.exists' => 'El residente seleccionado no existe.',
             'document.required' => 'El documento es obligatorio.',
             'document.string' => 'El documento debe ser una cadena.',
             'document.max' => 'El documento no puede tener más de 50 caracteres.',

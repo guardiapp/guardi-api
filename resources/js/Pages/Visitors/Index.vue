@@ -17,6 +17,13 @@
                 >
                     Visitantes
                 </h2>
+                <Link
+                    class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple"
+                    :href="`/visitors/create`"
+                    >
+                    Nuevo
+                    <span class="ml-2" aria-hidden="true">+</span>
+                </Link>
             </div>
             <FilterTemplate
                 :initial-filters="filters"
@@ -50,6 +57,28 @@
                             >
                                 <EyeIcon class="size-6" />
                             </button>
+                            <button
+                                @click="handleEdit(row.actions.id)"
+                                class="flex items-center justify-between px-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
+                                :class="
+                                    themeStore.dark
+                                    ? 'text-gray-400'
+                                    : 'text-purple-600'
+                                "
+                                aria-label="Editar">
+                                <PencilIcon class="size-6" />
+                            </button>
+                            <button
+                                @click="handleDelete(row.actions.id)"
+                                class="flex items-center justify-between px-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
+                                :class="
+                                    themeStore.dark
+                                    ? 'text-gray-400'
+                                    : 'text-purple-600'
+                                "
+                                >
+                                <TrashIcon class="size-6" />
+                            </button>
                         </div>
                     </template>
                 </TableTemplate>
@@ -62,7 +91,7 @@
             :selected-row="selectedRow || {}"
             :fields-to-show="{
                 document: 'Documento',
-                name: 'Nombre',
+                first_name: 'Nombre',
                 resident: 'Residente',
                 apartment: 'Apartamento',
                 building: 'Edificio',
@@ -83,9 +112,12 @@ import ShowDetails from "@/Components/modals/ShowDetails.vue";
 import { useThemeStore } from "@/stores/themeStore";
 import { usePage, router } from "@inertiajs/vue3";
 import { ref, computed } from "vue";
-import { EyeIcon } from '@heroicons/vue/24/solid';
+import Swal from "sweetalert2";
+import { EyeIcon, PencilIcon, TrashIcon } from '@heroicons/vue/24/solid';
+import { Link } from "@inertiajs/vue3";
+import { notify } from "notiwind";
 
-document.title="Listado de vistantes";
+document.title="Listado de visitantes";
 
 const themeStore = useThemeStore();
 const { props } = usePage();
@@ -141,6 +173,58 @@ const handleShowDetails = (id) => {
     } else {
         console.error("No se encontró el visitante con el ID especificado");
     }
+};
+
+/**
+ *
+ * @param {Number} id
+ */
+const handleEdit = (id) => {
+    router.visit('/visitors/edit/' + id);
+};
+
+/**
+ *
+ * @param {Number} id
+ */
+const handleDelete = async (id) => {
+
+    Swal.fire({
+        customClass: {
+            popup: themeStore.dark
+                ? "bg-gray-900 text-white"
+                : "bg-white text-gray-900",
+        },
+        text: "¿Desea eliminar este visitante?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#7e3af2",
+        cancelButtonColor: "#4c4f52",
+        confirmButtonText: "Si, eliminar",
+        cancelButtonText: "Cancelar",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            router.delete(route('visitors.destroy', id), {
+                onSuccess: (response) => {
+                    fetchFilteredVisitors();
+                    notify(
+                        {
+                            group: "info",
+                            title: "Cambio realizado",
+                            text: "El visitante ha sido eliminado",
+                        },
+                        4000
+                    );
+                },
+                onError: (error) => {
+                    console.error(
+                        "Error al eliminar:",
+                        error.response || error
+                    );
+                }
+            });
+        }
+    });
 };
 
 const formatData = (visitor) => {

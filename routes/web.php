@@ -81,11 +81,18 @@ Route::middleware('auth')->group(function () {
     Route::put('/visitors/{id}', [VisitorController::class, 'store'])->name('visitors.update');
     Route::delete('/visitors/{id}', [VisitorController::class, 'destroy'])->name('visitors.destroy');
     Route::get('/visitors/create', [VisitorController::class, 'create'])->name('visitors.create');
+    Route::get('/visitors/find-all', [VisitorController::class, 'findAll'])->name('visitors.findAll');
     Route::get('/visitors/edit/{id}', [VisitorController::class, 'edit'])->name('visitors.edit');
     Route::get('/residences/{residenceId}/visitors', [VisitorController::class, 'indexByResidence'])->name('visitors.indexByResidence');
 
     // Visitas
     Route::get('/visits', [VisitController::class, 'index'])->name('visits.index');
+    Route::get('/visits/find-all', [VisitController::class, 'findAll'])->name('visits.findAll');
+    Route::get('/visits/create', [VisitController::class, 'create'])->name('visits.create');
+    Route::get('/visits/edit/{id}', [VisitController::class, 'edit'])->name('visits.edit');
+    Route::post('/visits', [VisitController::class, 'store'])->name("visits.store");
+    Route::put('/visits/{id}', [VisitController::class, 'store'])->name('visits.update');
+    Route::delete('/visits/{id}', [VisitController::class, 'destroy'])->name('visits.destroy');
     Route::get('/residences/{residenceId}/visits', [VisitController::class, 'indexByResidence'])->name('visits.indexByResidence');
 });
 

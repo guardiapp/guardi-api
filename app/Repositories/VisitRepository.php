@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Residence;
 use App\Models\Visit;
@@ -46,8 +47,9 @@ class VisitRepository
 
     /**
      * Obtener las visitas asociadas a una residencia.
+     * @param Collection<Residence, int> $residence
      */
-    public function getByResidence(Residence $residence, $perPage, $page, array $filters)
+    public function getByResidence($residence, $perPage, $page, array $filters)
     {
         $query = Visit::whereHas('apartment.building', function ($query) use ($residence) {
             $query->where('residence_id', $residence->id);
@@ -100,6 +102,14 @@ class VisitRepository
 
         if (!empty($filters['expiration_date'])) {
             $query->whereDate('expiration_date', $filters['expiration_date']);
+        }
+
+        if(isset($filters['visitType']) && !empty($filters['visitType'])) {
+            $query->where(function ($q) use ($filters) {
+                //with_stay || without_stay
+                $with_stay = $filters['visitType'] == 'with_stay' ? 1 : 0;
+                $q->where("with_stay", "=", $with_stay);
+            });
         }
     }
 }

@@ -105,4 +105,10 @@ class VisitorController extends Controller
         return redirect()->route("visitors.index")
             ->with("success", "Se elimino el visitante exitosamente.");
     }
+
+    public function findAll(Request $request) {
+        $apartment_id = $request->apartment_id;
+        $data = Visitor::where("apartment_id", $apartment_id)->get();
+        return response()->json($data);
+    }
 }

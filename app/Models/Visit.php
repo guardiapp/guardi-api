@@ -6,7 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Visit extends Model
 {
-    protected $fillable = ['apartment_id', 'visitor_id', 'qr', 'remarks', 'visit_date', 'expiraton_date', 'cancelled', 'visited', 'entry_time'];
+    protected $fillable = [
+        'apartment_id',
+        'visitor_id',
+        'qr',
+        'qr_uses',
+        'remarks',
+        'visit_date',
+        'expiration_date',
+        'cancelled',
+        'visited',
+        'entry_time',
+        'with_stay'
+    ];
 
     /**
      * Relación con el modelo Apartment (cada visita pertenece a un apartamento).

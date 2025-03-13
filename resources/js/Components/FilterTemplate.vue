@@ -18,6 +18,19 @@
                         @blur="emitFilters"
                     />
 
+                    <select
+                        v-else-if="key == 'building_id'"
+                        v-model="filters.building_id"
+                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-select"
+                        name=""
+                        id=""
+                        @change="emitFilters">
+                        <option
+                            v-for="option in buildingSelectOptions" :value="option.value" :key="option.value">
+                            {{ option.label }}
+                        </option>
+                    </select>
+
                     <!-- Campos estándar -->
                     <input
                         v-else-if="key !== 'active'"
@@ -86,13 +99,18 @@ const props = defineProps({
             building_name: "Edificio",
             apartment: "Apartamento",
             expiration_date: "Fecha de vencimiento",
-            visit_date: "Fecha y hora de visita"
+            visit_date: "Fecha y hora de visita",
+            building_id:"Edificio"
         }),
     },
     currentUrl: {
         type: String,
         default: null,
     },
+    buildingSelectOptions: {
+        type: Array,
+        default: []
+    }
 });
 
 // Reactive filters

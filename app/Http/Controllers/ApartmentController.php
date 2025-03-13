@@ -54,7 +54,7 @@ class ApartmentController extends Controller
 
         $this->authorize('viewByResidence', $residence);
 
-        $filters = $request->only(['identifier', 'resident_name', 'building_name']);
+        $filters = $request->only(['identifier', 'resident_name', 'building_id']);
 
         $perPage = $request->input('per_page', 5);
 

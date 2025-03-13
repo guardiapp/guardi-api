@@ -29,6 +29,7 @@
                 :initial-filters="filters"
                 :filters-enabled="filtersEnabled"
                 :current-url="residence ? `/residences/${residenceId}/apartments` : '/apartments'"
+                :building-select-options="buildings"
                 @update:filters="syncFilters"
             />
             <div v-if="apartments">
@@ -172,6 +173,7 @@ const to = ref(props.apartments.to);
 const total = ref(props.apartments.total);
 const currentPage = ref(props.apartments.current_page);
 const rowsPerPage = ref(props.apartments.per_page ?? 5);
+const buildings = ref([]);
 
 const transformedApartments = computed(() => {
     if (user.type == "Admin") {
@@ -189,7 +191,7 @@ const transformedApartments = computed(() => {
         avatar: apartment.resident.avatar,
         identifier:  apartment.identifier,
         resident: `${apartment.resident.profile.first_name} ${apartment.resident.profile.last_name}`,
-        building: apartment.building.name,
+        building: apartment.building?.name,
         actions: { id: apartment.id },
     }));
 });
@@ -280,7 +282,7 @@ const filters = ref({ ...props.filters });
 const filtersEnabled = {
     identifier: true,
     resident_name: true,
-    building_name: true,
+    building_id: true,
 };
 
 // Función para obtener los datos filtrados
@@ -312,6 +314,17 @@ const fetchFilteredApartments = () => {
     );
 };
 
+const findBuildings = async () => {
+    const endpoint = `/residences/${residenceId}/buildings/list`;
+    const response = await axios.get(endpoint);
+    buildings.value = response.data.buildings.map((building) => {
+        return {
+            label: `${building.id} - ${building.name}`,
+            value: building.id
+        }
+    });
+}
+
 // Función para sincronizar filtros al cambiar inputs
 const syncFilters = (updatedFilters) => {
     filters.value = updatedFilters; // Actualiza todos los filtros reactivamente
@@ -323,5 +336,6 @@ onMounted(() => {
     if (!residenceId) {
         residenceStore.clearSelectedResidence();
     }
+    findBuildings();
 });
 </script>

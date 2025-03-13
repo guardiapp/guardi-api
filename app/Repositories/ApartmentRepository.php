@@ -70,6 +70,12 @@ class ApartmentRepository
                 $q->where('name', 'like', '%' . $filters['building_name'] . '%');
             });
         }
+
+        if(isset($filters['building_id']) && !empty($filters['building_id'])){
+            $query->whereHas('building', function ($q) use ($filters) {
+                $q->where('id', '=', $filters['building_id']);
+            });
+        }
     }
 
     public function create(array $data)

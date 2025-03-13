@@ -336,6 +336,9 @@ onMounted(() => {
     if (!residenceId) {
         residenceStore.clearSelectedResidence();
     }
+    if(!residenceId && user.type == 'Manager') {
+        return router.visit('/dashboard');
+    }
     findBuildings();
 });
 </script>

@@ -178,7 +178,7 @@ const menuItems = [
     { label: "Administradores", link: "/managers", icon: "UserCircleIcon", roles: ["Admin"] },
     { label: "Residencias", link: "/residences", icon:"BuildingOffice2Icon", roles: ["Admin"] },
     { label: "Edificios", link: "/buildings", icon:"BuildingOfficeIcon", roles: ["Admin"] },
-    { label: "Apartamentos", link: "/apartments", icon:"HomeIcon", roles: ["Admin", "Manager"] },
+    { label: "Apartamentos", link: "/apartments", icon:"HomeIcon", roles: ["Admin"] },
     { label: "Vigilantes", link: "/guards", icon:"ShieldExclamationIcon", roles: ["Admin", "Manager"] },
     { label: "Visitantes", link: "/visitors", icon:"UserGroupIcon",roles: ["Admin", "Manager"] },
     { label: "Visitas", link: "/visits", icon:"BookOpenIcon", roles: ["Admin", "Manager"] },

@@ -177,4 +177,11 @@ class BuildingController extends Controller
             return redirect()->back()->with('error', 'Error al eliminar el vigilante: ' . $e->getMessage());
         }
     }
+
+    public function findAll(Request $request) {
+        $filters = $request->only(['name', 'active']);
+        return response()->json(
+            ['buildings' => Building::get()]
+        );
+    }
 }

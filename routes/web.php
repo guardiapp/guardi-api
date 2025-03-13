@@ -50,6 +50,7 @@ Route::middleware('auth')->group(function () {
     // Edificios
     Route::get('/buildings', [BuildingController::class, 'index'])->name('buildings.index');
     Route::get('/residences/{residenceId}/buildings', [BuildingController::class, 'indexByResidence'])->name('buildings.indexByResidence');
+    Route::get('/buildings/find-all', [BuildingController::class, 'findAll'])->name('buildings.findAll');
     Route::get('/buildings/create', [BuildingController::class, 'create'])->name('buildings.create');
     Route::post('/buildings', [BuildingController::class, 'store'])->name('buildings.store');
     Route::get('/buildings/{id}', [BuildingController::class, 'edit'])->name('buildings.edit');

@@ -315,7 +315,7 @@ const fetchFilteredApartments = () => {
 };
 
 const findBuildings = async () => {
-    const endpoint = `/residences/${residenceId}/buildings/list`;
+    const endpoint = residenceId ? `/residences/${residenceId}/buildings/list` : '/buildings/find-all';
     const response = await axios.get(endpoint);
     buildings.value = response.data.buildings.map((building) => {
         return {

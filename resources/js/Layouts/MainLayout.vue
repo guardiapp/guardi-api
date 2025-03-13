@@ -9,7 +9,7 @@
                 'bg-gray-900 ': themeStore.dark,
             }"
         >
-            <SidebarTemplate v-if="user.type == 'Admin'"/>
+            <SidebarTemplate v-if="user.type == 'Admin' || user.type == 'Manager'"/>
             <div class="flex flex-col flex-1 w-full">
                 <HeaderTemplate />
                 <main class="h-full overflow-y-auto">

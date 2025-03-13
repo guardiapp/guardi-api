@@ -23,7 +23,7 @@
                         'text-gray-200': themeStore.dark,
                     }"
                 >
-                    Visitas
+                    Dashboard
                 </Link>
                 <ul class="mt-6">
                     <li

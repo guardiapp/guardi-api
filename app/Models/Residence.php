@@ -9,14 +9,25 @@ class Residence extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'name', 'address'];
+    protected $fillable = [
+        //'user_id',
+        'name',
+        'address'
+    ];
 
     /**
      * Relación con el modelo User (cada residencia pertenece a un manager).
      */
     public function manager()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->hasManyThrough(
+            User::class,
+            ManagerResidence::class,
+            'manager_id',
+            'id',
+            'id',
+            'id'
+        );//$this->belongsTo(User::class, 'user_id');
     }
 
     /**

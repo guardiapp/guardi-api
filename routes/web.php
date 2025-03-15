@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ManagerResidenceController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\ProfileController;
@@ -37,9 +38,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/managers/{manager}/residences', [ManagerController::class, 'getResidencesByManager'])
     ->name('managers.residences');
 
+    Route::get('/manager-residences/{residenceId}/manager-by-residence', [ManagerResidenceController::class, 'findManagersByResidenceId'])->name('manager-residences.findManagers');
+    Route::get('/manager-residences/{residenceId}/not-in', [ManagerResidenceController::class, 'findManagersWhereResidenceNotIn'])->name('manager-residences.findManagersWhereNotIn');
+    Route::get('/manager-residences/{managerId}/residence-by-manager', [ManagerResidenceController::class, 'findResidencesByManagerId'])->name('manager-residences.findResidences');
+    Route::post('/manager-residences/create-bulk', [ManagerResidenceController::class, 'createBulk'])->name('manager-residences.create-batch');
+    Route::delete('/manager-residences/{residenceId}/delete-by-residence', [ManagerResidenceController::class, 'deleteByResidenceId'])->name('manager-residences.delete-managers');
+    Route::delete('/manager-residences/{managerId}/delete-by-manager', [ManagerResidenceController::class, 'deleteByManagerId'])->name('manager-residences.delete-residences');
+
     // Residencias
     Route::get('/residences', [ResidenceController::class, 'index'])->name('residences.index');
     Route::get('/residences/create', [ResidenceController::class, 'create'])->name('residences.create');
+    Route::get('/residences/{residenceId}/manageManagers', [ResidenceController::class, 'manageManagersByResidence'])->name('residences.manage-admins');
     Route::post('/residences', [ResidenceController::class, 'store'])->name('residences.store');
     Route::get('/residences/{id}', [ResidenceController::class, 'show'])->name('residences.show');
     Route::get('/residences/edit/{id}', [ResidenceController::class, 'edit'])->name('residences.edit');

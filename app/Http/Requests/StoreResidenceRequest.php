@@ -16,7 +16,7 @@ class StoreResidenceRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:500',
-            'user_id' => 'required|exists:users,id',
+            //'user_id' => 'required|exists:users,id',
         ];
     }
 }

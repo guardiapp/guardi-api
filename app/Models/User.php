@@ -62,7 +62,12 @@ class User extends Authenticatable
      */
     public function residences()
     {
-        return $this->hasMany(Residence::class);
+        return $this->belongsToMany(
+            Residence::class,
+            'managers_residences',
+            'manager_id',
+            'residence_id'
+        );
     }
 
     /**

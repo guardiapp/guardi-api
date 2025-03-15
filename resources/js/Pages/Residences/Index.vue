@@ -110,6 +110,17 @@
                             </button>
                             <button
                                 v-if="user.type == 'Admin'"
+                                @click="manageManagers(row.actions.id)"
+                                class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
+                                :class="themeStore.dark
+                                 ? 'text-gray-400'
+                                 : 'text-purple-600'"
+                                 aria-label="Gestionar administradores"
+                                 title="Gestionar administradores">
+                                 <ArchiveBoxIcon class="size-6"/>
+                            </button>
+                            <button
+                                v-if="user.type == 'Admin'"
                                 @click="handleDeleteResidence(row.actions.id)"
                                 class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 rounded-lg focus:outline-none focus:shadow-outline-gray"
                                 :class="
@@ -150,7 +161,7 @@ import { useResidenceStore } from "@/stores/residenceStore";
 import { Link, usePage, router } from "@inertiajs/vue3";
 import { ref, computed, watch } from "vue";
 //import { useGlobalFunctions } from "@/composables/useGlobalFunctions";
-import { EyeIcon } from '@heroicons/vue/24/solid';
+import { EyeIcon, ArchiveBoxIcon, ArchiveBoxArrowDownIcon } from '@heroicons/vue/24/solid';
 import Swal from "sweetalert2";
 import { notify } from "notiwind";
 
@@ -299,6 +310,15 @@ const showResidence = (id) => {
     const residenceid = residenceStore.selectedResidence.id;
     router.visit(`/residences/${residenceid}`);
 };
+
+/**
+ *
+ * @param {Number} id
+ */
+const manageManagers = (id) => {
+    const endpoint = `/residences/${id}/manageManagers`;
+    router.visit(endpoint);
+}
 
 const editResidence = (id) => {
     setSelectedResidence(id)

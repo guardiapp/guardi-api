@@ -42,7 +42,7 @@ class UsersSeeder extends Seeder
             $managers[] = $manager;
 
             $residence = Residence::create([
-                'user_id' => $manager->id,
+                //'user_id' => $manager->id,
                 'name' => $faker->company,
                 'address' => $faker->address,
             ]);

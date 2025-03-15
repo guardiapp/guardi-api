@@ -20,6 +20,7 @@
         "vue": "^3.4.0"
     },
     "dependencies": {
+        "@formkit/drag-and-drop": "^0.4.1",
         "@heroicons/vue": "^2.2.0",
         "@sweetalert2/theme-dark": "^5.0.20",
         "chart.js": "^4.4.6",

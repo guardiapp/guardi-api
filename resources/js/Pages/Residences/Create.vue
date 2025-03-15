@@ -14,7 +14,7 @@
                     :class="themeStore.dark ? 'bg-gray-800' : 'bg-white'"
                 >
                     <!-- Input para Administradores -->
-                    <div class="text-sm my-5" v-if="managers.length">
+                    <!--div class="text-sm my-5" v-if="managers.length">
                         <label class="block text-sm">
                             <span
                                 :class="
@@ -40,7 +40,7 @@
                                 {{ errors.user_id }}
                             </p>
                         </label>
-                    </div>
+                    </div-->
 
 
                     <!-- Input para Nombre -->
@@ -148,17 +148,17 @@ const managers = props.managers || [];
 const form = useForm({
     name: "",
     address: "",
-    user_id: managers.length ? null : props.auth.user.id,
+    //user_id: managers.length ? null : props.auth.user.id,
 });
 
 //Validar si el formulario es válido (ambos campos llenos)
 const isFormValid = computed(
-    () => form.name.trim() !== "" && form.address.trim() !== "" && form.user_id !== null
+    () => form.name.trim() !== "" && form.address.trim() !== "" //&& form.user_id !== null
 );
 
 // Manejar errores
 const errors = reactive({
-    user_id: "",
+    //user_id: "",
     name: "",
     address: "",
 });
@@ -168,7 +168,7 @@ const hasSubmitted = ref(false)
 
 // Manejar el envío del formulario
 const submit = () => {
-    errors.user_id = form.user_id === null ? "El Manager es obligatorio." : "";
+    //errors.user_id = form.user_id === null ? "El Manager es obligatorio." : "";
     errors.name = form.name.trim() === "" ? "El nombre es obligatorio." : "";
     errors.address =
         form.address.trim() === "" ? "La dirección es obligatoria." : "";

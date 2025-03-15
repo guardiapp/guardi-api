@@ -163,4 +163,10 @@ class ResidenceController extends Controller
 
 
     }
+
+
+    public function manageManagersByResidence(Request $request) {
+        $residenceId = $request->residenceId;
+        return Inertia::render('Residences/ManageManagers', ['residenceId' => $residenceId]);
+    }
 }

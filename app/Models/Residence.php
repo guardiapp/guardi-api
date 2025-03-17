@@ -20,11 +20,11 @@ class Residence extends Model
      */
     public function manager()
     {
-        return $this->hasManyThrough(
+        return $this->belongsToMany(
             User::class,
             ManagerResidence::class,
             'manager_id',
-            'id',
+            'residence_id',
             'id',
             'id'
         );//$this->belongsTo(User::class, 'user_id');

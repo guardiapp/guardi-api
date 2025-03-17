@@ -168,7 +168,7 @@ const rowsPerPage = ref(props.buildings.per_page ?? 5);
 const transformedBuildings = computed(() => {
     if (user.type == "Admin") {
         return buildings.value.map((building) => ({
-            manager: building.residence.manager.name,
+            manager: building.residence.manager[0]?.name ?? 'N/A',
             building: building.name,
             floorsNumber: building.floors_number,
             active: building.active,

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->enum('type', ['Admin', 'Manager', 'Guard', 'Resident'])->default('Resident');
             $table->string('avatar')->nullable();
+            $table->string("refresh_token")->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

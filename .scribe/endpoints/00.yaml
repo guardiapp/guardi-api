@@ -65,7 +65,7 @@ endpoints:
         name: name
         description: 'Must not be greater than 255 characters.'
         required: true
-        example: pe
+        example: uqjetugx
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -75,7 +75,7 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: true
-        example: marietta23@example.net
+        example: allan.thompson@example.net
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -85,16 +85,16 @@ endpoints:
         name: password
         description: 'Must be at least 8 characters.'
         required: true
-        example: 'n~jDw}]'
+        example: '}a=*yTA{]-3weiN'
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      name: pe
-      email: marietta23@example.net
-      password: 'n~jDw}]'
+      name: uqjetugx
+      email: allan.thompson@example.net
+      password: '}a=*yTA{]-3weiN'
     fileParameters: []
     responses: []
     responseFields: []
@@ -128,7 +128,7 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: true
-        example: desiree16@example.org
+        example: weissnat.rita@example.net
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -138,15 +138,45 @@ endpoints:
         name: password
         description: ''
         required: true
-        example: 'PZ")S>KJYFP"<[TXy6s'
+        example: '$}{bns"!%c+7n'
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      email: desiree16@example.org
-      password: 'PZ")S>KJYFP"<[TXy6s'
+      email: weissnat.rita@example.net
+      password: '$}{bns"!%c+7n'
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/auth/refresh-token
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
     fileParameters: []
     responses: []
     responseFields: []
@@ -288,7 +318,7 @@ endpoints:
         name: name
         description: 'Must not be greater than 255 characters.'
         required: true
-        example: zxykrfgcgf
+        example: xfq
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -298,26 +328,15 @@ endpoints:
         name: address
         description: 'Must not be greater than 500 characters.'
         required: true
-        example: pknssungcpjluqjsyvmmh
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        custom: []
-      user_id:
-        name: user_id
-        description: 'The <code>id</code> of an existing record in the users table.'
-        required: true
-        example: debitis
+        example: ikwfurppxkbf
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      name: zxykrfgcgf
-      address: pknssungcpjluqjsyvmmh
-      user_id: debitis
+      name: xfq
+      address: ikwfurppxkbf
     fileParameters: []
     responses: []
     responseFields: []
@@ -347,14 +366,14 @@ endpoints:
         name: id
         description: 'The ID of the residence.'
         required: true
-        example: voluptatem
+        example: aspernatur
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: voluptatem
+      id: aspernatur
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -397,14 +416,14 @@ endpoints:
         name: id
         description: 'The ID of the residence.'
         required: true
-        example: a
+        example: aut
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: a
+      id: aut
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -412,7 +431,7 @@ endpoints:
         name: name
         description: 'Must not be greater than 255 characters.'
         required: true
-        example: krbkbuiidsgzmkt
+        example: pjyaxchkpamfazssbd
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -422,15 +441,15 @@ endpoints:
         name: address
         description: 'Must not be greater than 500 characters.'
         required: true
-        example: jekyjbzjtdune
+        example: awxadvhmcpzjctz
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      name: krbkbuiidsgzmkt
-      address: jekyjbzjtdune
+      name: pjyaxchkpamfazssbd
+      address: awxadvhmcpzjctz
     fileParameters: []
     responses: []
     responseFields: []
@@ -460,14 +479,14 @@ endpoints:
         name: id
         description: 'The ID of the residence.'
         required: true
-        example: facilis
+        example: at
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: facilis
+      id: at
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -544,7 +563,7 @@ endpoints:
         name: email
         description: 'Must be a valid email address. Must not be greater than 255 characters.'
         required: true
-        example: boehm.archibald@example.org
+        example: rosalia.blanda@example.net
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -554,7 +573,7 @@ endpoints:
         name: building_id
         description: 'The <code>id</code> of an existing record in the buildings table.'
         required: true
-        example: vitae
+        example: consectetur
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -564,7 +583,7 @@ endpoints:
         name: document
         description: 'Must not be greater than 20 characters.'
         required: true
-        example: fkfxydfumvy
+        example: szxkrloerdafqd
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -574,7 +593,7 @@ endpoints:
         name: first_name
         description: 'Must not be greater than 50 characters.'
         required: true
-        example: avutxtcunmsikfcffqkn
+        example: zedesiphjgcan
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -584,7 +603,7 @@ endpoints:
         name: last_name
         description: 'Must not be greater than 50 characters.'
         required: true
-        example: yx
+        example: iwkjdtvkqus
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -594,7 +613,7 @@ endpoints:
         name: phone
         description: 'Must not be greater than 20 characters.'
         required: true
-        example: omcg
+        example: gx
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -614,20 +633,20 @@ endpoints:
         name: apartment
         description: 'Must not be greater than 20 characters.'
         required: true
-        example: ljtc
+        example: lvmor
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      email: boehm.archibald@example.org
-      building_id: vitae
-      document: fkfxydfumvy
-      first_name: avutxtcunmsikfcffqkn
-      last_name: yx
-      phone: omcg
-      apartment: ljtc
+      email: rosalia.blanda@example.net
+      building_id: consectetur
+      document: szxkrloerdafqd
+      first_name: zedesiphjgcan
+      last_name: iwkjdtvkqus
+      phone: gx
+      apartment: lvmor
     fileParameters:
       avatar: null
     responses: []
@@ -658,14 +677,14 @@ endpoints:
         name: id
         description: 'The ID of the resident.'
         required: true
-        example: in
+        example: harum
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: in
+      id: harum
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -709,14 +728,14 @@ endpoints:
         name: id
         description: 'The ID of the resident.'
         required: true
-        example: et
+        example: accusantium
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: et
+      id: accusantium
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -724,7 +743,7 @@ endpoints:
         name: building_id
         description: 'The <code>id</code> of an existing record in the buildings table.'
         required: true
-        example: similique
+        example: delectus
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -734,7 +753,7 @@ endpoints:
         name: apartment
         description: 'Must not be greater than 20 characters.'
         required: true
-        example: tonlupvrgmrlaw
+        example: ahzhlwwqmuey
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -744,7 +763,7 @@ endpoints:
         name: document
         description: 'Must not be greater than 20 characters.'
         required: true
-        example: oiyhgdtieeuvilcqcgj
+        example: scucjfoskovzayma
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -754,7 +773,7 @@ endpoints:
         name: first_name
         description: 'Must not be greater than 50 characters.'
         required: true
-        example: soumwjhdfvgqzrounzg
+        example: fqkparxucapcawisym
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -764,7 +783,7 @@ endpoints:
         name: last_name
         description: 'Must not be greater than 50 characters.'
         required: true
-        example: yhvodflsfc
+        example: omegdjsxlfhfxsyfmwcyucvn
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -774,7 +793,7 @@ endpoints:
         name: phone
         description: 'Must not be greater than 20 characters.'
         required: true
-        example: sorlqryvdeawx
+        example: rafoghiqg
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -784,20 +803,20 @@ endpoints:
         name: avatar
         description: ''
         required: false
-        example: eos
+        example: excepturi
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         custom: []
     cleanBodyParameters:
-      building_id: similique
-      apartment: tonlupvrgmrlaw
-      document: oiyhgdtieeuvilcqcgj
-      first_name: soumwjhdfvgqzrounzg
-      last_name: yhvodflsfc
-      phone: sorlqryvdeawx
-      avatar: eos
+      building_id: delectus
+      apartment: ahzhlwwqmuey
+      document: scucjfoskovzayma
+      first_name: fqkparxucapcawisym
+      last_name: omegdjsxlfhfxsyfmwcyucvn
+      phone: rafoghiqg
+      avatar: excepturi
     fileParameters: []
     responses: []
     responseFields: []
@@ -827,14 +846,14 @@ endpoints:
         name: id
         description: 'The ID of the resident.'
         required: true
-        example: amet
+        example: ipsam
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: amet
+      id: ipsam
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []

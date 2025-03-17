@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Visitas
+  title: Laravel
   description: ''
   version: 1.0.0
 servers:
@@ -48,17 +48,17 @@ paths:
                 name:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: pe
+                  example: uqjetugx
                   nullable: false
                 email:
                   type: string
                   description: 'Must be a valid email address.'
-                  example: marietta23@example.net
+                  example: allan.thompson@example.net
                   nullable: false
                 password:
                   type: string
                   description: 'Must be at least 8 characters.'
-                  example: 'n~jDw}]'
+                  example: '}a=*yTA{]-3weiN'
                   nullable: false
               required:
                 - name
@@ -84,16 +84,26 @@ paths:
                 email:
                   type: string
                   description: 'Must be a valid email address.'
-                  example: desiree16@example.org
+                  example: weissnat.rita@example.net
                   nullable: false
                 password:
                   type: string
                   description: ''
-                  example: 'PZ")S>KJYFP"<[TXy6s'
+                  example: '$}{bns"!%c+7n'
                   nullable: false
               required:
                 - email
                 - password
+      security: []
+  /api/auth/refresh-token:
+    post:
+      summary: ''
+      operationId: postApiAuthRefreshToken
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
       security: []
   /api/auth/logout:
     post:
@@ -167,22 +177,16 @@ paths:
                 name:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: zxykrfgcgf
+                  example: xfq
                   nullable: false
                 address:
                   type: string
                   description: 'Must not be greater than 500 characters.'
-                  example: pknssungcpjluqjsyvmmh
-                  nullable: false
-                user_id:
-                  type: string
-                  description: 'The <code>id</code> of an existing record in the users table.'
-                  example: debitis
+                  example: ikwfurppxkbf
                   nullable: false
               required:
                 - name
                 - address
-                - user_id
       security: []
   '/api/residences/{id}':
     get:
@@ -224,12 +228,12 @@ paths:
                 name:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: krbkbuiidsgzmkt
+                  example: pjyaxchkpamfazssbd
                   nullable: false
                 address:
                   type: string
                   description: 'Must not be greater than 500 characters.'
-                  example: jekyjbzjtdune
+                  example: awxadvhmcpzjctz
                   nullable: false
               required:
                 - name
@@ -249,7 +253,7 @@ paths:
         in: path
         name: id
         description: 'The ID of the residence.'
-        example: voluptatem
+        example: aspernatur
         required: true
         schema:
           type: string
@@ -293,32 +297,32 @@ paths:
                 email:
                   type: string
                   description: 'Must be a valid email address. Must not be greater than 255 characters.'
-                  example: boehm.archibald@example.org
+                  example: rosalia.blanda@example.net
                   nullable: false
                 building_id:
                   type: string
                   description: 'The <code>id</code> of an existing record in the buildings table.'
-                  example: vitae
+                  example: consectetur
                   nullable: false
                 document:
                   type: string
                   description: 'Must not be greater than 20 characters.'
-                  example: fkfxydfumvy
+                  example: szxkrloerdafqd
                   nullable: false
                 first_name:
                   type: string
                   description: 'Must not be greater than 50 characters.'
-                  example: avutxtcunmsikfcffqkn
+                  example: zedesiphjgcan
                   nullable: false
                 last_name:
                   type: string
                   description: 'Must not be greater than 50 characters.'
-                  example: yx
+                  example: iwkjdtvkqus
                   nullable: false
                 phone:
                   type: string
                   description: 'Must not be greater than 20 characters.'
-                  example: omcg
+                  example: gx
                   nullable: false
                 avatar:
                   type: string
@@ -328,7 +332,7 @@ paths:
                 apartment:
                   type: string
                   description: 'Must not be greater than 20 characters.'
-                  example: ljtc
+                  example: lvmor
                   nullable: false
               required:
                 - email
@@ -379,37 +383,37 @@ paths:
                 building_id:
                   type: string
                   description: 'The <code>id</code> of an existing record in the buildings table.'
-                  example: similique
+                  example: delectus
                   nullable: false
                 apartment:
                   type: string
                   description: 'Must not be greater than 20 characters.'
-                  example: tonlupvrgmrlaw
+                  example: ahzhlwwqmuey
                   nullable: false
                 document:
                   type: string
                   description: 'Must not be greater than 20 characters.'
-                  example: oiyhgdtieeuvilcqcgj
+                  example: scucjfoskovzayma
                   nullable: false
                 first_name:
                   type: string
                   description: 'Must not be greater than 50 characters.'
-                  example: soumwjhdfvgqzrounzg
+                  example: fqkparxucapcawisym
                   nullable: false
                 last_name:
                   type: string
                   description: 'Must not be greater than 50 characters.'
-                  example: yhvodflsfc
+                  example: omegdjsxlfhfxsyfmwcyucvn
                   nullable: false
                 phone:
                   type: string
                   description: 'Must not be greater than 20 characters.'
-                  example: sorlqryvdeawx
+                  example: rafoghiqg
                   nullable: false
                 avatar:
                   type: string
                   description: ''
-                  example: eos
+                  example: excepturi
                   nullable: true
               required:
                 - building_id
@@ -433,7 +437,7 @@ paths:
         in: path
         name: id
         description: 'The ID of the resident.'
-        example: in
+        example: harum
         required: true
         schema:
           type: string

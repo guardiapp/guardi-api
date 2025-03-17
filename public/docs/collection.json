@@ -9,8 +9,8 @@
         }
     ],
     "info": {
-        "name": "Visitas",
-        "_postman_id": "f7c53189-c016-4d15-ba5b-6707b4291e61",
+        "name": "Laravel",
+        "_postman_id": "041eca4f-7808-4dd7-aacd-3b4dce185b59",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -89,7 +89,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"pe\",\"email\":\"marietta23@example.net\",\"password\":\"n~jDw}]\"}"
+                            "raw": "{\"name\":\"uqjetugx\",\"email\":\"allan.thompson@example.net\",\"password\":\"}a=*yTA{]-3weiN\"}"
                         },
                         "description": "",
                         "auth": {
@@ -120,8 +120,36 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"email\":\"desiree16@example.org\",\"password\":\"PZ\\\")S>KJYFP\\\"<[TXy6s\"}"
+                            "raw": "{\"email\":\"weissnat.rita@example.net\",\"password\":\"$}{bns\\\"!%c+7n\"}"
                         },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "POST api\/auth\/refresh-token",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/auth\/refresh-token",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/auth\/refresh-token"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
                         "description": "",
                         "auth": {
                             "type": "noauth"
@@ -275,7 +303,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"zxykrfgcgf\",\"address\":\"pknssungcpjluqjsyvmmh\",\"user_id\":\"debitis\"}"
+                            "raw": "{\"name\":\"xfq\",\"address\":\"ikwfurppxkbf\"}"
                         },
                         "description": "",
                         "auth": {
@@ -296,7 +324,7 @@
                                 {
                                     "id": "id",
                                     "key": "id",
-                                    "value": "voluptatem",
+                                    "value": "aspernatur",
                                     "description": "The ID of the residence."
                                 }
                             ]
@@ -352,7 +380,7 @@
                                 {
                                     "id": "id",
                                     "key": "id",
-                                    "value": "a",
+                                    "value": "aut",
                                     "description": "The ID of the residence."
                                 }
                             ]
@@ -370,7 +398,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"krbkbuiidsgzmkt\",\"address\":\"jekyjbzjtdune\"}"
+                            "raw": "{\"name\":\"pjyaxchkpamfazssbd\",\"address\":\"awxadvhmcpzjctz\"}"
                         },
                         "description": "",
                         "auth": {
@@ -391,7 +419,7 @@
                                 {
                                     "id": "id",
                                     "key": "id",
-                                    "value": "facilis",
+                                    "value": "at",
                                     "description": "The ID of the residence."
                                 }
                             ]
@@ -488,43 +516,43 @@
                             "formdata": [
                                 {
                                     "key": "email",
-                                    "value": "boehm.archibald@example.org",
+                                    "value": "rosalia.blanda@example.net",
                                     "type": "text",
                                     "description": "Must be a valid email address. Must not be greater than 255 characters."
                                 },
                                 {
                                     "key": "building_id",
-                                    "value": "vitae",
+                                    "value": "consectetur",
                                     "type": "text",
                                     "description": "The <code>id<\/code> of an existing record in the buildings table."
                                 },
                                 {
                                     "key": "document",
-                                    "value": "fkfxydfumvy",
+                                    "value": "szxkrloerdafqd",
                                     "type": "text",
                                     "description": "Must not be greater than 20 characters."
                                 },
                                 {
                                     "key": "first_name",
-                                    "value": "avutxtcunmsikfcffqkn",
+                                    "value": "zedesiphjgcan",
                                     "type": "text",
                                     "description": "Must not be greater than 50 characters."
                                 },
                                 {
                                     "key": "last_name",
-                                    "value": "yx",
+                                    "value": "iwkjdtvkqus",
                                     "type": "text",
                                     "description": "Must not be greater than 50 characters."
                                 },
                                 {
                                     "key": "phone",
-                                    "value": "omcg",
+                                    "value": "gx",
                                     "type": "text",
                                     "description": "Must not be greater than 20 characters."
                                 },
                                 {
                                     "key": "apartment",
-                                    "value": "ljtc",
+                                    "value": "lvmor",
                                     "type": "text",
                                     "description": "Must not be greater than 20 characters."
                                 },
@@ -554,7 +582,7 @@
                                 {
                                     "id": "id",
                                     "key": "id",
-                                    "value": "in",
+                                    "value": "harum",
                                     "description": "The ID of the resident."
                                 }
                             ]
@@ -610,7 +638,7 @@
                                 {
                                     "id": "id",
                                     "key": "id",
-                                    "value": "et",
+                                    "value": "accusantium",
                                     "description": "The ID of the resident."
                                 }
                             ]
@@ -628,7 +656,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"building_id\":\"similique\",\"apartment\":\"tonlupvrgmrlaw\",\"document\":\"oiyhgdtieeuvilcqcgj\",\"first_name\":\"soumwjhdfvgqzrounzg\",\"last_name\":\"yhvodflsfc\",\"phone\":\"sorlqryvdeawx\",\"avatar\":\"eos\"}"
+                            "raw": "{\"building_id\":\"delectus\",\"apartment\":\"ahzhlwwqmuey\",\"document\":\"scucjfoskovzayma\",\"first_name\":\"fqkparxucapcawisym\",\"last_name\":\"omegdjsxlfhfxsyfmwcyucvn\",\"phone\":\"rafoghiqg\",\"avatar\":\"excepturi\"}"
                         },
                         "description": "",
                         "auth": {
@@ -649,7 +677,7 @@
                                 {
                                     "id": "id",
                                     "key": "id",
-                                    "value": "amet",
+                                    "value": "ipsam",
                                     "description": "The ID of the resident."
                                 }
                             ]

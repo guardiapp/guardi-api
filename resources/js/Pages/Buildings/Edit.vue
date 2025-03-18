@@ -267,7 +267,7 @@ const { props } = usePage();
 const managers = props.managers || [];
 const residences = ref(props.residences || []);
 const building = props.building || [];
-const selectedManager = ref(props.building.residence.user_id);
+const selectedManager = ref(props.building.residence.manager[0].id);
 const selectedResidence = ref("");
 const residence = computed(() => residenceStore.selectedResidence);
 
@@ -293,6 +293,7 @@ onMounted(() => {
     if (residenceStore.selectedResidence) {
         form.residence_id = residenceStore.selectedResidence.id;
     }
+
 });
 
 const avatar = ref(null);

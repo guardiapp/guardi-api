@@ -58,11 +58,11 @@ class ResidenceRepository
 
     public function create(array $data)
     {
-        $user = User::findOrFail($data['user_id']);
+        //$user = User::findOrFail($data['user_id']);
         return Residence::create([
             'name' => $data['name'],
             'address' => $data['address'],
-            'user_id' => $user->id,
+            //'user_id' => $user->id,
         ]);
     }
 

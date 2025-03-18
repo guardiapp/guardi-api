@@ -33,7 +33,7 @@
             />
             <div v-if="visitors">
                 <TableTemplate
-                    :columns="user.type === 'Admin' ? ['Documento', 'Nombre', 'Apartamento', 'Residente', 'Administrador', 'Mostrar'] :  ['Documento', 'Nombre', 'Apartamento', 'Residente', 'Mostrar']"
+                    :columns="user.type === 'Admin' ? ['Documento', 'Nombre', 'Apartamento', 'Residente'] :  ['Documento', 'Nombre', 'Apartamento', 'Residente']"
                     :data="transformedVisitors"
                     :links="links"
                     :rows-per-page="rowsPerPage"

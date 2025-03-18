@@ -93,7 +93,8 @@ class VisitController extends Controller
                 'apartment',
                 'visit_date',
                 'expiration_date',
-                'normalTab'
+                'normalTab',
+                'visitType'
             ]);
             $data = $this->visitRepository->getAll(
                 $request->input('per_page', 5),

@@ -22,12 +22,12 @@ class Residence extends Model
     {
         return $this->belongsToMany(
             User::class,
-            ManagerResidence::class,
-            'manager_id',
+            'managers_residences',
             'residence_id',
+            'manager_id',
             'id',
             'id'
-        );//$this->belongsTo(User::class, 'user_id');
+        );
     }
 
     /**

@@ -134,7 +134,9 @@ class ManagerController extends Controller
 
         // Asegúrate de que el usuario autenticado tiene permiso para ver las residencias
         if ($user->type === 'Admin') {
-            $residences = Residence::where('user_id', $managerId)->get();
+            $residences = Residence::whereHas("manager", function ($q) use ($managerId) {
+                $q->where("users.id", "=", $managerId);
+            })->get();
         } elseif ($user->type === 'Manager') {
             $residences = $user->residences()->get();
         } else {

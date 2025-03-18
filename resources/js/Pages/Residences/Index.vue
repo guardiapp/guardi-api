@@ -188,7 +188,7 @@ const transformedResidences = computed(() => {
         return residences.value.map((residence) => ({
             name: { text: residence.name, id: residence.id },
             address: residence.address,
-            manager: residence.manager?.name || "N/A",
+            manager: residence.manager[0]?.name || "N/A",
             actions: { id: residence.id },
         }));
     }

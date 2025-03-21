@@ -214,7 +214,7 @@ const parseVisits = (data) => {
             resident:`${visit.apartment.resident.profile.first_name} ${visit.apartment.resident.profile.last_name}`,
             residence: visit.apartment.building.residence.name,
             date: new Date(visit.visit_date).toLocaleDateString('es-VE'),
-            hour: new Date(visit.visit_date).toLocaleTimeString('es-VE', { hour: '2-digit', minute: '2-digit', hour12: true }),
+            hour: visit.entry_time,
             status: visit.visited,
             actions: { id: visit.id },
         }));
@@ -319,7 +319,9 @@ const filters = ref({
     visit_date:"",
     expiration_date:"",
     page: 1,
-    visitType:"without_stay"
+    visitType:"without_stay",
+    managerId: user.type == 'Manager' ? user.id : '',
+    entry_time: ""
 });
 
 const filtersEnabled = computed(() => ({
@@ -327,6 +329,7 @@ const filtersEnabled = computed(() => ({
     resident_name: true,
     visit_date: normalTab.value,
     expiration_date: !normalTab.value,
+    entry_time: true
 }));
 
 const fetchFilteredVisits = () => {
@@ -367,7 +370,9 @@ const findAllVisits = async () => {
         { param: "visit_date", value: filters.value.visit_date ?? "" },
         { param: "expiration_date", value:filters.value.expiration_date ?? "" },
         { param: "visitType", value: filters.value.visitType ?? "" },
-        { param: "page", value: filters.value.page ?? 1 }
+        { param: "page", value: filters.value.page ?? 1 },
+        { param: "managerId", value: filters.value.managerId ?? "" },
+        { param: "entry_time", value: filters.value.entry_time ?? "" },
     );
     const response = await axios.get(`/visits/find-all?${params.toString()}`);
     const data = response.data;

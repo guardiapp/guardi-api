@@ -8,7 +8,6 @@
                     <span class="text-gray-700 dark:text-gray-400">
                         {{ fieldLabels[key] }}
                     </span>
-
                     <!-- Manejo especial de fecha y fecha con hora -->
                     <input
                         v-if="key === 'expiration_date' || key === 'visit_date'"
@@ -16,6 +15,14 @@
                         class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                         v-model="filters[key]"
                         @blur="emitFilters"
+                    />
+
+                    <input
+                        v-else-if="key === 'entry_time'"
+                        type="time"
+                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                        v-model="filters[key]"
+                        @change="emitFilters"
                     />
 
                     <select
@@ -99,8 +106,9 @@ const props = defineProps({
             building_name: "Edificio",
             apartment: "Apartamento",
             expiration_date: "Fecha de vencimiento",
-            visit_date: "Fecha y hora de visita",
-            building_id:"Edificio"
+            visit_date: "Fecha de visita",
+            building_id:"Edificio",
+            entry_time:"Hora de entrada"
         }),
     },
     currentUrl: {

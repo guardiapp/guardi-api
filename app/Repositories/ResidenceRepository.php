@@ -75,7 +75,17 @@ class ResidenceRepository
         }
 
         if ($user->type === 'Manager') {
-            return Residence::with(['manager', 'buildings', 'apartments.visits', 'apartments.visitors', 'guards'])->where('id', $id)->where('user_id', $user->id)->firstOrFail();
+            return Residence::whereHas("manager", function ($q) use ($user) {
+                $q->where('users.id', "=", $user->id);
+            })
+            ->with([
+                'buildings',
+                'apartments.visits',
+                'apartments.visitors',
+                'guards'
+                ])
+                ->where('residences.id', $id)
+                ->firstOrFail();
         }
 
         abort(403, 'Unauthorized action.');

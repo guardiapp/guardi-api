@@ -94,7 +94,8 @@ class VisitController extends Controller
                 'visit_date',
                 'expiration_date',
                 'normalTab',
-                'visitType'
+                'visitType',
+                'entry_time',
             ]);
             $data = $this->visitRepository->getAll(
                 $request->input('per_page', 5),

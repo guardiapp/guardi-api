@@ -111,5 +111,16 @@ class VisitRepository
                 $q->where("with_stay", "=", $with_stay);
             });
         }
+
+        if(isset($filters['managerId']) && !empty($filters['managerId'])) {
+            /*$query->whereHas('apartment.building.residence.manager', function ($q) use ($filters) {
+                $q->where("users.id", "=", $filters['managerId']);
+            });*/
+        }
+
+        if(isset($filters['entry_time']) && !empty($filters['entry_time'])) {
+            $query->where("entry_time", "=", $filters['entry_time']);
+            //$query->whereRaw("DATE_FORMAT(entry_time, '%H:%i') = ".$filters['entry_time']);
+        }
     }
 }

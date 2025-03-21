@@ -117,7 +117,7 @@ class ApartmentRepository
             ]);
 
             // Simular envío de correo en desarrollo
-            Mail::to($user->email)->send(new \App\Mail\ResidentCreated($user, $password));
+            Mail::to($user->email)->send(new \App\Mail\ResidentCreated($user->email, $password));
 
             return $apartment;
         } catch (\Exception $e) {

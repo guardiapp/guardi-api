@@ -48,17 +48,17 @@ paths:
                 name:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: uqjetugx
+                  example: ahekjkmnnsbvaio
                   nullable: false
                 email:
                   type: string
                   description: 'Must be a valid email address.'
-                  example: allan.thompson@example.net
+                  example: kaycee.carter@example.net
                   nullable: false
                 password:
                   type: string
                   description: 'Must be at least 8 characters.'
-                  example: '}a=*yTA{]-3weiN'
+                  example: 'K][cDLj^Pz{S`cFHFXDM'
                   nullable: false
               required:
                 - name
@@ -84,12 +84,12 @@ paths:
                 email:
                   type: string
                   description: 'Must be a valid email address.'
-                  example: weissnat.rita@example.net
+                  example: leonard.stiedemann@example.org
                   nullable: false
                 password:
                   type: string
                   description: ''
-                  example: '$}{bns"!%c+7n'
+                  example: '*mJm/Q>OJ'
                   nullable: false
               required:
                 - email
@@ -177,12 +177,12 @@ paths:
                 name:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: xfq
+                  example: kstgviplypu
                   nullable: false
                 address:
                   type: string
                   description: 'Must not be greater than 500 characters.'
-                  example: ikwfurppxkbf
+                  example: omzruuozhifzp
                   nullable: false
               required:
                 - name
@@ -228,12 +228,12 @@ paths:
                 name:
                   type: string
                   description: 'Must not be greater than 255 characters.'
-                  example: pjyaxchkpamfazssbd
+                  example: ikkynrblxuylv
                   nullable: false
                 address:
                   type: string
                   description: 'Must not be greater than 500 characters.'
-                  example: awxadvhmcpzjctz
+                  example: xs
                   nullable: false
               required:
                 - name
@@ -253,7 +253,7 @@ paths:
         in: path
         name: id
         description: 'The ID of the residence.'
-        example: aspernatur
+        example: et
         required: true
         schema:
           type: string
@@ -297,32 +297,32 @@ paths:
                 email:
                   type: string
                   description: 'Must be a valid email address. Must not be greater than 255 characters.'
-                  example: rosalia.blanda@example.net
+                  example: corkery.elvis@example.net
                   nullable: false
                 building_id:
                   type: string
                   description: 'The <code>id</code> of an existing record in the buildings table.'
-                  example: consectetur
+                  example: eos
                   nullable: false
                 document:
                   type: string
                   description: 'Must not be greater than 20 characters.'
-                  example: szxkrloerdafqd
+                  example: ubdcmxkzrkaslotxcf
                   nullable: false
                 first_name:
                   type: string
                   description: 'Must not be greater than 50 characters.'
-                  example: zedesiphjgcan
+                  example: zzakfoncsm
                   nullable: false
                 last_name:
                   type: string
                   description: 'Must not be greater than 50 characters.'
-                  example: iwkjdtvkqus
+                  example: jlrgtmhl
                   nullable: false
                 phone:
                   type: string
                   description: 'Must not be greater than 20 characters.'
-                  example: gx
+                  example: uip
                   nullable: false
                 avatar:
                   type: string
@@ -332,7 +332,7 @@ paths:
                 apartment:
                   type: string
                   description: 'Must not be greater than 20 characters.'
-                  example: lvmor
+                  example: yfhvwlvplbhirqmbkplj
                   nullable: false
               required:
                 - email
@@ -383,37 +383,37 @@ paths:
                 building_id:
                   type: string
                   description: 'The <code>id</code> of an existing record in the buildings table.'
-                  example: delectus
+                  example: aperiam
                   nullable: false
                 apartment:
                   type: string
                   description: 'Must not be greater than 20 characters.'
-                  example: ahzhlwwqmuey
+                  example: kyfjirrdov
                   nullable: false
                 document:
                   type: string
                   description: 'Must not be greater than 20 characters.'
-                  example: scucjfoskovzayma
+                  example: ampvyjxcy
                   nullable: false
                 first_name:
                   type: string
                   description: 'Must not be greater than 50 characters.'
-                  example: fqkparxucapcawisym
+                  example: eynpocidkbbhabuhlzfrcyik
                   nullable: false
                 last_name:
                   type: string
                   description: 'Must not be greater than 50 characters.'
-                  example: omegdjsxlfhfxsyfmwcyucvn
+                  example: kvfbu
                   nullable: false
                 phone:
                   type: string
                   description: 'Must not be greater than 20 characters.'
-                  example: rafoghiqg
+                  example: zosgnyljyaw
                   nullable: false
                 avatar:
                   type: string
                   description: ''
-                  example: excepturi
+                  example: quos
                   nullable: true
               required:
                 - building_id
@@ -437,7 +437,167 @@ paths:
         in: path
         name: id
         description: 'The ID of the resident.'
-        example: harum
+        example: asperiores
+        required: true
+        schema:
+          type: string
+  /api/visits:
+    get:
+      summary: ''
+      operationId: getApiVisits
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: ''
+      operationId: postApiVisits
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/visits/{id}':
+    get:
+      summary: ''
+      operationId: getApiVisitsId
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: ''
+      operationId: putApiVisitsId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiVisitsId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the visit.'
+        example: non
+        required: true
+        schema:
+          type: string
+  /api/visitors:
+    get:
+      summary: ''
+      operationId: getApiVisitors
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    post:
+      summary: ''
+      operationId: postApiVisitors
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+  '/api/visitors/{id}':
+    get:
+      summary: ''
+      operationId: getApiVisitorsId
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+      security: []
+    put:
+      summary: ''
+      operationId: putApiVisitorsId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    delete:
+      summary: ''
+      operationId: deleteApiVisitorsId
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+      security: []
+    parameters:
+      -
+        in: path
+        name: id
+        description: 'The ID of the visitor.'
+        example: et
         required: true
         schema:
           type: string

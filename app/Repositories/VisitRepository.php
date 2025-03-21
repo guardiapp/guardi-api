@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Residence;
 use App\Models\Visit;
 use Illuminate\Support\Facades\Auth;
+use DB;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class VisitRepository
 {
@@ -69,6 +71,45 @@ class VisitRepository
         $this->applyVisitFilters($query, $filters);
 
         return $query->paginate($perPage, ['*'], 'page', $page)->appends($filters);
+    }
+
+    public function findById(Int $id): Visit {
+        return Visit::findOrFail($id);
+    }
+
+    public function deleteById(Int $id) {
+        Visit::destroy([ $id ]);
+        return true;
+    }
+
+    public function saveOrUpdate($payload, $id = null) {
+        try {
+            DB::beginTransaction();
+            $visit = Visit::firstOrNew(["id" => $id]);
+            $visit->fill($payload);
+            $visit->qr = $id ? $visit->qr : "temp";
+            $visit->save();
+
+            if(!$id || $id == "") {
+                $qrCode = uniqid('visit_', true);
+                $qrImagePath = "qr_images/{$qrCode}.png";
+                // Generar código QR y guardarlo
+                QrCode::format('png')
+                ->size(200)
+                ->generate(json_encode([
+                        "visit_id" => $visit->id,
+                    ]), storage_path("app/public/{$qrImagePath}")
+                );
+
+                $visit->qr = $qrImagePath;
+            }
+            $visit->save();
+            DB::commit();
+            return $visit;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 
     /**

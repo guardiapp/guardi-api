@@ -87,8 +87,7 @@ class AuthController extends Controller implements HasMiddleware
      */
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
-
+        Auth::logout();
         return response()->json(['message' => 'Logged out successfully']);
     }
 
@@ -97,7 +96,7 @@ class AuthController extends Controller implements HasMiddleware
      */
     public function me(Request $request)
     {
-        return response()->json($request->user());
+        return response()->json(Auth::user());
     }
 
     public function refreshToken(Request $request) {

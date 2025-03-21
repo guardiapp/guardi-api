@@ -13,6 +13,26 @@ use Illuminate\Support\Str;
 
 class VisitorRepository
 {
+    public function saveOrUpdate($payload, $id = null) {
+        try {
+            $visitor = Visitor::firstOrNew(["id" => $id]);
+            $visitor->fill($payload);
+            $visitor->save();
+            return $visitor;
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    public function findById(Int $id) {
+        return Visitor::findOrFail($id);
+    }
+
+    public function deleteById(Int $id) {
+        Visitor::destroy([ $id ]);
+        return true;
+    }
+
     public function getAll($perPage, $page, array $filters)
     {
         $user = auth()->user();

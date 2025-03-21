@@ -65,7 +65,7 @@ endpoints:
         name: name
         description: 'Must not be greater than 255 characters.'
         required: true
-        example: uqjetugx
+        example: ahekjkmnnsbvaio
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -75,7 +75,7 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: true
-        example: allan.thompson@example.net
+        example: kaycee.carter@example.net
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -85,16 +85,16 @@ endpoints:
         name: password
         description: 'Must be at least 8 characters.'
         required: true
-        example: '}a=*yTA{]-3weiN'
+        example: 'K][cDLj^Pz{S`cFHFXDM'
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      name: uqjetugx
-      email: allan.thompson@example.net
-      password: '}a=*yTA{]-3weiN'
+      name: ahekjkmnnsbvaio
+      email: kaycee.carter@example.net
+      password: 'K][cDLj^Pz{S`cFHFXDM'
     fileParameters: []
     responses: []
     responseFields: []
@@ -128,7 +128,7 @@ endpoints:
         name: email
         description: 'Must be a valid email address.'
         required: true
-        example: weissnat.rita@example.net
+        example: leonard.stiedemann@example.org
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -138,15 +138,15 @@ endpoints:
         name: password
         description: ''
         required: true
-        example: '$}{bns"!%c+7n'
+        example: '*mJm/Q>OJ'
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      email: weissnat.rita@example.net
-      password: '$}{bns"!%c+7n'
+      email: leonard.stiedemann@example.org
+      password: '*mJm/Q>OJ'
     fileParameters: []
     responses: []
     responseFields: []
@@ -318,7 +318,7 @@ endpoints:
         name: name
         description: 'Must not be greater than 255 characters.'
         required: true
-        example: xfq
+        example: kstgviplypu
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -328,15 +328,15 @@ endpoints:
         name: address
         description: 'Must not be greater than 500 characters.'
         required: true
-        example: ikwfurppxkbf
+        example: omzruuozhifzp
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      name: xfq
-      address: ikwfurppxkbf
+      name: kstgviplypu
+      address: omzruuozhifzp
     fileParameters: []
     responses: []
     responseFields: []
@@ -366,14 +366,14 @@ endpoints:
         name: id
         description: 'The ID of the residence.'
         required: true
-        example: aspernatur
+        example: et
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: aspernatur
+      id: et
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -416,14 +416,14 @@ endpoints:
         name: id
         description: 'The ID of the residence.'
         required: true
-        example: aut
+        example: nobis
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: aut
+      id: nobis
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -431,7 +431,7 @@ endpoints:
         name: name
         description: 'Must not be greater than 255 characters.'
         required: true
-        example: pjyaxchkpamfazssbd
+        example: ikkynrblxuylv
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -441,15 +441,15 @@ endpoints:
         name: address
         description: 'Must not be greater than 500 characters.'
         required: true
-        example: awxadvhmcpzjctz
+        example: xs
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      name: pjyaxchkpamfazssbd
-      address: awxadvhmcpzjctz
+      name: ikkynrblxuylv
+      address: xs
     fileParameters: []
     responses: []
     responseFields: []
@@ -479,14 +479,14 @@ endpoints:
         name: id
         description: 'The ID of the residence.'
         required: true
-        example: at
+        example: cum
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: at
+      id: cum
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -563,7 +563,7 @@ endpoints:
         name: email
         description: 'Must be a valid email address. Must not be greater than 255 characters.'
         required: true
-        example: rosalia.blanda@example.net
+        example: corkery.elvis@example.net
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -573,7 +573,7 @@ endpoints:
         name: building_id
         description: 'The <code>id</code> of an existing record in the buildings table.'
         required: true
-        example: consectetur
+        example: eos
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -583,7 +583,7 @@ endpoints:
         name: document
         description: 'Must not be greater than 20 characters.'
         required: true
-        example: szxkrloerdafqd
+        example: ubdcmxkzrkaslotxcf
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -593,7 +593,7 @@ endpoints:
         name: first_name
         description: 'Must not be greater than 50 characters.'
         required: true
-        example: zedesiphjgcan
+        example: zzakfoncsm
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -603,7 +603,7 @@ endpoints:
         name: last_name
         description: 'Must not be greater than 50 characters.'
         required: true
-        example: iwkjdtvkqus
+        example: jlrgtmhl
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -613,7 +613,7 @@ endpoints:
         name: phone
         description: 'Must not be greater than 20 characters.'
         required: true
-        example: gx
+        example: uip
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -633,20 +633,20 @@ endpoints:
         name: apartment
         description: 'Must not be greater than 20 characters.'
         required: true
-        example: lvmor
+        example: yfhvwlvplbhirqmbkplj
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      email: rosalia.blanda@example.net
-      building_id: consectetur
-      document: szxkrloerdafqd
-      first_name: zedesiphjgcan
-      last_name: iwkjdtvkqus
-      phone: gx
-      apartment: lvmor
+      email: corkery.elvis@example.net
+      building_id: eos
+      document: ubdcmxkzrkaslotxcf
+      first_name: zzakfoncsm
+      last_name: jlrgtmhl
+      phone: uip
+      apartment: yfhvwlvplbhirqmbkplj
     fileParameters:
       avatar: null
     responses: []
@@ -677,14 +677,14 @@ endpoints:
         name: id
         description: 'The ID of the resident.'
         required: true
-        example: harum
+        example: asperiores
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: harum
+      id: asperiores
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -728,14 +728,14 @@ endpoints:
         name: id
         description: 'The ID of the resident.'
         required: true
-        example: accusantium
+        example: repellat
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: accusantium
+      id: repellat
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
@@ -743,7 +743,7 @@ endpoints:
         name: building_id
         description: 'The <code>id</code> of an existing record in the buildings table.'
         required: true
-        example: delectus
+        example: aperiam
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -753,7 +753,7 @@ endpoints:
         name: apartment
         description: 'Must not be greater than 20 characters.'
         required: true
-        example: ahzhlwwqmuey
+        example: kyfjirrdov
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -763,7 +763,7 @@ endpoints:
         name: document
         description: 'Must not be greater than 20 characters.'
         required: true
-        example: scucjfoskovzayma
+        example: ampvyjxcy
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -773,7 +773,7 @@ endpoints:
         name: first_name
         description: 'Must not be greater than 50 characters.'
         required: true
-        example: fqkparxucapcawisym
+        example: eynpocidkbbhabuhlzfrcyik
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -783,7 +783,7 @@ endpoints:
         name: last_name
         description: 'Must not be greater than 50 characters.'
         required: true
-        example: omegdjsxlfhfxsyfmwcyucvn
+        example: kvfbu
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -793,7 +793,7 @@ endpoints:
         name: phone
         description: 'Must not be greater than 20 characters.'
         required: true
-        example: rafoghiqg
+        example: zosgnyljyaw
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -803,20 +803,20 @@ endpoints:
         name: avatar
         description: ''
         required: false
-        example: excepturi
+        example: quos
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         custom: []
     cleanBodyParameters:
-      building_id: delectus
-      apartment: ahzhlwwqmuey
-      document: scucjfoskovzayma
-      first_name: fqkparxucapcawisym
-      last_name: omegdjsxlfhfxsyfmwcyucvn
-      phone: rafoghiqg
-      avatar: excepturi
+      building_id: aperiam
+      apartment: kyfjirrdov
+      document: ampvyjxcy
+      first_name: eynpocidkbbhabuhlzfrcyik
+      last_name: kvfbu
+      phone: zosgnyljyaw
+      avatar: quos
     fileParameters: []
     responses: []
     responseFields: []
@@ -846,14 +846,418 @@ endpoints:
         name: id
         description: 'The ID of the resident.'
         required: true
-        example: ipsam
+        example: aperiam
         type: string
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanUrlParameters:
-      id: ipsam
+      id: aperiam
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/visits
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/visits
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/visits/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the visit.'
+        required: true
+        example: non
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: non
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PUT
+      - PATCH
+    uri: 'api/visits/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the visit.'
+        required: true
+        example: nihil
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: nihil
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/visits/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the visit.'
+        required: true
+        example: sit
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: sit
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/visitors
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/visitors
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/visitors/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the visitor.'
+        required: true
+        example: et
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: et
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PUT
+      - PATCH
+    uri: 'api/visitors/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the visitor.'
+        required: true
+        example: earum
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: earum
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/visitors/{id}'
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the visitor.'
+        required: true
+        example: recusandae
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: recusandae
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []

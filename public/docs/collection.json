@@ -10,7 +10,7 @@
     ],
     "info": {
         "name": "Laravel",
-        "_postman_id": "041eca4f-7808-4dd7-aacd-3b4dce185b59",
+        "_postman_id": "45e28885-0eee-4a5c-820c-8a07815d1097",
         "description": "",
         "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
     },
@@ -89,7 +89,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"uqjetugx\",\"email\":\"allan.thompson@example.net\",\"password\":\"}a=*yTA{]-3weiN\"}"
+                            "raw": "{\"name\":\"ahekjkmnnsbvaio\",\"email\":\"kaycee.carter@example.net\",\"password\":\"K][cDLj^Pz{S`cFHFXDM\"}"
                         },
                         "description": "",
                         "auth": {
@@ -120,7 +120,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"email\":\"weissnat.rita@example.net\",\"password\":\"$}{bns\\\"!%c+7n\"}"
+                            "raw": "{\"email\":\"leonard.stiedemann@example.org\",\"password\":\"*mJm\\\/Q>OJ\"}"
                         },
                         "description": "",
                         "auth": {
@@ -303,7 +303,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"xfq\",\"address\":\"ikwfurppxkbf\"}"
+                            "raw": "{\"name\":\"kstgviplypu\",\"address\":\"omzruuozhifzp\"}"
                         },
                         "description": "",
                         "auth": {
@@ -324,7 +324,7 @@
                                 {
                                     "id": "id",
                                     "key": "id",
-                                    "value": "aspernatur",
+                                    "value": "et",
                                     "description": "The ID of the residence."
                                 }
                             ]
@@ -380,7 +380,7 @@
                                 {
                                     "id": "id",
                                     "key": "id",
-                                    "value": "aut",
+                                    "value": "nobis",
                                     "description": "The ID of the residence."
                                 }
                             ]
@@ -398,7 +398,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"name\":\"pjyaxchkpamfazssbd\",\"address\":\"awxadvhmcpzjctz\"}"
+                            "raw": "{\"name\":\"ikkynrblxuylv\",\"address\":\"xs\"}"
                         },
                         "description": "",
                         "auth": {
@@ -419,7 +419,7 @@
                                 {
                                     "id": "id",
                                     "key": "id",
-                                    "value": "at",
+                                    "value": "cum",
                                     "description": "The ID of the residence."
                                 }
                             ]
@@ -516,43 +516,43 @@
                             "formdata": [
                                 {
                                     "key": "email",
-                                    "value": "rosalia.blanda@example.net",
+                                    "value": "corkery.elvis@example.net",
                                     "type": "text",
                                     "description": "Must be a valid email address. Must not be greater than 255 characters."
                                 },
                                 {
                                     "key": "building_id",
-                                    "value": "consectetur",
+                                    "value": "eos",
                                     "type": "text",
                                     "description": "The <code>id<\/code> of an existing record in the buildings table."
                                 },
                                 {
                                     "key": "document",
-                                    "value": "szxkrloerdafqd",
+                                    "value": "ubdcmxkzrkaslotxcf",
                                     "type": "text",
                                     "description": "Must not be greater than 20 characters."
                                 },
                                 {
                                     "key": "first_name",
-                                    "value": "zedesiphjgcan",
+                                    "value": "zzakfoncsm",
                                     "type": "text",
                                     "description": "Must not be greater than 50 characters."
                                 },
                                 {
                                     "key": "last_name",
-                                    "value": "iwkjdtvkqus",
+                                    "value": "jlrgtmhl",
                                     "type": "text",
                                     "description": "Must not be greater than 50 characters."
                                 },
                                 {
                                     "key": "phone",
-                                    "value": "gx",
+                                    "value": "uip",
                                     "type": "text",
                                     "description": "Must not be greater than 20 characters."
                                 },
                                 {
                                     "key": "apartment",
-                                    "value": "lvmor",
+                                    "value": "yfhvwlvplbhirqmbkplj",
                                     "type": "text",
                                     "description": "Must not be greater than 20 characters."
                                 },
@@ -582,7 +582,7 @@
                                 {
                                     "id": "id",
                                     "key": "id",
-                                    "value": "harum",
+                                    "value": "asperiores",
                                     "description": "The ID of the resident."
                                 }
                             ]
@@ -638,7 +638,7 @@
                                 {
                                     "id": "id",
                                     "key": "id",
-                                    "value": "accusantium",
+                                    "value": "repellat",
                                     "description": "The ID of the resident."
                                 }
                             ]
@@ -656,7 +656,7 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\"building_id\":\"delectus\",\"apartment\":\"ahzhlwwqmuey\",\"document\":\"scucjfoskovzayma\",\"first_name\":\"fqkparxucapcawisym\",\"last_name\":\"omegdjsxlfhfxsyfmwcyucvn\",\"phone\":\"rafoghiqg\",\"avatar\":\"excepturi\"}"
+                            "raw": "{\"building_id\":\"aperiam\",\"apartment\":\"kyfjirrdov\",\"document\":\"ampvyjxcy\",\"first_name\":\"eynpocidkbbhabuhlzfrcyik\",\"last_name\":\"kvfbu\",\"phone\":\"zosgnyljyaw\",\"avatar\":\"quos\"}"
                         },
                         "description": "",
                         "auth": {
@@ -677,8 +677,416 @@
                                 {
                                     "id": "id",
                                     "key": "id",
-                                    "value": "ipsam",
+                                    "value": "aperiam",
                                     "description": "The ID of the resident."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET api\/visits",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/visits",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/visits"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "POST api\/visits",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/visits",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/visits"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET api\/visits\/{id}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/visits\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/visits\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "non",
+                                    "description": "The ID of the visit."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "PUT api\/visits\/{id}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/visits\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/visits\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "nihil",
+                                    "description": "The ID of the visit."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "DELETE api\/visits\/{id}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/visits\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/visits\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "sit",
+                                    "description": "The ID of the visit."
+                                }
+                            ]
+                        },
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET api\/visitors",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/visitors",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/visitors"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "POST api\/visitors",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/visitors",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/visitors"
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "GET api\/visitors\/{id}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/visitors\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/visitors\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "et",
+                                    "description": "The ID of the visitor."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [
+                                {
+                                    "key": "cache-control",
+                                    "value": "no-cache, private"
+                                },
+                                {
+                                    "key": "content-type",
+                                    "value": "application\/json"
+                                },
+                                {
+                                    "key": "access-control-allow-origin",
+                                    "value": "*"
+                                }
+                            ],
+                            "code": 401,
+                            "body": "{\"message\":\"Unauthenticated.\"}",
+                            "name": ""
+                        }
+                    ]
+                },
+                {
+                    "name": "PUT api\/visitors\/{id}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/visitors\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/visitors\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "earum",
+                                    "description": "The ID of the visitor."
+                                }
+                            ]
+                        },
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "DELETE api\/visitors\/{id}",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/visitors\/:id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/visitors\/:id",
+                            "variable": [
+                                {
+                                    "id": "id",
+                                    "key": "id",
+                                    "value": "recusandae",
+                                    "description": "The ID of the visitor."
                                 }
                             ]
                         },

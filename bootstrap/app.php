@@ -22,7 +22,8 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->api(append: [
-            RedirectIfUnauthorized::class
+            RedirectIfUnauthorized::class,
+            \App\Http\Middleware\JwtAuth::class,
         ]);
 
     })

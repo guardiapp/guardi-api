@@ -10,13 +10,13 @@ use App\Http\Controllers\Api\VisitController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
-})->middleware('auth:api');
+})->middleware('jwt.auth');
 
 // Autenticación
 Route::prefix('auth')->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('login', [AuthController::class, 'login']);
-    Route::middleware('auth:api')->group(function () {
+    Route::middleware('jwt.auth')->group(function () {
         Route::post('refresh-token', [AuthController::class, 'refreshToken']);
         Route::post('logout', [AuthController::class, 'logout']);
         Route::get('me', [AuthController::class, 'me']);
@@ -24,7 +24,7 @@ Route::prefix('auth')->group(function () {
 });
 
 // Residences (API)
-Route::middleware('auth:api')->group(function () {
+Route::middleware('jwt.auth')->group(function () {
 
 
     //Route::get('/managers', [UserController::class, 'index']);

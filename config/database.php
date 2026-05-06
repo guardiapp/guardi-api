@@ -2,6 +2,14 @@
 
 use Illuminate\Support\Str;
 
+$mysqlSslCaPath = env('MYSQL_ATTR_SSL_CA');
+
+if (is_string($mysqlSslCaPath) && $mysqlSslCaPath !== '') {
+    $mysqlSslCaPath = is_file($mysqlSslCaPath) ? $mysqlSslCaPath : base_path($mysqlSslCaPath);
+} else {
+    $mysqlSslCaPath = null;
+}
+
 return [
 
     /*
@@ -57,9 +65,13 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
+            'options' => extension_loaded('pdo_mysql') && $mysqlSslCaPath ? [
+                PDO::MYSQL_ATTR_SSL_CA => $mysqlSslCaPath,
+                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => filter_var(
+                    env('MYSQL_ATTR_SSL_VERIFY_SERVER_CERT', true),
+                    FILTER_VALIDATE_BOOLEAN
+                ),
+            ] : [],
         ],
 
         'mariadb' => [
@@ -77,9 +89,13 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
+            'options' => extension_loaded('pdo_mysql') && $mysqlSslCaPath ? [
+                PDO::MYSQL_ATTR_SSL_CA => $mysqlSslCaPath,
+                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => filter_var(
+                    env('MYSQL_ATTR_SSL_VERIFY_SERVER_CERT', true),
+                    FILTER_VALIDATE_BOOLEAN
+                ),
+            ] : [],
         ],
 
         'pgsql' => [

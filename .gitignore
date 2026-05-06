@@ -21,3 +21,6 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# Certificado CA de Aiven (descarga manual desde la consola)
+/database/certs/*.pem

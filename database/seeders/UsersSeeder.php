@@ -18,6 +18,11 @@ class UsersSeeder extends Seeder
 {
     public function run(): void
     {
+        // Idempotente: en cada deploy se vuelve a ejecutar db:seed; no repetir datos demo.
+        if (User::query()->where('email', 'admin@example.com')->exists()) {
+            return;
+        }
+
         $firstNames = ['Juan', 'María', 'Carlos', 'Ana', 'Luis', 'Laura', 'Pedro', 'Carmen', 'Jorge', 'Elena', 'Miguel', 'Isabel'];
         $lastNames = ['García', 'Rodríguez', 'López', 'Martínez', 'Sánchez', 'Pérez', 'González', 'Ruiz', 'Ramírez', 'Torres', 'Flores', 'Díaz'];
         $streets = ['Av. Principal', 'Calle Mayor', 'Plaza Centro', 'Paseo del Río', 'Calle Sol', 'Av. Libertad'];
